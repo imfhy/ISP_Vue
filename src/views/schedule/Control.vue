@@ -298,13 +298,13 @@ export default {
 </style>
 <style>
 .my-table .el-table th.is-leaf{
-    border: none;
+  border: none;
 }
 .my-table .el-table td{
-    border: none;
+  border: none;
 }
 .my-table  .el-table::before{
-    height: 0;
+  height: 0;
 }
 </style>
 
