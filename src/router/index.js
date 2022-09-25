@@ -130,6 +130,48 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
+    path: '/schedule',
+    component: Layout,
+    redirect: '/schedule/control',
+    alwaysShow: true, // will always show the root menu
+    name: 'Schedule',
+    meta: {
+      title: '排程模块',
+      icon: 'component',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'control',
+        component: () => import('@/views/schedule/Control'),
+        name: 'Control',
+        meta: {
+          title: '控制面板',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'onlinetable',
+        component: () => import('@/views/schedule/OnlineTable'),
+        name: 'OnlineTable',
+        meta: {
+          title: '在线表格',
+          roles: ['admin'] // or you can only set roles in sub nav
+          // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'config',
+        component: () => import('@/views/schedule/Config'),
+        name: 'Config',
+        meta: {
+          title: '排程配置',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',

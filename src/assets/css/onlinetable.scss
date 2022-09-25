@@ -1,0 +1,32 @@
+
+.card-control{
+    margin-top: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+.card-luckysheet{
+    margin: 16px;
+}
+.my-luckysheet{
+    padding:0px;
+    height:700px;
+}
+.control-buuton{
+    display: flex;
+    .el-input{
+        width: 200px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .el-button{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .history{
+        .el-select{
+            margin-left: 10px;
+        }
+    }
+}
