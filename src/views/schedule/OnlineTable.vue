@@ -9,7 +9,7 @@
       />
       <div class="control-buuton">
         <el-input
-          v-model="input"
+          v-model="uploadFileName"
           placeholder="未上传文件"
           :disabled="true"
         />
@@ -63,23 +63,50 @@
   </div>
 </template>
 <script>
+import LuckyExcel from 'luckyexcel'
 export default {
   data() {
     return {
-
+      uploadFileName: '',
+      uploadFiles: []
     }
   },
   mounted() {
-    this.init_luckysheet()
+    this.initLuckysheet()
   },
   methods: {
-    init_luckysheet() {
+    // 初始化luckysheet
+    initLuckysheet() {
       var options = {
         container: 'luckysheet',
         lang: 'zh',
         showinfobar: false // 不显示luckysheet图标
       }
       window.luckysheet.create(options)
+    },
+    // 上传文件
+    loadExcelFile(file, fileList) {
+      if (fileList.length > 0) {
+        this.uploadFiles = fileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
+        this.file_name = this.uploadFiles[0].name // 更新文件名
+      }
+      // this.uploadFiles = fileList
+      var excel_file = fileList[0].raw // 获取文件流
+      LuckyExcel.transformExcelToLucky(excel_file, function(exportJson, luckysheetfile) {
+        window.luckysheet.create({
+          container: 'luckysheet',
+          showinfobar: false,
+          data: exportJson.sheets,
+          title: exportJson.info.name,
+          userInfo: exportJson.info.name.creator,
+          lang: 'zh',
+          hook: { // 冻结首行，添加钩子，初始化后冻结首行
+            workbookCreateAfter: function() {
+              window.luckysheet.setHorizontalFrozen(false)
+            }
+          }
+        })
+      })
     }
   }
 }

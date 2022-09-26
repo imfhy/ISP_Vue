@@ -36,7 +36,16 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/sqyapi': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true, // 配置跨域
+        pathRewrite: {
+          '^/sqyapi': ''
+        }
+      }
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
