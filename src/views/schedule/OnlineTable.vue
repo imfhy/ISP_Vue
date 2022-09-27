@@ -6,8 +6,9 @@
         type="info"
         :closable="false"
         :color="progress_color"
+        style="margin-bottom: 10px;"
       />
-      <div class="control-buuton">
+      <div class="control-button">
         <el-input
           :value="uploadFileName"
           placeholder="未上传文件"
@@ -30,9 +31,11 @@
           <el-button type="primary" @click="checkData">
             <i class="el-icon-circle-check" />检查
           </el-button>
-          <el-button type="primary" @click="analysisDialog">
-            <i class="el-icon-monitor" />分析
-          </el-button>
+          <el-badge is-dot class="item" :hidden="false">
+            <el-button type="primary" @click="analysisDialog">
+              <i class="el-icon-monitor" />分析
+            </el-button>
+          </el-badge>
           <el-button type="primary" @click="downloadLuckyExcel">
             <i class="el-icon-download" />下载
           </el-button>
@@ -178,93 +181,84 @@
     <el-dialog
       :title="statisticsTitle"
       :visible.sync="statisticsDialogVisible"
-      width="75%"
+      width="60%"
       :before-close="handleCloseStatistics"
       class="statistics-dialog"
     >
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <el-card shadow="hover">
-            <el-table
-              :data="tableData_1"
-              style="width: 100%;height:500px;"
-              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-            >
-              <el-table-column
-                prop="line"
-                label="线体"
-              />
-              <el-table-column
-                prop="points_type"
-                label="点数类别"
-              />
-              <el-table-column
-                prop="points"
-                label="点数"
-              />
-            </el-table>
-          </el-card>
-        </el-col>
-
-        <el-col :span="8">
-          <el-card shadow="hover">
-            <el-table
-              :data="tableData_2"
-              style="width: 100%;height:240px;"
-              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-            >
-              <el-table-column
-                prop="type"
-                label="量化类型"
-              />
-              <el-table-column
-                prop="hours"
-                label="量化结果(小时)"
-              />
-              <el-table-column
-                prop="days"
-                label="量化结果(天)"
-              />
-            </el-table>
-          </el-card>
-
-          <el-card shadow="hover" style="margin-top:10px">
-            <el-table
-              :data="tableData_3"
-              style="width: 100%;height:240px;"
-              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-            >
-              <el-table-column
-                prop="type"
-                label="量化类型"
-              />
-              <el-table-column
-                prop="points"
-                label="值"
-              />
-            </el-table>
-          </el-card>
-        </el-col>
-
-        <el-col :span="8">
-          <el-card shadow="hover">
-            <el-table
-              :data="tableData_4"
-              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-              style="width: 100%;height:500px;"
-            >
-              <el-table-column
-                prop="line"
-                label="线体"
-              />
-              <el-table-column
-                prop="time"
-                label="线体完工时间"
-              />
-            </el-table>
-          </el-card>
-        </el-col>
-      </el-row>
+      <el-tabs>
+        <el-tab-pane label="量化结果1">
+          <el-table
+            :data="tableData_1"
+            style="width: 100%;height:460px;"
+            :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+          >
+            <el-table-column
+              prop="line"
+              label="线体"
+            />
+            <el-table-column
+              prop="points_type"
+              label="点数类别"
+            />
+            <el-table-column
+              prop="points"
+              label="点数"
+            />
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="量化结果2">
+          <el-table
+            :data="tableData_2"
+            style="width: 100%;height:460px;"
+            :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+          >
+            <el-table-column
+              prop="type"
+              label="量化类型"
+            />
+            <el-table-column
+              prop="hours"
+              label="量化结果(小时)"
+            />
+            <el-table-column
+              prop="days"
+              label="量化结果(天)"
+            />
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="量化结果3">
+          <el-table
+            :data="tableData_3"
+            style="width: 100%;height:460px;"
+            :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+          >
+            <el-table-column
+              prop="type"
+              label="量化类型"
+            />
+            <el-table-column
+              prop="points"
+              label="值"
+            />
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="量化结果4">
+          <el-table
+            :data="tableData_4"
+            :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            style="width: 100%;height:460px;"
+          >
+            <el-table-column
+              prop="line"
+              label="线体"
+            />
+            <el-table-column
+              prop="time"
+              label="线体完工时间"
+            />
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="statisticsDialogVisible = false">
           关闭
@@ -449,12 +443,12 @@ export default {
     // 下载表格
     downloadAnaExcel() {
       DownloadAnaExcel().then(res => {
+        this.stepNow = 4
         this.$message({
           type: 'success',
           message: '开始下载'
         })
         this.downloadFile(res)
-        this.stepNow = 4
       }).catch(err => {
         console.log(err)
         this.$message({
@@ -628,7 +622,11 @@ export default {
     },
     // 量化结果 TODO
     statisticsSchedule() {
-      this.statisticsTitle = '量化结果-' + this.uploadFileName
+      if (this.uploadFileName !== '') {
+        this.statisticsTitle = '量化结果-' + this.uploadFileName
+      } else {
+        this.statisticsTitle = '量化结果'
+      }
       this.statisticsDialogVisible = true
 
       this.stepNow = 4

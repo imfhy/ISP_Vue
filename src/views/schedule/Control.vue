@@ -180,10 +180,12 @@
                     </el-upload>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="computeDialog">
-                      <i class="el-icon-monitor" />
-                      计算排程表格
-                    </el-button>
+                    <el-badge value="运行中" class="item">
+                      <el-button type="primary" plain @click="computeDialog">
+                        <i class="el-icon-monitor" />
+                        计算排程表格
+                      </el-button>
+                    </el-badge>
                   </el-col>
                   <el-col :span="8">
                     <el-button type="primary" plain @click="stopTabu">
