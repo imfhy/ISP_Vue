@@ -26,21 +26,23 @@
             <i class="el-icon-upload2" />上传表格
           </el-button>
         </el-upload>
-        <el-button type="primary">
-          <i class="el-icon-circle-check" />检查
-        </el-button>
-        <el-button type="primary" @click="analysisDialog">
-          <i class="el-icon-monitor" />分析
-        </el-button>
-        <el-button type="primary" @click="downloadLuckyExcel">
-          <i class="el-icon-download" />下载
-        </el-button>
-        <el-button>
-          <i class="el-icon-position" />接口更新
-        </el-button>
-        <el-button>
-          <i class="el-icon-position" />推送排程
-        </el-button>
+        <div>
+          <el-button type="primary" @click="checkData">
+            <i class="el-icon-circle-check" />检查
+          </el-button>
+          <el-button type="primary" @click="analysisDialog">
+            <i class="el-icon-monitor" />分析
+          </el-button>
+          <el-button type="primary" @click="downloadLuckyExcel">
+            <i class="el-icon-download" />下载
+          </el-button>
+          <el-button>
+            <i class="el-icon-position" />接口更新
+          </el-button>
+          <el-button>
+            <i class="el-icon-position" />推送排程
+          </el-button>
+        </div>
         <div class="history">
           <el-select v-model="value" clearable placeholder="选择历史排程">
             <el-option
@@ -120,9 +122,9 @@
             <div slot="header" class="clearfix">
               <span class="ana-res-text">分析结果</span>
               <div class="ana-history">
-                <el-select v-model="value_ana_time" placeholder="查看历史分析结果" style="width: 200px%;" size="small">
+                <el-select v-model="selectAnaTime" placeholder="查看历史分析结果" style="width: 200px%;" size="small">
                   <el-option
-                    v-for="item in options_analysis_data"
+                    v-for="item in options_history_analysis"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -132,7 +134,7 @@
                   获取
                 </el-button>
                 <el-button style="margin-left: 5px;" size="small" @click="getAnaSelectItem">
-                  刷新列表
+                  <i class="el-icon-refresh" />
                 </el-button>
               </div>
             </div>
@@ -140,12 +142,12 @@
               <span style="font-weight:normal;">{{ ana_time }}</span>
             </p>
             <p style="line-height:160%">
-              是否可行解：{{ enable }}<br>
+              是否可行解：{{ feasible }}<br>
               目标值：{{ obj_value }}<br>
-              逾期：{{ overdue }}<br>
-              停顿：{{ idle }}<br>
+              逾期：{{ overdue_value }}<br>
+              停顿：{{ idle_value }}<br>
               线平衡：{{ line_balance }}<br>
-              三天总点数：{{ points }}<br>
+              三天总点数：{{ three_days_points }}<br>
             </p>
           </el-card>
         </el-col>
@@ -159,16 +161,16 @@
         <el-button @click="closeAnalysis">
           关闭
         </el-button>
-        <el-button type="primary" @click="beginAnalysis">
+        <el-button type="primary" :disabled="beginAnaBtn" @click="beginAnalysis">
           开始分析
         </el-button>
-        <el-button type="primary" @click="generateAnaExcel">
+        <el-button type="primary" :disabled="generateAnaBtn" @click="generateAnaExcel">
           生成表格
         </el-button>
-        <el-button type="primary" @click="statisticsSchedule">
+        <el-button type="primary" :disabled="statisticsBtn" @click="statisticsSchedule">
           获取量化
         </el-button>
-        <el-button type="primary" @click="downloadAnaExcel">
+        <el-button type="primary" :disabled="downloadAnaBtn" @click="downloadAnaExcel">
           下载表格
         </el-button>
       </span>
@@ -199,13 +201,22 @@ export default {
       statisticsDialogVisible: false, // 量化结果dialog显示
       stepNow: 0, // 分析排程进行到第几步
       progressColor: '#02bafd', // 进度条颜色
-      scheduleResult: [{
-        obj_value: '1210.30',
-        idle_value: '22.30',
-        overdue_value: '63.30',
-        enable: '可行',
-        line_balance: '23.30'
-      }] // 排程结果数据
+      checkSuccess: false, // 是否检查数据
+      schedule_time: '', // 排程时间
+      schedule_mode: '', // 正排或预排
+      ana_time: '', // f分析排程的时间
+      feasible: '', // 是否可行
+      obj_value: '', // 目标值
+      overdue_value: '', // 逾期
+      idle_value: '', // 停顿
+      line_balance: '', // 线平衡
+      three_days_points: '', // 三天总点数
+      options_history_analysis: [], // 历史分析结果
+      selectAnaTime: '', // 根据选中的分析时间获取历史分析结果
+      beginAnaBtn: false, // 开始分析禁用按钮
+      generateAnaBtn: true, // 开始分析禁用按钮
+      statisticsBtn: true, // 开始分析禁用按钮
+      downloadAnaBtn: true // 开始分析禁用按钮
     }
   },
   mounted() {
@@ -227,7 +238,6 @@ export default {
         this.uploadFiles = fileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
         this.uploadFileName = this.uploadFiles[0].name // 更新文件名
       }
-      // this.uploadFiles = fileList
       const excelFile = fileList[0].raw // 获取文件流
       LuckyExcel.transformExcelToLucky(excelFile, function(exportJson, luckysheetfile) {
         window.luckysheet.create({
@@ -243,6 +253,15 @@ export default {
             }
           }
         })
+      })
+    },
+    // 检查
+    checkData() {
+      this.checkSuccess = true
+      this.stepNow = 1
+      this.$alert('未发现错误', '提示', {
+        confirmButtonText: '确定',
+        type: 'success'
       })
     },
     // 分析排程dialog

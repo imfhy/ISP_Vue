@@ -225,7 +225,7 @@
               <div class="box-button">
                 <el-select v-model="selectLogValue" placeholder="选择历史日志">
                   <el-option
-                    v-for="item in logOptions"
+                    v-for="item in options_history_log"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -361,7 +361,7 @@ export default {
       uploadFile: null, // 上传到文件
       fileName: '', // 文件名
       uploadFileName: '请上传排程文件', // 当前选中的文件名
-      logOptions: [], // 历史日志列表
+      options_history_log: [], // 历史日志列表
       selectLogValue: '' // 当前选中的历史日志
     }
   },
@@ -395,12 +395,12 @@ export default {
     handleSuccess(res) {
       this.loadingInstance.close() // 清除动画
       if (res.type === 'success') {
-        this.$alert(res.msg, '提示', {
+        this.$alert(res.message, '提示', {
           confirmButtonText: '确定',
           type: 'success'
         })
       } else {
-        this.$alert(res.msg, '提示', {
+        this.$alert(res.message, '提示', {
           confirmButtonText: '确定',
           type: 'warning'
         })
@@ -515,13 +515,13 @@ export default {
     },
     // 获取历史日志选择器选项
     getLogSelectItem() {
-      this.logOptions = []
+      this.options_history_log = []
       GetLogSelectItem().then(res => {
         for (const key in res.log_data) {
           const temp = {}
           temp['value'] = res.log_data[key]
           temp['label'] = res.log_data[key]
-          this.logOptions.push(temp)
+          this.options_history_log.push(temp)
         }
       })
     },
