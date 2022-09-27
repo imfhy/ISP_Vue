@@ -83,35 +83,35 @@
             <el-progress
               :text-inside="true"
               :stroke-width="16"
-              :percentage="70"
+              :percentage="percentage_1"
               :color="progressColor"
             />
             <el-alert
-              title="预处理完成|100%"
+              :title="progress_text_1"
               type="info"
               :closable="false"
             />
             <el-progress
               :text-inside="true"
               :stroke-width="16"
-              :percentage="70"
+              :percentage="percentage_2"
               :color="progressColor"
               class="my-progress"
             />
             <el-alert
-              title="分析完成|100%"
+              :title="progress_text_2"
               type="info"
               :closable="false"
             />
             <el-progress
               :text-inside="true"
               :stroke-width="16"
-              :percentage="70"
+              :percentage="percentage_3"
               :color="progressColor"
               class="my-progress"
             />
             <el-alert
-              title="生成表格完成|100%"
+              :title="progress_text_3"
               type="info"
               :closable="false"
             />
@@ -192,6 +192,7 @@
 <script>
 import LuckyExcel from 'luckyexcel'
 import XLSX from 'xlsx'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress } from '@/api/onlinetable'
 export default {
   data() {
     return {
@@ -214,9 +215,17 @@ export default {
       options_history_analysis: [], // 历史分析结果
       selectAnaTime: '', // 根据选中的分析时间获取历史分析结果
       beginAnaBtn: false, // 开始分析禁用按钮
-      generateAnaBtn: true, // 开始分析禁用按钮
-      statisticsBtn: true, // 开始分析禁用按钮
-      downloadAnaBtn: true // 开始分析禁用按钮
+      generateAnaBtn: true, // 生成表格禁用按钮
+      statisticsBtn: true, // 获取量化禁用按钮
+      downloadAnaBtn: true, // 下载表格禁用按钮
+      ana_progress_refresh: null, // 分析排程刷新进度条
+      percentage_1: 0,
+      percentage_2: 0,
+      percentage_3: 0,
+      progress_text_1: '预处理|未开始',
+      progress_text_2: '分析|未开始',
+      progress_text_3: '输出表格|未开始',
+      progressCount: 0
     }
   },
   mounted() {
@@ -267,30 +276,197 @@ export default {
     // 分析排程dialog
     analysisDialog() {
       this.analysisDialogVisible = true
+      this.beginAnaBtn = false
+      this.generateAnaBtn = true
+      // this.clearAnaProgress()
+      this.getAnaSelectItem()
+      this.progressCount = 0
     },
     // 关闭分析排程
     closeAnalysis() {
       this.analysisDialogVisible = false
+      clearInterval(this.ana_progress_refresh)
+      this.ana_progress_refresh = null
     },
     // 开始分析
     beginAnalysis() {
-
+      if (this.checkSuccess === false) {
+        this.$confirm('数据未检查，请确认是否要开始分析排程?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.analysisExcel()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消分析'
+          })
+        })
+      } else {
+        this.analysisExcel()
+      }
+    },
+    // 分析排程
+    analysisExcel() {
+      this.$message({
+        type: 'success',
+        message: '开始分析'
+      })
+      this.resetShowAnaData() // 重置所有显示信息
+      const wb = this.get_sheet_js(false) // luckysheet获取sheet，并且转化为SheetJS的格式
+      const blob = this.workbook2blob(wb) // SheetJS转化为文件流
+      const form_data = new FormData() // 新建表单
+      form_data.append('files', blob) // 在线表格文件流e
+      form_data.append('file_name', this.uploadFileName) // 在线表格文件流
+      this.ana_progress_refresh = setInterval(() => { // 每隔2秒监听进度条
+        setTimeout(this.getAnaProgress(), 0)
+      }, 2000)
+      AnalysisExcel(form_data).then(res => {
+        console.log('analysis done')
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '开始分析请求出错'
+        })
+      })
     },
     // 生成表格
     generateAnaExcel() {
-
+      this.$message({
+        type: 'success',
+        message: '开始生成表格,预计需要1~2分钟'
+      })
+      this.generateAnaBtn = true
+      GenerateAnaExcel().then(res => {
+        console.log('generate done')
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '生成表格请求出错'
+        })
+      })
     },
     // 下载表格
     downloadAnaExcel() {
-
+      DownloadAnaExcel().then(res => {
+        this.$message({
+          type: 'success',
+          message: '开始下载'
+        })
+        this.downloadFile(res)
+        this.stepNow = 4
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '下载请求出错'
+        })
+      })
     },
     // 分析排程进度条
     getAnaProgress() {
-
+      GetAnaProgress().then(res => {
+        this.percentage_1 = res.p0
+        this.percentage_2 = res.p1
+        this.percentage_3 = res.p2
+        this.progress_text_1 = res.p0text
+        this.progress_text_2 = res.p1text
+        this.progress_text_3 = res.p2text
+        const run_flag = res.run_flag
+        if (run_flag === 1 && res.data.p2 > 0 && this.progressCount === 0) {
+          this.$message({
+            type: 'success',
+            message: '分析完毕，可以生成表格'
+          })
+          this.stepNow = 2
+          // 分析完毕，可以点击生成表格的按钮
+          this.generateAnaBtn = false
+          this.progressCount = 1
+          // 显示分析排程的结果
+          this.showAnaData(res, 0)
+        } else if (run_flag === 2) {
+          clearInterval(this.ana_progress_refresh)
+          this.ana_progress_refresh = null
+          this.stepNow = 3
+          this.$message({
+            type: 'success',
+            message: '生成表格完毕，可以下载表格和获取量化'
+          })
+          // 生成表格完毕，可以下载
+          this.downloadAnaBtn = false
+          this.statisticsBtn = false
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'err',
+          message: '获取进度条请求出错'
+        })
+      })
     },
     // 清空分析排程进度条
     clearAnaProgress() {
-
+      ClearAnaProgress().then(res => {
+        console.log(res.message)
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '清空进度条请求出错'
+        })
+      })
+    },
+    // 显示分析排程结果
+    showAnaData(res, flag) {
+      if (flag === 0) {
+        this.ana_time = '(最新分析结果)'
+      } else {
+        let time = this.value_ana_time
+        const time_date = time.substring(0, 10)
+        const time_time = time.substring(11).replaceAll('-', ':')
+        time = time_date + ' ' + time_time
+        // time[13] = ":"
+        this.ana_time = '(分析时间：' + time + ')'
+      }
+      this.schedule_mode = res.new_mode
+      this.schedule_time = res.new_time
+      this.feasible = res.new_feasible_str
+      this.obj_value = res.new_obj_value
+      this.overdue_value = res.new_overdue_value
+      this.idle_value = res.new_real_idle_value
+      this.line_balance = res.new_line_balance_value
+      this.three_days_points = res.new_three_days_points
+    },
+    // 重置分析排程显示信息
+    resetShowAnaData() {
+      // 取消监听
+      clearInterval(this.ana_progress_refresh)
+      this.ana_progress_refresh = null
+      // 清空进度条
+      this.percentage_1 = 0
+      this.percentage_2 = 0
+      this.percentage_3 = 0
+      this.progress_text_1 = '预处理|未开始'
+      this.progress_text_2 = '分析排程|未开始'
+      this.progress_text_3 = '输出表格|未开始'
+      // 开始分析，禁用按钮按钮
+      this.beginAnaBtn = true
+      this.generateAnaBtn = true
+      this.downloadAnaBtn = true
+      this.statisticsBtn = true
+      // 清空上一份排程结果
+      this.schedule_time = ''
+      this.schedule_mode = ''
+      this.ana_time = ''
+      this.feasible = ''
+      this.obj_value = ''
+      this.overdue_value = ''
+      this.idle_value = ''
+      this.line_balance = ''
+      this.three_days_points = ''
     },
     // 获取分析排程历史选择项
     getAnaSelectItem() {
@@ -300,13 +476,10 @@ export default {
     getAnaSelectData() {
 
     },
-    // 显示分析排程结果
-    showAnaData() {
-
-    },
     // 量化结果
     statisticsSchedule() {
       this.statisticsDialogVisible = true
+      this.stepNow = 4
     },
     // 是否关闭分析排程
     handleCloseAnalysis() {
