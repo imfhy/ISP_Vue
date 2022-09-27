@@ -44,9 +44,9 @@
           </el-button>
         </div>
         <div class="history">
-          <el-select v-model="value" clearable placeholder="选择历史排程">
+          <el-select v-model="selectFileName" clearable placeholder="选择历史排程">
             <el-option
-              v-for="item in options"
+              v-for="item in options_history_excel"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -78,7 +78,7 @@
         <el-col :span="12">
           <el-card class="ana-card" shadow="hover">
             <div slot="header" class="clearfix">
-              <span>任务进度</span>
+              <span>分析进度</span>
             </div>
             <el-progress
               :text-inside="true"
@@ -130,10 +130,10 @@
                     :value="item.value"
                   />
                 </el-select>
-                <el-button style="margin-left: 5px;" type="info" size="small" @click="getAnaSelectData">
+                <el-button style="margin-left: 5px;" type="info" size="small" @click="getHistoryAnaData">
                   获取
                 </el-button>
-                <el-button style="margin-left: 5px;" size="small" @click="getAnaSelectItem">
+                <el-button style="margin-left: 5px;" size="small" @click="getHistoryAnaItem">
                   <i class="el-icon-refresh" />
                 </el-button>
               </div>
@@ -158,9 +158,9 @@
         </div>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="closeAnalysis">
+        <!-- <el-button @click="closeAnalysis">
           关闭
-        </el-button>
+        </el-button> -->
         <el-button type="primary" :disabled="beginAnaBtn" @click="beginAnalysis">
           开始分析
         </el-button>
@@ -176,14 +176,101 @@
       </span>
     </el-dialog>
     <el-dialog
-      title="量化结果"
+      :title="statisticsTitle"
       :visible.sync="statisticsDialogVisible"
-      width="60%"
+      width="75%"
       :before-close="handleCloseStatistics"
+      class="statistics-dialog"
     >
+      <el-row :gutter="10">
+        <el-col :span="8">
+          <el-card shadow="hover">
+            <el-table
+              :data="tableData_1"
+              style="width: 100%;height:500px;"
+              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            >
+              <el-table-column
+                prop="line"
+                label="线体"
+              />
+              <el-table-column
+                prop="points_type"
+                label="点数类别"
+              />
+              <el-table-column
+                prop="points"
+                label="点数"
+              />
+            </el-table>
+          </el-card>
+        </el-col>
+
+        <el-col :span="8">
+          <el-card shadow="hover">
+            <el-table
+              :data="tableData_2"
+              style="width: 100%;height:240px;"
+              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            >
+              <el-table-column
+                prop="type"
+                label="量化类型"
+              />
+              <el-table-column
+                prop="hours"
+                label="量化结果(小时)"
+              />
+              <el-table-column
+                prop="days"
+                label="量化结果(天)"
+              />
+            </el-table>
+          </el-card>
+
+          <el-card shadow="hover" style="margin-top:10px">
+            <el-table
+              :data="tableData_3"
+              style="width: 100%;height:240px;"
+              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            >
+              <el-table-column
+                prop="type"
+                label="量化类型"
+              />
+              <el-table-column
+                prop="points"
+                label="值"
+              />
+            </el-table>
+          </el-card>
+        </el-col>
+
+        <el-col :span="8">
+          <el-card shadow="hover">
+            <el-table
+              :data="tableData_4"
+              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+              style="width: 100%;height:500px;"
+            >
+              <el-table-column
+                prop="line"
+                label="线体"
+              />
+              <el-table-column
+                prop="time"
+                label="线体完工时间"
+              />
+            </el-table>
+          </el-card>
+        </el-col>
+      </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="statisticsDialogVisible = false">
+        <!-- <el-button @click="statisticsDialogVisible = false">
           关闭
+        </el-button> -->
+        <el-button type="primary" @click="exportStatisticsExcel">
+          导出Excel
         </el-button>
       </span>
     </el-dialog>
@@ -192,13 +279,14 @@
 <script>
 import LuckyExcel from 'luckyexcel'
 import XLSX from 'xlsx'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress } from '@/api/onlinetable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData } from '@/api/onlinetable'
 export default {
   data() {
     return {
       uploadFileName: '', // 上传的文件名
       uploadFiles: [], // 上传的文件列表（限制1个）
       analysisDialogVisible: false, // 分析排程dialog显示
+      statisticsTitle: '量化结果', // 量化的dialog名称
       statisticsDialogVisible: false, // 量化结果dialog显示
       stepNow: 0, // 分析排程进行到第几步
       progressColor: '#02bafd', // 进度条颜色
@@ -213,19 +301,27 @@ export default {
       line_balance: '', // 线平衡
       three_days_points: '', // 三天总点数
       options_history_analysis: [], // 历史分析结果
+      options_history_excel: [], // 历史Excel
+      selectFileName: '', // 选中的历史Excel文件名
       selectAnaTime: '', // 根据选中的分析时间获取历史分析结果
       beginAnaBtn: false, // 开始分析禁用按钮
       generateAnaBtn: true, // 生成表格禁用按钮
-      statisticsBtn: true, // 获取量化禁用按钮
+      statisticsBtn: false, // 获取量化禁用按钮
       downloadAnaBtn: true, // 下载表格禁用按钮
       ana_progress_refresh: null, // 分析排程刷新进度条
+      // 分析排程进度条相关
       percentage_1: 0,
       percentage_2: 0,
       percentage_3: 0,
       progress_text_1: '预处理|未开始',
       progress_text_2: '分析|未开始',
       progress_text_3: '输出表格|未开始',
-      progressCount: 0
+      progressCount: 0,
+      // 量化结果
+      tableData_1: [],
+      tableData_2: [],
+      tableData_3: [],
+      tableData_4: []
     }
   },
   mounted() {
@@ -263,6 +359,7 @@ export default {
           }
         })
       })
+      this.checkSuccess = false // 重置检查
     },
     // 检查
     checkData() {
@@ -279,7 +376,7 @@ export default {
       this.beginAnaBtn = false
       this.generateAnaBtn = true
       // this.clearAnaProgress()
-      this.getAnaSelectItem()
+      this.getHistoryAnaItem()
       this.progressCount = 0
     },
     // 关闭分析排程
@@ -469,25 +566,96 @@ export default {
       this.three_days_points = ''
     },
     // 获取分析排程历史选择项
-    getAnaSelectItem() {
-
+    getHistoryAnaItem() {
+      this.options_history_analysis = []
+      GetHistoryAnaItem().then(res => {
+        for (const key in res) {
+          const temp = {}
+          const first_name = res[key]['first']
+          const second_name = res[key]['second']
+          temp['value'] = second_name
+          temp['label'] = first_name + '-' + second_name
+          this.options_history_analysis.push(temp)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
     // 获取历史分析结果
-    getAnaSelectData() {
-
+    getHistoryAnaData() {
+      GetHistoryAnaData({ 'time': this.value_ana_time }).then(res => {
+        this.showAnaData(res, 1)
+        this.$message({
+          type: 'success',
+          message: '获取成功'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '获取失败'
+        })
+      })
     },
-    // 量化结果
+    // 获取历史Excel选择项
+    getHistoryExcelItem() {
+      this.options_history_excel = []
+      GetHistoryExcelItem().then(res => {
+        for (const key in res) {
+          const temp = {}
+          temp['value'] = res[key]
+          temp['label'] = res[key]
+          this.options_history_excel.push(temp)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    // 获取历史Excel TODO
+    getHistoryExcelData() {
+      GetHistoryExcelData({ 'file_name': this.selectFileName }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '获取成功'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          type: 'error',
+          message: '获取失败'
+        })
+      })
+    },
+    // 量化结果 TODO
     statisticsSchedule() {
+      this.statisticsTitle = '量化结果-' + this.uploadFileName
       this.statisticsDialogVisible = true
+
       this.stepNow = 4
+    },
+    // 量化结果导出到Excel TODO
+    exportStatisticsExcel() {
+
     },
     // 是否关闭分析排程
     handleCloseAnalysis() {
-
+      this.$confirm('请确认是否要关闭分析排程窗口？', '提示', {
+        type: 'warning',
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(_ => {
+        this.analysisDialogVisible = false
+      }).catch(_ => {})
     },
     // 是否关闭量化结果
     handleCloseStatistics() {
-
+      this.$confirm('请确认是否要关闭量化窗口？', '提示', {
+        type: 'warning',
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(_ => {
+        this.statisticsDialogVisible = false
+      }).catch(_ => {})
     },
     // 下载luckysheet中的数据到Excel
     downloadLuckyExcel() {
@@ -644,5 +812,8 @@ export default {
 }
 .my-table  .el-table::before{
   height: 0;
+}
+.statistics-dialog .el-card__body{
+    padding: 0px;
 }
 </style>

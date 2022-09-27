@@ -11,14 +11,14 @@ export function CheckData(data) {
 // 获取分析排程进度条
 export function GetAnaProgress() {
   return request({
-    url: '//preprocess/excel/analysis/',
+    url: '/preprocess/excel/analysis/',
     method: 'get'
   })
 }
 // 清空分析排程进度条
 export function ClearAnaProgress() {
   return request({
-    url: '//preprocess/excel/analysis/',
+    url: '/preprocess/excel/analysis/',
     method: 'get'
   })
 }
@@ -33,7 +33,7 @@ export function AnalysisExcel(data) {
 // 生成表格
 export function GenerateAnaExcel() {
   return request({
-    url: '//preprocess/excel/analysis/',
+    url: '/preprocess/excel/analysis/',
     method: 'get'
   })
 }
@@ -49,22 +49,38 @@ export function DownloadAnaExcel(data) {
 // 获取量化
 export function StatisticsSchedule() {
   return request({
-    url: '//preprocess/excel/analysis/',
+    url: '/preprocess/excel/analysis/',
     method: 'get'
   })
 }
 // 获取历史分析选项
-export function GetAnaSelectItem() {
+export function GetHistoryAnaItem() {
   return request({
-    url: '//preprocess/excel/analysis/',
+    url: '/preprocess/excel/analysis/',
     method: 'get'
   })
 }
 // 获取历史分析结果
-export function GetAnaSelectData(data) {
+export function GetHistoryAnaData(data) {
   return request({
     url: '/preprocess/excel/analysis/',
     method: 'post',
     data
   })
 }
+// 获取历史Excel选项
+export function GetHistoryExcelItem() {
+  return request({
+    url: '/preprocess/excel/analysis/',
+    method: 'get'
+  })
+}
+// 获取历史分析结果
+export function GetHistoryExcelData(data) {
+  return request({
+    url: '/preprocess/excel/analysis/',
+    method: 'post',
+    data
+  })
+}
+
