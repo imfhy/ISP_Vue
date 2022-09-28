@@ -295,7 +295,7 @@
             <el-button slot="trigger" type="primary">
               上传排程文件
             </el-button>
-            <el-button type="success" style="margin-left:10px;" @click="submitUploadFile">
+            <el-button type="success" style="margin-left:10px;" @click="beforeImport">
               导入文件
             </el-button>
           </el-upload>
@@ -323,11 +323,13 @@
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
       />
-      <el-button type="primary" @click="computeSchedule">
+      <el-button type="primary" @click="beforeCompute">
         开始计算排程
       </el-button>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="computeDialogVisible = false">取 消</el-button>
+        <el-button @click="computeDialogVisible = false">
+          关 闭
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -409,6 +411,24 @@ export default {
       }
       this.stepNow = 1
     },
+    // 终止深度搜索
+    stopTabu() {
+      this.$confirm('请确定是否要终止深度搜索?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '终止成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消终止'
+        })
+      })
+    },
     // 训练预测模型
     trainModel() {
       TrainModel({ 'end_time': this.trainDate }).then(res => {
@@ -419,6 +439,32 @@ export default {
           })
         }
       })
+    },
+    // 导入前判断是否在跑排程
+    beforeImport() {
+      const run_flag = 1
+      const confirmText = ['目前正在运行排程，请确定是否要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      if (run_flag === 1) {
+        this.$confirm('提示', {
+          message: h('div', null, newDatas),
+          confirmButtonText: '确定，仍要导入',
+          cancelButtonText: '取消',
+          confirmButtonClass: 'btnDanger',
+          type: 'warning'
+        }).then(() => {
+          this.submitUploadFile()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消导入'
+          })
+        })
+      }
     },
     // 导入文件
     async submitUploadFile() {
@@ -435,6 +481,32 @@ export default {
         }
       })
       this.loadingInstance.close()
+    },
+    // 计算前判断是否在跑排程
+    beforeCompute() {
+      const run_flag = 1
+      const confirmText = ['目前正在运行排程，请确定是否要重新开始计算？', '注意：此操作将会中断当前的排程！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      if (run_flag === 1) {
+        this.$confirm('提示', {
+          message: h('div', null, newDatas),
+          confirmButtonText: '确定，仍要计算',
+          cancelButtonText: '取消',
+          confirmButtonClass: 'btnDanger',
+          type: 'warning'
+        }).then(() => {
+          this.submitUploadFile()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消计算'
+          })
+        })
+      }
     },
     // 开始计算排程
     computeSchedule() {
@@ -575,6 +647,14 @@ export default {
 }
 .my-table  .el-table::before{
   height: 0;
+}
+.btnDanger{
+  background-color: #a52a2a !important;
+  border-color: #a52a2a !important;
+}
+.btnDanger:hover{
+  background-color: #c24848 !important;
+  border-color: #c24848 !important;
 }
 </style>
 

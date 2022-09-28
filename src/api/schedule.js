@@ -85,3 +85,10 @@ export function DownloadIdleInfo() {
     responseType: 'blob'
   })
 }
+// 获取运行状态
+export function GetRunFlag() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/get_run_flag/'
+  })
+}

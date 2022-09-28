@@ -161,10 +161,10 @@
         </div>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="closeAnalysis">
-          关闭
-        </el-button> -->
-        <el-button type="primary" :disabled="beginAnaBtn" @click="beginAnalysis">
+        <el-button @click="handleCloseAnalysis">
+          关 闭
+        </el-button>
+        <el-button type="primary" :disabled="beginAnaBtn" @click="beforeAnalysis">
           开始分析
         </el-button>
         <el-button type="primary" :disabled="generateAnaBtn" @click="generateAnaExcel">
@@ -260,9 +260,9 @@
         </el-tab-pane>
       </el-tabs>
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="statisticsDialogVisible = false">
-          关闭
-        </el-button> -->
+        <el-button @click="handleCloseStatistics">
+          关 闭
+        </el-button>
         <el-button type="primary" @click="exportStatisticsExcel">
           导出Excel
         </el-button>
@@ -359,7 +359,7 @@ export default {
     checkData() {
       this.checkSuccess = true
       this.stepNow = 1
-      this.$alert('未发现错误', '提示', {
+      this.$alert('检查完成，未发现错误', '提示', {
         confirmButtonText: '确定',
         type: 'success'
       })
@@ -396,6 +396,32 @@ export default {
         })
       } else {
         this.analysisExcel()
+      }
+    },
+    // 计算前判断是否在跑排程
+    beforeAnalysis() {
+      const run_flag = 1
+      const confirmText = ['目前正在运行排程，请确定是否要继续分析？', '注意：此操作将会同时影响跑排程和分析排程！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      if (run_flag === 1) {
+        this.$confirm('提示', {
+          message: h('div', null, newDatas),
+          confirmButtonText: '确定，仍要分析',
+          cancelButtonText: '取消',
+          confirmButtonClass: 'btnDanger',
+          type: 'warning'
+        }).then(() => {
+          this.analysisExcel()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消分析'
+          })
+        })
       }
     },
     // 分析排程
@@ -813,5 +839,13 @@ export default {
 }
 .statistics-dialog .el-card__body{
     padding: 0px;
+}
+.btnDanger{
+  background-color: #a52a2a !important;
+  border-color: #a52a2a !important;
+}
+.btnDanger:hover{
+  background-color: #c24848 !important;
+  border-color: #c24848 !important;
 }
 </style>
