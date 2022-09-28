@@ -17,10 +17,11 @@ export function ImportSchedule(data) {
   })
 }
 // 计算排程表格接口
-export function ComputeSchedule() {
+export function ComputeSchedule(data) {
   return request({
     url: '/preprocess/control/compute_schedule/',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 // 终止深度搜素

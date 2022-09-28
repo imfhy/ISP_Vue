@@ -604,13 +604,13 @@ export default {
     },
     // 开始计算排程
     computeSchedule() {
-      ComputeSchedule().then(res => {
+      ComputeSchedule({ 'filename': this.uploadFileName }).then(res => {
         if (res.code === 20000) {
           this.$message({
             message: res.message,
             type: 'success'
           })
-          this.stepNow = 2
+          this.stepNow = 4
         } else {
           this.$message({
             message: '开始计算失败',
