@@ -590,7 +590,7 @@ export default {
             confirmButtonClass: 'btnDanger',
             type: 'warning'
           }).then(() => {
-            this.submitUploadFile()
+            this.computeSchedule()
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -598,7 +598,7 @@ export default {
             })
           })
         } else {
-          this.submitUploadFile()
+          this.computeSchedule()
         }
       })
     },
