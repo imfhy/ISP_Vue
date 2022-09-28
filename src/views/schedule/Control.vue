@@ -337,7 +337,7 @@
 
 <script>
 import { Loading } from 'element-ui'
-import { TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo } from '@/api/schedule'
+import { TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo } from '@/api/control'
 export default {
   data() {
     return {
@@ -573,7 +573,7 @@ export default {
     },
     // 下载无程序表
     downloadNoProgram() {
-      DownloadNoProgram({ 'filename': this.selectLogValue }).then(res => {
+      DownloadNoProgram().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
@@ -601,7 +601,7 @@ export default {
     },
     // 下载历史日志
     downloadHistoryLog() {
-      DownloadHistoryLog().then(res => {
+      DownloadHistoryLog({ 'filename': this.selectLogValue }).then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',

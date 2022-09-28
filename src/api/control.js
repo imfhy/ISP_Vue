@@ -77,7 +77,7 @@ export function DownloadNoProgram() {
     responseType: 'blob'
   })
 }
-// 下载无程序表
+// 下载idle明细
 export function DownloadIdleInfo() {
   return request({
     method: 'get',
