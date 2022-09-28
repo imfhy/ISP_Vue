@@ -287,7 +287,7 @@ export default {
       checkSuccess: false, // 是否检查数据
       schedule_time: '', // 排程时间
       schedule_mode: '', // 正排或预排
-      ana_time: '', // f分析排程的时间
+      ana_time: '', // 分析排程的时间
       feasible: '', // 是否可行
       obj_value: '', // 目标值
       overdue_value: '', // 逾期
@@ -376,7 +376,7 @@ export default {
     // 关闭分析排程
     closeAnalysis() {
       this.analysisDialogVisible = false
-      clearInterval(this.ana_progress_refresh)
+      this.clearListenProgress()
       this.ana_progress_refresh = null
     },
     // 开始分析
@@ -436,9 +436,7 @@ export default {
       const form_data = new FormData() // 新建表单
       form_data.append('files', blob) // 在线表格文件流e
       form_data.append('file_name', this.uploadFileName) // 在线表格文件流
-      this.ana_progress_refresh = setInterval(() => { // 每隔2秒监听进度条
-        setTimeout(this.getAnaProgress(), 0)
-      }, 2000)
+      this.listenProgress()
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
       }).catch(err => {
@@ -483,6 +481,17 @@ export default {
         })
       })
     },
+    // 监听进度条
+    listenProgress() {
+      this.ana_progress_refresh = setInterval(() => { // 每隔2秒监听进度条
+        setTimeout(this.getAnaProgress(), 0)
+      }, 2000)
+    },
+    // 取消监听进度条
+    clearListenProgress() {
+      clearInterval(this.ana_progress_refresh)
+      this.ana_progress_refresh = null
+    },
     // 分析排程进度条
     getAnaProgress() {
       GetAnaProgress().then(res => {
@@ -505,8 +514,7 @@ export default {
           // 显示分析排程的结果
           this.showAnaData(res, 0)
         } else if (run_flag === 2) {
-          clearInterval(this.ana_progress_refresh)
-          this.ana_progress_refresh = null
+          this.clearListenProgress()
           this.stepNow = 3
           this.$message({
             type: 'success',
@@ -541,7 +549,7 @@ export default {
       if (flag === 0) {
         this.ana_time = '(最新分析结果)'
       } else {
-        let time = this.value_ana_time
+        let time = this.selectAnaTime
         const time_date = time.substring(0, 10)
         const time_time = time.substring(11).replaceAll('-', ':')
         time = time_date + ' ' + time_time
@@ -560,7 +568,7 @@ export default {
     // 重置分析排程显示信息
     resetShowAnaData() {
       // 取消监听
-      clearInterval(this.ana_progress_refresh)
+      this.clearListenProgress()
       this.ana_progress_refresh = null
       // 清空进度条
       this.percentage_1 = 0
@@ -589,10 +597,11 @@ export default {
     getHistoryAnaItem() {
       this.options_history_analysis = []
       GetHistoryAnaItem().then(res => {
-        for (const key in res) {
+        const data = res.Items
+        for (const key in data) {
           const temp = {}
-          const first_name = res[key]['first']
-          const second_name = res[key]['second']
+          const first_name = data[key]['first']
+          const second_name = data[key]['second']
           temp['value'] = second_name
           temp['label'] = first_name + '-' + second_name
           this.options_history_analysis.push(temp)
@@ -603,7 +612,7 @@ export default {
     },
     // 获取历史分析结果
     getHistoryAnaData() {
-      GetHistoryAnaData({ 'time': this.value_ana_time }).then(res => {
+      GetHistoryAnaData({ 'time': this.selectAnaTime }).then(res => {
         this.showAnaData(res, 1)
         this.$message({
           type: 'success',

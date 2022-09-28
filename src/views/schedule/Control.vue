@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="main">
     <el-card class="card-info">
       <div>
         <el-skeleton :rows="6" />
@@ -15,7 +15,7 @@
                 排程日期
               </div>
               <div class="card-panel-text-down">
-                2022年09月25日-预排
+                {{ schedule_time }}-{{ schedule_mode }}
               </div>
             </div>
           </el-col>
@@ -30,14 +30,14 @@
                 排程运行时长
               </div>
               <div class="card-panel-text-down">
-                00 时 30 分 27 秒
+                {{ schedule_run_time }}
               </div>
             </div>
           </el-col>
           <el-col :span="14" style="float:right;">
             <div class="my-table">
               <el-table
-                :data="scheduleResult"
+                :data="schedule_result"
                 style="width: 490px;"
                 :border="false"
                 algin="right"
@@ -84,47 +84,47 @@
           <el-progress
             :text-inside="true"
             :stroke-width="16"
-            :percentage="70"
+            :percentage="percentage_1"
             :color="progressColor"
           />
           <el-alert
-            title="预测模型完成训练|100%"
+            :title="progress_text_1"
             type="info"
             :closable="false"
           />
           <el-progress
             :text-inside="true"
             :stroke-width="16"
-            :percentage="70"
+            :percentage="percentage_2"
             :color="progressColor"
             class="my-progress"
           />
           <el-alert
-            title="预处理完成|100%"
+            :title="progress_text_2"
             type="info"
             :closable="false"
           />
           <el-progress
             :text-inside="true"
             :stroke-width="16"
-            :percentage="70"
+            :percentage="percentage_3"
             :color="progressColor"
             class="my-progress"
           />
           <el-alert
-            title="初始解完成:230组|100%"
+            :title="progress_text_3"
             type="info"
             :closable="false"
           />
           <el-progress
             :text-inside="true"
             :stroke-width="16"
-            :percentage="70"
+            :percentage="percentage_4"
             :color="progressColor"
             class="my-progress"
           />
           <el-alert
-            title="输出完成(可下载)|100%"
+            :title="progress_text_4"
             type="info"
             :closable="false"
           />
@@ -180,7 +180,7 @@
                     </el-upload>
                   </el-col>
                   <el-col :span="8">
-                    <el-badge value="运行中" class="item">
+                    <el-badge :value="computeTip" class="item">
                       <el-button type="primary" plain @click="computeDialog">
                         <i class="el-icon-monitor" />
                         计算排程表格
@@ -337,47 +337,124 @@
 
 <script>
 import { Loading } from 'element-ui'
-import { TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo } from '@/api/control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/control'
 export default {
   data() {
     return {
-      scheduleResult: [{
-        obj_value: '1210.30',
-        idle_value: '22.30',
-        overdue_value: '63.30',
-        enable: '可行',
-        line_balance: '23.30'
-      }], // 排程结果数据
       progressColor: '#02bafd', // 进度条颜色
       computeDialogVisible: false, // 计算导入排程dialog
       stepNow: 0, // 计算导入排程进行到第几步
       checkLoading: {
         text: '检查中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.6)',
+        target: '#main'
       }, // 检查动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.6)',
+        target: '#main'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       trainDate: new Date(), // 训练预测模型日期
       uploadFiles: [], // 上传的文件列表
       uploadFile: null, // 上传到文件
       fileName: '', // 文件名
-      uploadFileName: '请上传排程文件', // 当前选中的文件名
+      uploadFileName: '', // 当前选中的文件名
       options_history_log: [], // 历史日志列表
-      selectLogValue: '' // 当前选中的历史日志
+      selectLogValue: '', // 当前选中的历史日志
+      isImport: false, // 是否上传文件
+      // 进度条相关
+      percentage_1: 0,
+      percentage_2: 0,
+      percentage_3: 0,
+      percentage_4: 0,
+      progress_text_1: '未开始训练预测模型|0%',
+      progress_text_2: '未开始|0%',
+      progress_text_3: '未开始初始解|0%',
+      progress_text_4: '未开始深度搜索|0%',
+      // 排程结果
+      schedule_run_time: '00 时 00 分 00 秒', // 排程时间 未开始 计算完毕，共耗时：00 时 00 分 00 秒
+      schedule_time: '2022年09月28日', // 排程时间
+      schedule_mode: '预排', // 正排或预排
+      schedule_result: [{
+        obj_value: '1210.30',
+        idle_value: '22.30',
+        overdue_value: '63.30',
+        enable: '可行',
+        line_balance: '23.30'
+      }],
+      progress_refresh: null, // 刷新进度条
+      computeTip: '' // 计算排程按钮左上角的小红标
     }
   },
   mounted() {
     // Loading.service(this.checkLoading)
     this.getLogSelectItem()
+    this.listenProgress()
   },
   methods: {
+    // 监听进度条
+    listenProgress() {
+      this.progress_refresh = setInterval(() => { // 每隔2秒监听进度条
+        setTimeout(this.getProgress(), 0)
+      }, 2000)
+    },
+    // 取消监听进度条
+    clearListenProgress() {
+      clearInterval(this.progress_refresh)
+      this.progress_refresh = null
+    },
+    // 获取进度条
+    getProgress() {
+      GetProgress().then(res => {
+        // 更新进度条
+        this.percentage_1 = res.p0
+        this.percentage_2 = res.p1
+        this.percentage_3 = res.p2
+        this.percentage_4 = res.p3
+        this.progress_text_1 = res.p0text
+        this.progress_text_2 = res.p1text
+        this.progress_text_3 = res.p2text
+        this.progress_text_4 = res.p3text
+        // 程序运行时间
+        const start_time = res.start_time
+        const end_time = res.end_time
+        const time = end_time - start_time
+        const second = parseInt(time % 60)
+        const minute = parseInt((time / 60) % 60)
+        const hour = parseInt((time / (60 * 60)) % 24)
+        if (res.run_flag === -1) {
+          this.clearListenProgress()
+          this.computeTip = '出错'
+          this.schedule_run_time = '计算排程出错，请联系开发人员'
+          this.$alert('计算排程出错，请联系开发人员！', '提示', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        } else if (res.run_flag === -2) {
+          this.clearListenProgress()
+          this.computeTip = '出错'
+          this.schedule_run_time = '计算排程出错，工单量为空'
+          this.$alert('计算排程出错，工单量为空，具体请查看Db logging,如果为公式，如果为公式请手动修改为数值后重新计算！', '提示', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        } else if (res.run_flag === 1) {
+          this.computeTip = '运行中'
+          this.schedule_run_time = hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+        } else if (res.run_flag === 2) {
+          this.clearListenProgress()
+          this.computeTip = '已完成'
+          this.schedule_run_time = '计算完毕，总耗时: ' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+        } else {
+          this.computeTip = '未开始'
+          this.schedule_run_time = '未开始'
+        }
+      })
+    },
     // 计算导入排程dialog弹出
     computeDialog() {
       this.computeDialogVisible = true
-      this.stepNow = 0
     },
     // 文件上传钩子
     handleChange(file, fileList) {
@@ -442,29 +519,39 @@ export default {
     },
     // 导入前判断是否在跑排程
     beforeImport() {
-      const run_flag = 1
+      if (this.uploadFileName === '') {
+        this.$message({
+          type: 'warning',
+          message: '未上传排程文件，无法导入'
+        })
+        return
+      }
       const confirmText = ['目前正在运行排程，请确定是否要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
         newDatas.push(h('p', null, confirmText[i]))
       }
-      if (run_flag === 1) {
-        this.$confirm('提示', {
-          message: h('div', null, newDatas),
-          confirmButtonText: '确定，仍要导入',
-          cancelButtonText: '取消',
-          confirmButtonClass: 'btnDanger',
-          type: 'warning'
-        }).then(() => {
-          this.submitUploadFile()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消导入'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$confirm('提示', {
+            message: h('div', null, newDatas),
+            confirmButtonText: '确定，仍要导入',
+            cancelButtonText: '取消',
+            confirmButtonClass: 'btnDanger',
+            type: 'warning'
+          }).then(() => {
+            this.submitUploadFile()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消计算'
+            })
           })
-        })
-      }
+        } else {
+          this.submitUploadFile()
+        }
+      })
     },
     // 导入文件
     async submitUploadFile() {
@@ -472,41 +559,50 @@ export default {
       const form = new FormData()
       form.append('file', this.uploadFile.raw)
       await ImportSchedule(form).then(res => {
-        if (res.code === 20000) {
-          this.$message({
-            message: res.message,
-            type: 'success'
-          })
-          this.stepNow = 2
-        }
+        this.$message({
+          message: res.message,
+          type: 'success'
+        })
+        this.stepNow = 2
+        this.isImport = true
       })
       this.loadingInstance.close()
     },
     // 计算前判断是否在跑排程
     beforeCompute() {
-      const run_flag = 1
+      if (this.isImport === false) {
+        this.$message({
+          type: 'warning',
+          message: '未导入文件，无法计算排程'
+        })
+        return
+      }
       const confirmText = ['目前正在运行排程，请确定是否要重新开始计算？', '注意：此操作将会中断当前的排程！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
         newDatas.push(h('p', null, confirmText[i]))
       }
-      if (run_flag === 1) {
-        this.$confirm('提示', {
-          message: h('div', null, newDatas),
-          confirmButtonText: '确定，仍要计算',
-          cancelButtonText: '取消',
-          confirmButtonClass: 'btnDanger',
-          type: 'warning'
-        }).then(() => {
-          this.submitUploadFile()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消计算'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$confirm('提示', {
+            message: h('div', null, newDatas),
+            confirmButtonText: '确定，仍要计算',
+            cancelButtonText: '取消',
+            confirmButtonClass: 'btnDanger',
+            type: 'warning'
+          }).then(() => {
+            this.submitUploadFile()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消计算'
+            })
           })
-        })
-      }
+        } else {
+          this.submitUploadFile()
+        }
+      })
     },
     // 开始计算排程
     computeSchedule() {
