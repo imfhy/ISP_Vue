@@ -346,13 +346,11 @@ export default {
       stepNow: 0, // 计算导入排程进行到第几步
       checkLoading: {
         text: '检查中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)',
-        target: '#main'
+        background: 'rgba(0, 0, 0, 0.6)'
       }, // 检查动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)',
-        target: '#main'
+        background: 'rgba(0, 0, 0, 0.6)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       trainDate: new Date(), // 训练预测模型日期
