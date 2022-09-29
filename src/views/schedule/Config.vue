@@ -2,7 +2,7 @@
   <div id="main">
     <el-card>
       <div>
-        <el-descriptions class="margin-top" title="排程配置" :column="4" :size="size" label-style="font-weight:bold;" border>
+        <el-descriptions class="margin-top" title="排程配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
             <el-button size="small">
               <i class="el-icon-refresh-left" /> 返回上一次配置
@@ -69,10 +69,10 @@
             <el-tag v-else-if="force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ sm13_buttom_new_machine_predict }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ sm21_top_led_threshold }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ sm21_top_le_predict }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ sm21_top_gt_predict }}</el-descriptions-item>
+          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ sm13_buttom_new_machine_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ sm21_top_led_threshold }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ sm21_top_le_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ sm21_top_gt_predict }}万</el-descriptions-item>
 
           <el-descriptions-item label="是否执行分组">
             <el-tag v-if="need_dispatch === true" size="small">开启</el-tag>
@@ -700,6 +700,9 @@ export default {
   methods: {
     editDataDialog() {
       this.dialogVisible = true
+    },
+    handleClose() {
+
     }
   }
 }
