@@ -2,7 +2,6 @@
   <div id="main">
     <el-card class="card-info">
       <div>
-        <el-skeleton :rows="6" />
         <el-row>
           <el-col :span="1">
             <div class="my-icon-date">
@@ -386,9 +385,8 @@ export default {
     }
   },
   mounted() {
-    // Loading.service(this.checkLoading)
     this.getLogSelectItem()
-    this.listenProgress()
+    // this.listenProgress()
   },
   methods: {
     // 监听进度条

@@ -75,11 +75,12 @@ export function GetHistoryExcelItem() {
     method: 'get'
   })
 }
-// 获取历史分析结果
+// 获取历史Excel
 export function GetHistoryExcelData(data) {
   return request({
-    url: '/preprocess/onlinetable/get_history_excel_item/',
+    url: '/preprocess/onlinetable/get_history_excel_data/',
     method: 'post',
+    responseType: 'blob',
     data
   })
 }

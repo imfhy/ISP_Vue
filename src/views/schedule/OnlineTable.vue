@@ -5,7 +5,6 @@
         title="提示信息"
         type="info"
         :closable="false"
-        :color="progress_color"
         style="margin-bottom: 10px;"
       />
       <div class="control-button">
@@ -31,11 +30,9 @@
           <el-button type="primary" @click="checkData">
             <i class="el-icon-circle-check" />检查
           </el-button>
-          <el-badge is-dot class="item" :hidden="false">
-            <el-button type="primary" @click="analysisDialog">
-              <i class="el-icon-monitor" />分析
-            </el-button>
-          </el-badge>
+          <el-button type="primary" @click="analysisDialog">
+            <i class="el-icon-monitor" />分析
+          </el-button>
           <el-button type="primary" @click="downloadLuckyExcel">
             <i class="el-icon-download" />下载
           </el-button>
@@ -55,7 +52,7 @@
               :value="item.value"
             />
           </el-select>
-          <el-button type="primary">
+          <el-button type="primary" @click="getHistoryExcelData">
             获取
           </el-button>
         </div>
@@ -188,9 +185,12 @@
       <el-tabs>
         <el-tab-pane label="量化结果1">
           <el-table
+            id="table1"
+            v-loading="loading_table1"
             :data="tableData_1"
-            style="width: 100%;height:460px;"
             :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            height="460"
+            border
           >
             <el-table-column
               prop="line"
@@ -208,9 +208,12 @@
         </el-tab-pane>
         <el-tab-pane label="量化结果2">
           <el-table
+            id="table2"
+            v-loading="loading_table2"
             :data="tableData_2"
-            style="width: 100%;height:460px;"
             :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            height="460"
+            border
           >
             <el-table-column
               prop="type"
@@ -228,9 +231,12 @@
         </el-tab-pane>
         <el-tab-pane label="量化结果3">
           <el-table
+            id="table3"
+            v-loading="loading_table3"
             :data="tableData_3"
-            style="width: 100%;height:460px;"
             :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+            height="460"
+            border
           >
             <el-table-column
               prop="type"
@@ -244,9 +250,12 @@
         </el-tab-pane>
         <el-tab-pane label="量化结果4">
           <el-table
+            id="table4"
+            v-loading="loading_table4"
             :data="tableData_4"
             :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-            style="width: 100%;height:460px;"
+            height="460"
+            border
           >
             <el-table-column
               prop="line"
@@ -272,6 +281,7 @@
 </template>
 <script>
 import LuckyExcel from 'luckyexcel'
+import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/onlinetable'
 export default {
@@ -300,7 +310,7 @@ export default {
       selectAnaTime: '', // 根据选中的分析时间获取历史分析结果
       beginAnaBtn: false, // 开始分析禁用按钮
       generateAnaBtn: true, // 生成表格禁用按钮
-      statisticsBtn: false, // 获取量化禁用按钮
+      statisticsBtn: true, // 获取量化禁用按钮
       downloadAnaBtn: true, // 下载表格禁用按钮
       ana_progress_refresh: null, // 分析排程刷新进度条
       // 分析排程进度条相关
@@ -315,11 +325,16 @@ export default {
       tableData_1: [],
       tableData_2: [],
       tableData_3: [],
-      tableData_4: []
+      tableData_4: [],
+      loading_table1: true,
+      loading_table2: true,
+      loading_table3: true,
+      loading_table4: true
     }
   },
   mounted() {
     this.initLuckysheet()
+    this.getHistoryExcelItem()
   },
   methods: {
     // 初始化luckysheet
@@ -418,7 +433,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消分析22'
+            message: '取消分析'
           })
         })
       }
@@ -426,6 +441,7 @@ export default {
     // 分析排程
     analysisExcel() {
       this.clearAnaProgress() // 清空进度条
+      this.resetShowAnaData() // 重置所有显示信息
       const wb = this.getSheetJs(false) // luckysheet获取sheet，并且转化为SheetJS的格式
       const blob = this.workbook2blob(wb) // SheetJS转化为文件流
       const form_data = new FormData() // 新建表单
@@ -437,7 +453,6 @@ export default {
         message: '开始分析'
       })
       this.stepNow = 2
-      this.resetShowAnaData() // 重置所有显示信息
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
       }).catch(err => {
@@ -572,7 +587,7 @@ export default {
       this.percentage_2 = 0
       this.percentage_3 = 0
       this.progress_text_1 = '预处理|未开始'
-      this.progress_text_2 = '分析排程|未开始'
+      this.progress_text_2 = '分析|未开始'
       this.progress_text_3 = '输出表格|未开始'
       // 开始分析，禁用按钮按钮
       this.beginAnaBtn = true
@@ -627,10 +642,11 @@ export default {
     getHistoryExcelItem() {
       this.options_history_excel = []
       GetHistoryExcelItem().then(res => {
-        for (const key in res) {
+        const data = res.Items
+        for (const key in data) {
           const temp = {}
-          temp['value'] = res[key]
-          temp['label'] = res[key]
+          temp['value'] = data[key]
+          temp['label'] = data[key]
           this.options_history_excel.push(temp)
         }
       }).catch(err => {
@@ -644,12 +660,36 @@ export default {
           type: 'success',
           message: '获取成功'
         })
+        this.checkSuccess = false // 重置检查
       }).catch(err => {
         console.log(err)
         this.$message({
           type: 'error',
           message: '获取失败'
         })
+      })
+    },
+    updateSheet(exportJson, luckysheetfile) {
+      if (exportJson.sheets == null || exportJson.sheets.length === 0) {
+        alert('加载失败!')
+        return
+      }
+      window.luckysheet.destroy()
+      window.luckysheet.create({
+        container: 'luckysheet',
+        showinfobar: false,
+        data: exportJson.sheets,
+        title: exportJson.info.name,
+        userInfo: exportJson.info.name.creator,
+        lang: 'zh',
+        row: 60, // 初始化行数
+        column: 16, // 列数
+        hook: {
+          workbookCreateAfter: function() {
+            window.luckysheet.setHorizontalFrozen(false, { order: 0 }) // 冻结首行
+            window.luckysheet.setHorizontalFrozen(false, { order: 1 })
+          }
+        }
       })
     },
     // 量化结果 TODO
@@ -670,11 +710,41 @@ export default {
         this.tableData_2 = res.table_data2
         this.tableData_3 = res.table_data3
         this.tableData_4 = res.table_data4
+        this.loading_table1 = false
+        this.loading_table2 = false
+        this.loading_table3 = false
+        this.loading_table4 = false
       })
     },
     // 量化结果导出到Excel TODO
     exportStatisticsExcel() {
-
+      var xlsxParam = {
+        raw: true
+      } // 转换成excel时，使用原始的格式，这样导出的时候数字过长不会变成科学计数法
+      const workbook = XLSX.utils.book_new()
+      // 添加多个sheet页
+      const ws1 = XLSX.utils.table_to_sheet(document.querySelector('#table1'), xlsxParam)
+      XLSX.utils.book_append_sheet(workbook, ws1, 'table1')
+      const ws2 = XLSX.utils.table_to_sheet(document.querySelector('#table2'), xlsxParam)
+      XLSX.utils.book_append_sheet(workbook, ws2, 'table2')
+      const ws3 = XLSX.utils.table_to_sheet(document.querySelector('#table3'), xlsxParam)
+      XLSX.utils.book_append_sheet(workbook, ws3, 'table3')
+      const ws4 = XLSX.utils.table_to_sheet(document.querySelector('#table4'), xlsxParam)
+      XLSX.utils.book_append_sheet(workbook, ws4, 'table4')
+      const wbout = XLSX.write(workbook, {
+        bookType: 'xlsx',
+        bookSST: true,
+        type: 'array'
+      })
+      try {
+        FileSaver.saveAs(
+          new Blob([wbout], {
+            type: 'application/octet-stream;charset=utf-8"'
+          }), '量化结果.xlsx')
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
     },
     // 是否关闭分析排程
     handleCloseAnalysis() {
