@@ -604,13 +604,17 @@ export default {
     },
     // 开始计算排程
     computeSchedule() {
+      this.$message({
+        message: '开始计算排程',
+        type: 'success'
+      })
+      this.stepNow = 4
       ComputeSchedule({ 'filename': this.uploadFileName }).then(res => {
         if (res.code === 20000) {
           this.$message({
-            message: res.message,
+            message: '排程计算完毕',
             type: 'success'
           })
-          this.stepNow = 4
         } else {
           this.$message({
             message: '开始计算失败',

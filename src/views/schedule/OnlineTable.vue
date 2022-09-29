@@ -377,7 +377,6 @@ export default {
     closeAnalysis() {
       this.analysisDialogVisible = false
       this.clearListenProgress()
-      this.ana_progress_refresh = null
     },
     // 开始分析
     beginAnalysis() {
@@ -415,28 +414,30 @@ export default {
           confirmButtonClass: 'btnDanger',
           type: 'warning'
         }).then(() => {
-          this.analysisExcel()
+          this.beginAnalysis()
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '取消分析'
+            message: '取消分析22'
           })
         })
       }
     },
     // 分析排程
     analysisExcel() {
+      this.clearAnaProgress() // 清空进度条
+      const wb = this.getSheetJs(false) // luckysheet获取sheet，并且转化为SheetJS的格式
+      const blob = this.workbook2blob(wb) // SheetJS转化为文件流
+      const form_data = new FormData() // 新建表单
+      form_data.append('files', blob) // 在线表格文件流
+      form_data.append('file_name', this.uploadFileName) // 在线表格文件流
+      this.listenProgress()
       this.$message({
         type: 'success',
         message: '开始分析'
       })
+      this.stepNow = 2
       this.resetShowAnaData() // 重置所有显示信息
-      const wb = this.get_sheet_js(false) // luckysheet获取sheet，并且转化为SheetJS的格式
-      const blob = this.workbook2blob(wb) // SheetJS转化为文件流
-      const form_data = new FormData() // 新建表单
-      form_data.append('files', blob) // 在线表格文件流e
-      form_data.append('file_name', this.uploadFileName) // 在线表格文件流
-      this.listenProgress()
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
       }).catch(err => {
@@ -502,7 +503,7 @@ export default {
         this.progress_text_2 = res.p1text
         this.progress_text_3 = res.p2text
         const run_flag = res.run_flag
-        if (run_flag === 1 && res.data.p2 > 0 && this.progressCount === 0) {
+        if (run_flag === 1 && res.p2 > 0 && this.progressCount === 0) {
           this.$message({
             type: 'success',
             message: '分析完毕，可以生成表格'
@@ -553,7 +554,6 @@ export default {
         const time_date = time.substring(0, 10)
         const time_time = time.substring(11).replaceAll('-', ':')
         time = time_date + ' ' + time_time
-        // time[13] = ":"
         this.ana_time = '(分析时间：' + time + ')'
       }
       this.schedule_mode = res.new_mode
@@ -567,9 +567,6 @@ export default {
     },
     // 重置分析排程显示信息
     resetShowAnaData() {
-      // 取消监听
-      this.clearListenProgress()
-      this.ana_progress_refresh = null
       // 清空进度条
       this.percentage_1 = 0
       this.percentage_2 = 0

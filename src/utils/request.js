@@ -44,7 +44,6 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    console.log(res)
     // 如果是文件流直接返回
     if (res instanceof Blob) {
       return response
