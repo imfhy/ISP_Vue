@@ -273,7 +273,7 @@
 <script>
 import LuckyExcel from 'luckyexcel'
 import XLSX from 'xlsx'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData } from '@/api/onlinetable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/onlinetable'
 export default {
   data() {
     return {
@@ -655,13 +655,22 @@ export default {
     // 量化结果 TODO
     statisticsSchedule() {
       if (this.uploadFileName !== '') {
-        this.statisticsTitle = '量化结果-' + this.uploadFileName
+        this.statisticsTitle = '量化结果 - ' + this.uploadFileName
       } else {
         this.statisticsTitle = '量化结果'
       }
       this.statisticsDialogVisible = true
-
       this.stepNow = 4
+      StatisticsSchedule().then(res => {
+        this.$message({
+          type: 'success',
+          message: '获取成功'
+        })
+        this.tableData_1 = res.table_data1
+        this.tableData_2 = res.table_data2
+        this.tableData_3 = res.table_data3
+        this.tableData_4 = res.table_data4
+      })
     },
     // 量化结果导出到Excel TODO
     exportStatisticsExcel() {
