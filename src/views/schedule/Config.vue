@@ -2,7 +2,7 @@
   <div id="main">
     <el-card>
       <div>
-        <el-descriptions class="margin-top" title="排程配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
+        <el-descriptions class="margin-top" title="参数配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
             <el-button size="small">
               <i class="el-icon-refresh-left" /> 返回上一次配置
@@ -111,10 +111,12 @@
       </div>
     </el-card>
     <el-dialog
-      title="修改排程配置"
+      v-el-drag-dialog
       :visible.sync="dialogVisible"
+      title="修改参数配置"
       width="70%"
       :before-close="handleClose"
+      @dragDialog="handleDrag"
     >
       <el-card class="card-form" shadow="never">
         <el-form ref="$form" :model="model" label-position="left" size="small">
@@ -341,7 +343,9 @@
   </div>
 </template>
 <script>
+import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
 export default {
+  directives: { elDragDialog },
   data() {
     return {
       schedule_date: new Date(),
@@ -698,6 +702,10 @@ export default {
 
   },
   methods: {
+    // v-el-drag-dialog onDrag callback function
+    handleDrag() {
+      this.$refs.select.blur()
+    },
     editDataDialog() {
       this.dialogVisible = true
     },
