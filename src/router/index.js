@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-
+import outsourceRouter from './modules/outsource'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -93,7 +93,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     name: 'Schedule',
     meta: {
-      title: '排程模块',
+      title: '主板排程',
       icon: 'component',
       roles: ['admin', 'editor']
     },
@@ -196,6 +196,9 @@ export const asyncRoutes = [
       }
     ]
   },
+
+  outsourceRouter,
+
   {
     path: '/permission',
     component: Layout,

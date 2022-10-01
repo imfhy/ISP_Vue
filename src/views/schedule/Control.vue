@@ -1,78 +1,76 @@
 <template>
   <div id="main">
     <el-card class="card-info">
-      <div>
-        <el-row>
-          <el-col :span="1">
-            <div class="my-icon-date">
-              <i class="el-icon-date" />
+      <el-row>
+        <el-col :span="1">
+          <div class="my-icon-date">
+            <i class="el-icon-date" />
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="card-panel-description">
+            <div class="card-panel-text-upper">
+              排程日期
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="card-panel-description">
-              <div class="card-panel-text-upper">
-                排程日期
-              </div>
-              <div class="card-panel-text-down">
-                {{ schedule_time }}-{{ schedule_mode }}
-              </div>
+            <div class="card-panel-text-down">
+              {{ schedule_time }}-{{ schedule_mode }}
             </div>
-          </el-col>
-          <el-col :span="1">
-            <div class="my-icon-timer">
-              <i class="el-icon-timer" />
+          </div>
+        </el-col>
+        <el-col :span="1">
+          <div class="my-icon-timer">
+            <i class="el-icon-timer" />
+          </div>
+        </el-col>
+        <el-col :span="4">
+          <div class="card-panel-description">
+            <div class="card-panel-text-upper">
+              排程运行时长
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="card-panel-description">
-              <div class="card-panel-text-upper">
-                排程运行时长
-              </div>
-              <div class="card-panel-text-down">
-                {{ schedule_run_time }}
-              </div>
+            <div class="card-panel-text-down">
+              {{ schedule_run_time }}
             </div>
-          </el-col>
-          <el-col :span="14" style="float:right;">
-            <div class="my-table">
-              <el-table
-                :data="schedule_result"
-                style="width: 490px;"
-                :border="false"
-                algin="right"
-                header-cell-style="font-weight:normal;text-align:right;"
-                cell-style="font-size: 20px;font-weight:20px;text-align:right;"
-              >
-                <el-table-column
-                  prop="enable"
-                  label="是否可行解"
-                  width="100px;"
-                />
-                <el-table-column
-                  prop="obj_value"
-                  label="目标值"
-                  width="110px;"
-                />
-                <el-table-column
-                  prop="idle_value"
-                  label="停顿(天)"
-                  width="100px;"
-                />
-                <el-table-column
-                  prop="overdue_value"
-                  label="逾期(天)"
-                  width="100px;"
-                />
-                <el-table-column
-                  prop="line_balance"
-                  label="线平衡"
-                  width="80px;"
-                />
-              </el-table>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
+          </div>
+        </el-col>
+        <el-col :span="14" style="float:right;">
+          <div class="my-table">
+            <el-table
+              :data="schedule_result"
+              style="width: 490px;"
+              :border="false"
+              algin="right"
+              header-cell-style="font-weight:normal;text-align:right;"
+              cell-style="font-size: 20px;font-weight:20px;text-align:right;"
+            >
+              <el-table-column
+                prop="enable"
+                label="是否可行解"
+                width="100px;"
+              />
+              <el-table-column
+                prop="obj_value"
+                label="目标值"
+                width="110px;"
+              />
+              <el-table-column
+                prop="idle_value"
+                label="停顿(天)"
+                width="100px;"
+              />
+              <el-table-column
+                prop="overdue_value"
+                label="逾期(天)"
+                width="100px;"
+              />
+              <el-table-column
+                prop="line_balance"
+                label="线平衡"
+                width="80px;"
+              />
+            </el-table>
+          </div>
+        </el-col>
+      </el-row>
     </el-card>
     <el-row :gutter="16">
       <el-col :span="8">
@@ -130,7 +128,7 @@
         </el-card>
       </el-col>
       <el-col :span="16">
-        <el-card class="card-control">
+        <el-card class="control">
           <div slot="header" class="clearfix">
             <span>控制中心</span>
           </div>
@@ -336,7 +334,7 @@
 
 <script>
 import { Loading } from 'element-ui'
-import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedule/control'
 export default {
   data() {
     return {
@@ -732,7 +730,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/control.scss';
+  @import '../../assets/css/schedule/Control.scss';
 </style>
 <style>
 .my-table .el-table th.is-leaf{

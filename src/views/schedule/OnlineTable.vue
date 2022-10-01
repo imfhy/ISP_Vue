@@ -283,7 +283,7 @@
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/onlinetable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedule/onlinetable'
 export default {
   data() {
     return {
@@ -897,7 +897,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/onlinetable.scss';
+  @import '../../assets/css/schedule/OnlineTable.scss';
 </style>
 <style>
 .card-control .el-card__body{

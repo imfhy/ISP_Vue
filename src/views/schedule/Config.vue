@@ -716,7 +716,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    @import '../../assets/css/config.scss';
+  @import '../../assets/css/schedule/Config.scss';
 </style>
 <style>
 .card-form .el-card__body{
