@@ -122,7 +122,7 @@
             <div slot="header" class="clearfix">
               <span class="ana-res-text">分析结果</span>
               <div class="ana-history">
-                <el-select v-model="selectAnaTime" placeholder="查看历史分析结果" style="width: 200px%;" size="small">
+                <el-select v-model="selectAnaTime" placeholder="查看历史分析结果" style="width: 200px%;" size="mini">
                   <el-option
                     v-for="item in options_history_analysis"
                     :key="item.value"
@@ -130,12 +130,14 @@
                     :value="item.value"
                   />
                 </el-select>
-                <el-button style="margin-left: 5px;" type="info" size="small" @click="getHistoryAnaData">
+                <el-button style="margin-left: 5px;" type="info" size="mini" @click="getHistoryAnaData">
                   获取
                 </el-button>
-                <el-button style="margin-left: 5px;" size="small" @click="getHistoryAnaItem">
-                  <i class="el-icon-refresh" />
-                </el-button>
+                <el-tooltip class="item" effect="dark" content="刷新列表" placement="top">
+                  <el-button style="margin-left: 5px;" size="mini" @click="getHistoryAnaItem">
+                    <i class="el-icon-refresh" />
+                  </el-button>
+                </el-tooltip>
               </div>
             </div>
             <p style="font-weight:bold;line-height: 90%;">{{ schedule_time }}-{{ schedule_mode }}
@@ -283,7 +285,7 @@
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedule/onlinetable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedule/OnlineTable'
 export default {
   data() {
     return {

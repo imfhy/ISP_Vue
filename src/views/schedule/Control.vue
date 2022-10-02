@@ -334,7 +334,7 @@
 
 <script>
 import { Loading } from 'element-ui'
-import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedule/control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedule/Control'
 export default {
   data() {
     return {

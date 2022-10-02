@@ -8,6 +8,9 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import outsourceRouter from './modules/outsource'
+import dayconfigRouter from './modules/dayconfig'
+import longconfigRouter from './modules/longconfig'
+import predictRouter from './modules/predict'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -127,76 +130,10 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/dayconfig',
-    component: Layout,
-    redirect: '/dayconfig/blocktimedata',
-    alwaysShow: true,
-    name: 'DayConfig',
-    meta: {
-      title: '每日配置',
-      icon: 'el-icon-setting',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'blocktimedata',
-        component: () => import('@/views/dayconfig/BlockTimeData'),
-        name: 'BlockTimeData',
-        meta: {
-          title: '维护时间表',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-  {
-    path: '/longconfig',
-    component: Layout,
-    redirect: '/longconfig/ledctdata',
-    alwaysShow: true,
-    name: 'LongConfig',
-    meta: {
-      title: '长期配置',
-      icon: 'el-icon-setting',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'ledctdata',
-        component: () => import('@/views/longconfig/LEDCTData'),
-        name: 'LEDCTData',
-        meta: {
-          title: 'LED经验数据',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-  {
-    path: '/predict',
-    component: Layout,
-    redirect: '/predict/ledctdata',
-    alwaysShow: true,
-    name: 'Predict',
-    meta: {
-      title: '预测数据',
-      icon: 'el-icon-coin',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'trainleddata',
-        component: () => import('@/views/predict/TrainLEDTData'),
-        name: 'TrainLEDTData',
-        meta: {
-          title: 'LED训练数据',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
 
+  dayconfigRouter,
+  longconfigRouter,
+  predictRouter,
   outsourceRouter,
 
   {
@@ -283,7 +220,6 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

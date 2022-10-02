@@ -165,7 +165,7 @@
                 <el-switch v-model="model.packline_holiday_flag" />
               </el-form-item>
             </el-col>
-            <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.pack_holiday_interval_str" prop="pack_holiday_interval_str" label="全部包装放假日期">
                 <el-date-picker v-model="model.pack_holiday_interval_str" type="daterange" start-placeholder="请选择" end-placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
               </el-form-item>
