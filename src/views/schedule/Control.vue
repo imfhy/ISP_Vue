@@ -333,6 +333,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedule/Control'
 export default {
@@ -382,8 +383,15 @@ export default {
       computeTip: '' // 计算排程按钮左上角的小红标
     }
   },
-  mounted() {
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
+  },
+  created() {
     this.getLogSelectItem()
+  },
+  mounted() {
     // this.listenProgress()
   },
   methods: {
@@ -605,7 +613,7 @@ export default {
         type: 'success'
       })
       this.stepNow = 4
-      ComputeSchedule({ 'filename': this.uploadFileName }).then(res => {
+      ComputeSchedule({ 'file_name': this.uploadFileName, 'user_name': this.name }).then(res => {
         if (res.code === 20000) {
           this.$message({
             message: '排程计算完毕',

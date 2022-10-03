@@ -282,6 +282,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
@@ -332,16 +333,24 @@ export default {
       loading_table2: true,
       loading_table3: true,
       loading_table4: true
+
     }
+  },
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
+  },
+  created() {
+    this.getHistoryExcelItem()
   },
   mounted() {
     this.initLuckysheet()
-    this.getHistoryExcelItem()
   },
   methods: {
     // 初始化luckysheet
     initLuckysheet() {
-      var options = {
+      const options = {
         container: 'luckysheet',
         lang: 'zh',
         showinfobar: false // 不显示luckysheet图标
@@ -449,6 +458,7 @@ export default {
       const form_data = new FormData() // 新建表单
       form_data.append('files', blob) // 在线表格文件流
       form_data.append('file_name', this.uploadFileName) // 在线表格文件流
+      form_data.append('user_name', this.name) // 在线表格文件流
       this.listenProgress()
       this.$message({
         type: 'success',

@@ -20,8 +20,12 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <i class="el-icon-caret-bottom" /> -->
+          <i class="el-icon-user-solid" />
+          <span class="el-dropdown-link">
+            {{ name }}<i class="el-icon-arrow-down el-icon--right" />
+          </span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
@@ -58,7 +62,8 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'device'
+      'device',
+      'name'
     ])
   },
   methods: {
@@ -134,8 +139,11 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 2px;
         position: relative;
+        .el-icon-user-solid{
+          font-size: 22px;
+        }
 
         .user-avatar {
           cursor: pointer;

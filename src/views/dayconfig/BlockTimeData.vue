@@ -28,7 +28,7 @@
                 @click="refreshTableData"
               />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="查看帮助" placement="top">
+            <el-tooltip class="item" effect="dark" content="查看说明" placement="top">
               <el-button
                 size="small"
                 icon="el-icon-warning-outline"
@@ -112,7 +112,6 @@
           layout="total, prev, pager, next, jumper"
           :total="page_total_num"
           style="margin-top: 16px;"
-          @size-change="handleSizeChange"
           @current-change="handlePageChange"
         />
       </div>
@@ -189,12 +188,12 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="帮助"
+      title="表格说明"
       :visible.sync="helpDialogVisible"
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>各种提示信息可以写在这</span>
+      <span>关于表格的各种说明可以写在这</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="helpDialogVisible = false">关闭</el-button>
       </span>
@@ -295,6 +294,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, SaveData, DeleteData, HandleDelete, ConfirmImport, ConfirmExport } from '@/api/dayconfig/BlockTimeData'
 import { LineOptions } from '@/utils/items'
@@ -325,6 +325,7 @@ export default {
       uploadFileName: '', // 上传的文件名
       importRadio: 3, // 导入方式选择（方便以后扩展）
       exportRadio: 3, // 导出格式选择（方便以后扩展）
+      isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
       forms: ['$form'],
       model: {
@@ -383,8 +384,16 @@ export default {
       dataTableSelections: [] // 表格选中的数据
     }
   },
-  mounted() {
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
+  },
+  created() {
     this.getTableData(this.currentPage, this.pageSize)
+  },
+  mounted() {
+    // this.getTableData(this.currentPage, this.pageSize)
   },
   methods: {
     // dialog可拖拽
@@ -395,10 +404,6 @@ export default {
     handlePageChange(val) {
       this.currentPage = val
       this.getTableData(val, this.pageSize) // 翻页
-    },
-    // 分页
-    handleSizeChange(val) {
-      this.pageNum = val
     },
     // 分页展示表格数据
     getTableData(currentPage, pageSize) {
@@ -421,10 +426,13 @@ export default {
       this.dialogTitle = '添加数据'
       this.dialogBtnType = true
       this.dataDialogVisible = true
+      this.isClick = false
     },
     // 添加数据
     addData() {
-      const data = { 'rowData': this.scopeRow, 'index': this.scopeIndex }
+      this.isClick = true
+      const data = this.model
+      data['user_name'] = this.name
       AddData(data).then(res => {
         if (res.code === 20000) {
           this.$notify({
@@ -432,6 +440,7 @@ export default {
             message: '成功添加 1 条数据',
             type: 'success'
           })
+          this.refreshTableData()
         }
       })
     },
@@ -459,7 +468,7 @@ export default {
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
-        const data = { 'id_list': idList }
+        const data = { 'id_list': idList, 'user_name': this.name }
         DeleteData(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
@@ -501,9 +510,11 @@ export default {
       }
       // 显示dialog
       this.dataDialogVisible = true
+      this.isClick = false
     },
     // 编辑数据发送到后端保存
     saveData() {
+      this.isClick = true
       const data = { 'rowData': this.scopeRow, 'index': this.scopeIndex }
       SaveData(data).then(res => {
         if (res.code === 20000) {
@@ -512,6 +523,7 @@ export default {
             message: '数据已修改',
             type: 'success'
           })
+          this.refreshTableData()
         }
       })
     },
@@ -529,7 +541,7 @@ export default {
     },
     // 表单dialog关闭前提示
     handleClose() {
-      if (this.checkFormChange()) {
+      if (this.checkFormChange() && !this.isClick) {
         this.$confirm('修改的数据未保存，请确定是否要关闭窗口？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -579,7 +591,11 @@ export default {
         confirmButtonClass: 'btnDanger',
         type: 'warning'
       }).then(() => {
-        HandleDelete(row.id).then(res => {
+        const data = {}
+        data['id'] = row.id
+        data['line_name'] = row.line_name
+        data['user_name'] = this.name
+        HandleDelete(data).then(res => {
           if (res.code === 20000) {
             this.$notify({
               title: '删除成功',

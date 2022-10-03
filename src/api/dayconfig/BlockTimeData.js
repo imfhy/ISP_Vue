@@ -32,11 +32,11 @@ export function DeleteData(data) {
   })
 }
 // 删除一条数据
-export function HandleDelete(id) {
+export function HandleDelete(data) {
   return request({
     url: '/config/blocktimedata/handle_delete/',
-    method: 'get',
-    params: { id }
+    method: 'post',
+    data
   })
 }
 // 确认导入数据
