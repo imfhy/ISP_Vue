@@ -127,7 +127,7 @@ export default {
       table_data: [], // 表格数据
       // 分页相关
       page_total_num: 0,
-      pageSize: 50,
+      pageSize: 20,
       currentPage: 1,
       // 搜索类型
       typeOptions: [{
@@ -154,29 +154,50 @@ export default {
       }],
       tableValue: '', // 搜索表名
       typeValue: '', // 搜索类型
-      userValue: '' // 搜索用户
+      userValue: '', // 搜索用户
+      isSearch: false // 是否点击了搜索
     }
   },
   created() {
-    this.getTableData(this.currentPage, this.pageSize)
+    this.getTableData(this.currentPage, this.pageSize, this.isSearch)
   },
   methods: {
     // 分页
     handlePageChange(val) {
       this.currentPage = val
-      this.getTableData(val, this.pageSize) // 翻页
+      this.getTableData(val, this.pageSize, this.isSearch) // 翻页
     },
     // 分页展示表格数据
-    getTableData(currentPage, pageSize) {
+    getTableData(currentPage, pageSize, isSearch) {
       this.loading = true
-      const data = { 'current_page': currentPage, 'page_size': pageSize }
-      GetTableData(data).then(res => {
-        if (res.code === 20000) {
-          this.table_data = res.table_data
-          this.page_total_num = res.page_total_num
-          this.loading = false
+      if (isSearch === true) {
+        const data = {
+          'current_page': currentPage,
+          'page_size': pageSize,
+          'type_value': this.typeValue,
+          'user_value': this.userValue,
+          'table_value': this.tableValue
         }
-      })
+        SearchData(data).then(res => {
+          if (res.code === 20000) {
+            this.table_data = res.table_data
+            this.page_total_num = res.page_total_num
+            this.loading = false
+          }
+        })
+      } else {
+        const data = {
+          'current_page': currentPage,
+          'page_size': pageSize
+        }
+        GetTableData(data).then(res => {
+          if (res.code === 20000) {
+            this.table_data = res.table_data
+            this.page_total_num = res.page_total_num
+            this.loading = false
+          }
+        })
+      }
     },
     // 搜索 搜索结果怎么分页TODO
     searchData() {
@@ -187,23 +208,17 @@ export default {
         })
         return
       }
-      const data = { 'typeValue': this.typeValue, 'userValue': this.userValue, 'tableValue': this.tableValue }
-      SearchData(data).then(res => {
-        if (res.code === 20000) {
-          this.$notify({
-            title: res.message_title,
-            message: res.message,
-            type: res.type
-          })
-          this.table_data = res.table_data
-          this.page_total_num = res.page_total_num
-          this.loading = false
-        }
-      })
+      this.isSearch = true
+      this.getTableData(1, this.pageSize, true)
     },
     // 刷新表格
     refreshTableData() {
-      this.getTableData(1, this.pageSize)
+      this.isSearch = false
+      this.typeValue = ''
+      this.userValue = ''
+      this.tableValue = ''
+      this.currentPage = 1
+      this.getTableData(1, this.pageSize, false)
     },
     // 帮助
     helpTips() {
