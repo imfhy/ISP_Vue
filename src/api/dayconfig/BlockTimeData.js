@@ -16,9 +16,9 @@ export function AddData(data) {
   })
 }
 // 修改数据
-export function SaveData(data) {
+export function ModifyData(data) {
   return request({
-    url: '/config/blocktimedata/save_data/',
+    url: '/config/blocktimedata/modify_data/',
     method: 'post',
     data
   })
@@ -40,7 +40,7 @@ export function HandleDelete(data) {
   })
 }
 // 确认导入数据
-export function ConfirmImport(data) {
+export function ImportData(data) {
   return request({
     url: '/config/blocktimedata/import_data/',
     method: 'post',
@@ -48,7 +48,7 @@ export function ConfirmImport(data) {
   })
 }
 // 确认导出数据
-export function ConfirmExport() {
+export function ExportData() {
   return request({
     url: '/config/blocktimedata/export_data/',
     method: 'get'

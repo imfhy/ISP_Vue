@@ -90,7 +90,7 @@
           <template slot-scope="scope">
             <el-tag v-if="scope.row.action_type === 'add'" size="small">添加</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'delete'" size="small" type="danger">删除</el-tag>
-            <el-tag v-else-if="scope.row.action_type === 'edit'" size="small" type="success">修改</el-tag>
+            <el-tag v-else-if="scope.row.action_type === 'modify'" size="small" type="success">修改</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'import'" size="small" type="info">导入</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'export'" size="small" type="info">导出</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'run'" size="small" type="warning">运行</el-tag>
