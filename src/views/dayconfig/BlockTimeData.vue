@@ -1,5 +1,5 @@
 <template>
-  <div class="main-box">
+  <div id="main-box">
     <el-card>
       <el-row>
         <el-col :span="16">
@@ -81,7 +81,7 @@
             width="200"
           >
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.flag === true" size="small">开启</el-tag>
+              <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
               <el-tag v-else-if="scope.row.flag === false" size="small" type="danger">关闭</el-tag>
             </template>
           </el-table-column>
@@ -92,7 +92,7 @@
                 size="mini"
                 icon="el-icon-edit"
                 circle
-                @click="handleEditDialog(scope.$index, scope.row)"
+                @click="handleModify(scope.$index, scope.row)"
               />
               <el-button
                 type="danger"
@@ -110,7 +110,7 @@
           :page-size="pageSize"
           :current-page="currentPage"
           layout="total, prev, pager, next, jumper"
-          :total="page_total_num"
+          :total="total_num"
           style="margin-top: 16px;"
           @current-change="handlePageChange"
         />
@@ -135,12 +135,12 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.start_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.end_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -152,7 +152,7 @@
           </el-col>
           <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
-              <el-date-picker v-model="model.lock_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.lock_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -211,7 +211,7 @@
         导入数据格式示例如下（仅支持.xlsx文件，列名需保持一致）：
       </p>
       <el-table
-        :data="tableDataExa"
+        :data="tableDataExample"
         :header-cell-style="{background:'#eef1f6',color:'#606266'}"
         :cell-style="setCellColor"
         border
@@ -255,8 +255,6 @@
               accept=".xlsx"
               action="http://localhost:9527/sqyapi/config/blocktimedata/import_data/"
               :on-change="handleChange"
-              :on-progress="handleProgress"
-              :on-success="handleSuccess"
               :auto-upload="false"
               :show-file-list="true"
               :file-list="uploadFileList"
@@ -299,6 +297,7 @@
 <script>
 import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
+// import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/BlockTimeData'
 import { LineOptions } from '@/utils/items'
@@ -307,8 +306,14 @@ export default {
   data() {
     return {
       loading: true, // 表格加载动画
+      importLoading: {
+        text: '导入中，请稍等...',
+        background: 'rgba(0, 0, 0, 0.7)',
+        target: document.querySelector('#main-box')
+      }, // 导入动画
+      loadingInstance: null,
       table_data: [], // 表格数据
-      tableDataExa: [
+      tableDataExample: [
         {
           line_name: 'SM01',
           start_time: '	2022-10-01 08:00:00',
@@ -352,7 +357,7 @@ export default {
         UPDATED_BY: '',
         UPDATED_TIME: ''
       },
-      // 用于检测表单前后的变化（关闭前提示是否保存）
+      // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
         line_name: '',
@@ -390,7 +395,7 @@ export default {
       },
       line_name_data: LineOptions, // 维护线别
       // 分页相关
-      page_total_num: 0, // 总共有多少条数据(后端返回)
+      total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
       pageSize: 20, // 每页多少条数据
       dataTableSelections: [] // 表格选中的数据
@@ -433,14 +438,19 @@ export default {
       GetTableData(data).then(res => {
         if (res.code === 20000) {
           this.table_data = res.table_data
-          this.page_total_num = res.page_total_num
+          this.total_num = res.total_num
           this.loading = false
         }
       })
     },
     // 刷新表格数据
-    refreshTableData() {
-      this.getTableData(1, this.pageSize)
+    refreshTableData(isAddData = false) {
+      if (isAddData) { // 如果是导入/添加/点击刷新按钮，刷新时返回第一页
+        this.currentPage = 1
+        this.getTableData(1, this.pageSize)
+      } else { // 否则只刷新当前页
+        this.getTableData(this.currentPage, this.pageSize)
+      }
     },
     // 添加数据
     addDataDialog() {
@@ -461,7 +471,10 @@ export default {
             message: '成功添加 1 条数据',
             type: 'success'
           })
-          this.refreshTableData()
+          setTimeout(() => {
+            this.closeFormDialog()
+          }, 1000)
+          this.refreshTableData(true)
         }
       })
     },
@@ -508,7 +521,7 @@ export default {
       })
     },
     // 修改数据
-    handleEditDialog(index, row) {
+    handleModify(index, row) {
       // 修改dialog
       this.dialogTitle = '修改数据'
       this.dialogBtnType = false
@@ -649,10 +662,6 @@ export default {
         }).then(() => {
           this.importData()
         }).catch(() => {
-          // 清空已上传文件
-          this.$refs.upload.clearFiles()
-          this.uploadFileName = ''
-          this.uploadFile = null
           this.$message({
             type: 'info',
             message: '取消导入'
@@ -664,6 +673,7 @@ export default {
     },
     // 导入数据
     importData() {
+      // this.loadingInstance = Loading.service(this.importLoading)
       const form = new FormData()
       form.append('file', this.uploadFile)
       form.append('file_name', this.uploadFileName)
@@ -676,30 +686,30 @@ export default {
             message: '本次共导入了 ' + res.data_count + ' 条数据',
             type: 'success'
           })
-          this.refreshTableData()
-          this.handleImportClose()
+          // this.loadingInstance.close() // 清除动画
+          // 1秒后自动关闭窗口
+          setTimeout(() => {
+            this.handleImportClose()
+          }, 1000)
+          this.refreshTableData(true)
         }
       })
     },
     // 导入数据窗口关闭
     handleImportClose() {
       this.importDialogVisible = false
+      // 清理已上传文件
       this.$refs.upload.clearFiles()
       this.uploadFileName = ''
       this.uploadFile = null
     },
+    // 获取上传文件
     handleChange(file, fileList) {
       if (fileList.length > 0) {
         this.uploadFileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
         this.uploadFileName = this.uploadFileList[0].name // 更新文件名
         this.uploadFile = this.uploadFileList[0].raw // 更新文件
       }
-    },
-    handleProgress() {
-
-    },
-    handleSuccess() {
-
     },
     // 数据库导出到Excel
     exportDataDialog() {
@@ -712,15 +722,16 @@ export default {
           const dataCount = res.data_count
           const sheetData = res.table_data
           const fields = res.fields
+          const tableName = res.table_name
           const fields_display = res.fields_display
           const newData = [fields_display, ...sheetData]
           const sheet = XLSX.utils.json_to_sheet(newData, { header: fields, skipHeader: true })
           const wb = XLSX.utils.book_new()
-          XLSX.utils.book_append_sheet(wb, sheet, '维护时间表')
-          XLSX.writeFile(wb, '维护时间表.xlsx')
+          XLSX.utils.book_append_sheet(wb, sheet, tableName)
+          XLSX.writeFile(wb, tableName + '.xlsx')
           this.$notify({
             title: '导出成功',
-            message: '共导出' + dataCount + ' 条数据',
+            message: '本次共导出了 ' + dataCount + ' 条数据',
             type: 'success'
           })
           this.handleExportClose() // 导出后自动关闭窗口

@@ -87,7 +87,7 @@
         :page-size="pageSize"
         :current-page="currentPage"
         layout="total, prev, pager, next, jumper"
-        :total="page_total_num"
+        :total="total_num"
         style="margin-top: 16px;"
         @current-change="handlePageChange"
       />
@@ -103,7 +103,7 @@ export default {
       loading: true, // 表格加载动画
       table_data: [], // 表格数据
       // 分页相关
-      page_total_num: 0,
+      total_num: 0,
       pageSize: 20,
       currentPage: 1,
       // 搜索类型
@@ -147,7 +147,7 @@ export default {
         SearchData(data).then(res => {
           if (res.code === 20000) {
             this.table_data = res.table_data
-            this.page_total_num = res.page_total_num
+            this.total_num = res.total_num
             this.loading = false
           }
         })
@@ -159,7 +159,7 @@ export default {
         GetTableData(data).then(res => {
           if (res.code === 20000) {
             this.table_data = res.table_data
-            this.page_total_num = res.page_total_num
+            this.total_num = res.total_num
             this.loading = false
           }
         })

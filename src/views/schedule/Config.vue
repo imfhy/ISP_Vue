@@ -4,109 +4,112 @@
       <div>
         <el-descriptions class="margin-top" title="参数配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
-            <el-button size="small">
-              <i class="el-icon-refresh-left" /> 返回上一次配置
-            </el-button>
-          </template>
-          <template slot="extra">
-            <el-button type="primary" size="small" @click="editDataDialog">
+            <el-button type="primary" size="small" @click="modifyDataDialog">
               <i class="el-icon-edit" /> 修改
             </el-button>
           </template>
-          <el-descriptions-item label="排程日期" :span="2">{{ schedule_date }}</el-descriptions-item>
-          <el-descriptions-item label="开始排程时间" :span="2">{{ schedule_time }}</el-descriptions-item>
+          <el-descriptions-item label="排程日期" :span="2">{{ modelOriginal.schedule_date }}</el-descriptions-item>
+          <el-descriptions-item label="开始排程时间" :span="2">{{ modelOriginal.schedule_time }}</el-descriptions-item>
 
-          <el-descriptions-item label="overdue权重">{{ overdue_weight }}</el-descriptions-item>
-          <el-descriptions-item label="idle权重">{{ idle_weight }}</el-descriptions-item>
-          <el-descriptions-item label="Line balance权重">{{ line_balance_weight }}</el-descriptions-item>
-          <el-descriptions-item label="大工单线权重">{{ big_line_weight }}</el-descriptions-item>
-          <el-descriptions-item label="锁定时间节点内的idle权重" :span="4">{{ lock_time_idle_weight }}</el-descriptions-item>
+          <el-descriptions-item label="overdue权重">{{ modelOriginal.overdue_weight }}</el-descriptions-item>
+          <el-descriptions-item label="idle权重">{{ modelOriginal.idle_weight }}</el-descriptions-item>
+          <el-descriptions-item label="Line balance权重">{{ modelOriginal.line_balance_weight }}</el-descriptions-item>
+          <el-descriptions-item label="大工单线权重">{{ modelOriginal.big_line_weight }}</el-descriptions-item>
+          <el-descriptions-item label="锁定时间节点内的idle权重" :span="4">{{ modelOriginal.lock_time_idle_weight }}</el-descriptions-item>
 
           <el-descriptions-item label="是否开启全部包装放假">
-            <el-tag v-if="pack_holiday_flag === true" size="small">开启</el-tag>
-            <el-tag v-else-if="pack_holiday_flag === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.pack_holiday_flag === true" size="small">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.pack_holiday_flag === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否开启部分包装线放假">
-            <el-tag v-if="packline_holiday_flag === true" size="small">开启</el-tag>
-            <el-tag v-else-if="packline_holiday_flag === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.packline_holiday_flag === true" size="small">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.packline_holiday_flag === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="放假区间" :span="2">{{ pack_holiday_interval_str }}</el-descriptions-item>
+          <el-descriptions-item label="放假日期" :span="2">
+            <el-tag
+              v-for="(val,key) in modelOriginal.pack_holiday_interval_str"
+              :key="key"
+              style="margin-right: 5px;"
+            >
+              {{ val }}
+            </el-tag>
+          </el-descriptions-item>
 
-          <el-descriptions-item label="默认无法识别需求日期">{{ default_unknown_require_day }}</el-descriptions-item>
-          <el-descriptions-item label="大小穿插时间">{{ large_small_punctuated }}</el-descriptions-item>
-          <el-descriptions-item label="repair_mode">{{ repair_mode }}</el-descriptions-item>
-          <el-descriptions-item label="未上排程状态">{{ unschedule_state_str }}</el-descriptions-item>
-          <el-descriptions-item label="n天需求日期参数">{{ threshold_duedate }}</el-descriptions-item>
-          <el-descriptions-item label="n天物料到达时间参数">{{ threshold_release }}</el-descriptions-item>
-          <el-descriptions-item label="LED额外切换时间" :span="2">{{ led_extra_setup_time }}</el-descriptions-item>
+          <el-descriptions-item label="默认无法识别需求日期">{{ modelOriginal.default_unknown_require_day }}</el-descriptions-item>
+          <el-descriptions-item label="大小穿插时间">{{ modelOriginal.large_small_punctuated }}</el-descriptions-item>
+          <el-descriptions-item label="repair_mode">{{ modelOriginal.repair_mode }}</el-descriptions-item>
+          <el-descriptions-item label="未上排程状态">{{ modelOriginal.unschedule_state_str }}</el-descriptions-item>
+          <el-descriptions-item label="n天需求日期参数">{{ modelOriginal.threshold_duedate }}</el-descriptions-item>
+          <el-descriptions-item label="n天物料到达时间参数">{{ modelOriginal.threshold_release }}</el-descriptions-item>
+          <el-descriptions-item label="LED额外切换时间" :span="2">{{ modelOriginal.led_extra_setup_time }}</el-descriptions-item>
 
           <el-descriptions-item label="维护时间约束">
-            <el-tag v-if="block_time_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="block_time_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.block_time_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.block_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="上下板间隔约束">
-            <el-tag v-if="buffer_time_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="buffer_time_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.buffer_time_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.buffer_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="排白班约束">
-            <el-tag v-if="day_shift_time_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.day_shift_time_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="程序约束">
-            <el-tag v-if="program_as_material_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="program_as_material_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.program_as_material_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.program_as_material_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="第一单不约束">
-            <el-tag v-if="skip_first_group_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="skip_first_group_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.skip_first_group_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.skip_first_group_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="排xx白班约束">
-            <el-tag v-if="force_day_shift_time_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="force_day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.force_day_shift_time_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.force_day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="排xx夜班约束" :span="2">
-            <el-tag v-if="force_night_shift_time_rule === true" size="small">开启</el-tag>
-            <el-tag v-else-if="force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.force_night_shift_time_rule === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ sm13_buttom_new_machine_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ sm21_top_led_threshold }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ sm21_top_le_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ sm21_top_gt_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item>
 
           <el-descriptions-item label="是否执行分组">
-            <el-tag v-if="need_dispatch === true" size="small">开启</el-tag>
-            <el-tag v-else-if="need_dispatch === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.need_dispatch === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.need_dispatch === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否执行repair">
-            <el-tag v-if="need_repair === true" size="small">开启</el-tag>
-            <el-tag v-else-if="need_repair === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.need_repair === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.need_repair === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否执行tabu">
-            <el-tag v-if="use_tabu === true" size="small">开启</el-tag>
-            <el-tag v-else-if="use_tabu === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.use_tabu === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.use_tabu === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否执行插入锁定">
-            <el-tag v-if="use_insert_lock === true" size="small">开启</el-tag>
-            <el-tag v-else-if="use_insert_lock === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.use_insert_lock === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.use_insert_lock === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否开启并行" :span="2">
-            <el-tag v-if="use_parallel === true" size="small">开启</el-tag>
-            <el-tag v-else-if="use_parallel === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.use_parallel === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.use_parallel === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="开放搜索解" :span="2">
-            <el-tag v-if="deep_search === true" size="small">开启</el-tag>
-            <el-tag v-else-if="deep_search === false" size="small" type="danger">关闭</el-tag>
+            <el-tag v-if="modelOriginal.deep_search === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.deep_search === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="输入的列" :span="4">{{ input_col }}</el-descriptions-item>
-          <el-descriptions-item label="导出的列" :span="4">{{ output_col }}</el-descriptions-item>
-          <el-descriptions-item label="导出线体顺序" :span="4">{{ output_line_order }}</el-descriptions-item>
+          <el-descriptions-item label="输入的列" :span="4">{{ modelOriginal.input_col }}</el-descriptions-item>
+          <el-descriptions-item label="导出的列" :span="4">{{ modelOriginal.output_col }}</el-descriptions-item>
+          <el-descriptions-item label="导出线体顺序" :span="4">{{ modelOriginal.output_line_order }}</el-descriptions-item>
 
-          <el-descriptions-item label="创建人">{{ CREATED_BY }}</el-descriptions-item>
-          <el-descriptions-item label="创建时间">{{ CREATED_TIME }}</el-descriptions-item>
-          <el-descriptions-item label="修改人">{{ UPDATED_BY }}</el-descriptions-item>
-          <el-descriptions-item label="修改时间">{{ UPDATED_TIME }}</el-descriptions-item>
+          <el-descriptions-item label="创建人">{{ modelOriginal.CREATED_BY }}</el-descriptions-item>
+          <el-descriptions-item label="创建时间">{{ modelOriginal.CREATED_TIME }}</el-descriptions-item>
+          <el-descriptions-item label="修改人">{{ modelOriginal.UPDATED_BY }}</el-descriptions-item>
+          <el-descriptions-item label="修改时间">{{ modelOriginal.UPDATED_TIME }}</el-descriptions-item>
         </el-descriptions>
       </div>
     </el-card>
@@ -115,7 +118,7 @@
       :visible.sync="dialogVisible"
       title="修改参数配置"
       width="70%"
-      :before-close="handleClose"
+      :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
       <el-card class="card-form" shadow="never">
@@ -123,7 +126,12 @@
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.schedule_time" prop="schedule_time" label="开始排程时间">
-                <el-time-picker v-model="model.schedule_time" placeholder="请选择" :style="{width: '100%'}" />
+                <el-time-picker
+                  v-model="model.schedule_time"
+                  value-format="HH:00:00"
+                  placeholder="请选择"
+                  :style="{width: '100%'}"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
@@ -167,7 +175,15 @@
             </el-col>
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.pack_holiday_interval_str" prop="pack_holiday_interval_str" label="全部包装放假日期">
-                <el-date-picker v-model="model.pack_holiday_interval_str" type="daterange" start-placeholder="请选择" end-placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
+                <!-- <el-date-picker v-model="model.pack_holiday_interval_str" type="daterange" start-placeholder="请选择" end-placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" /> -->
+                <el-date-picker
+                  v-model="model.pack_holiday_interval_str"
+                  type="dates"
+                  placeholder="选择一个或多个放假日期"
+                  :style="{width: '100%'}"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -336,82 +352,35 @@
         </el-form>
       </el-card>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveData = false">保 存</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="modifyData">确认修改</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
+import { GetTableData, ModifyData } from '@/api/schedule/Config'
 export default {
   directives: { elDragDialog },
   data() {
     return {
-      schedule_date: new Date(),
-      schedule_time: '8:00',
-
-      overdue_weight: 20.0,
-      idle_weight: 1,
-      line_balance_weight: 1,
-      big_line_weight: 1,
-      lock_time_idle_weight: 1,
-
-      default_unknown_require_day: 3,
-      threshold_duedate: 10,
-      threshold_release: 5.0,
-      large_small_punctuated: 1500,
-      repair_mode: 1,
-      unschedule_state_str: '未上排程',
-
-      block_time_rule: true,
-      buffer_time_rule: true,
-      day_shift_time_rule: true,
-      program_as_material_rule: true,
-      skip_first_group_rule: true,
-      force_day_shift_time_rule: true,
-      force_night_shift_time_rule: true,
-
-      pack_holiday_flag: true,
-      packline_holiday_flag: false,
-      pack_holiday_interval_str: '2022-10-01~2022-10-04',
-
-      sm13_buttom_new_machine_predict: 45,
-      sm21_top_led_threshold: 10000,
-      sm21_top_le_predict: 200,
-      sm21_top_gt_predict: 230,
-      led_extra_setup_time: 120,
-
-      use_tabu: true,
-      need_preprocess: true,
-      need_dispatch: true,
-      need_repair: true,
-      use_insert_lock: true,
-      use_parallel: true,
-      deep_search: true,
-
-      input_col: '',
-      output_col: '',
-      output_line_order: '',
-
-      CREATED_BY: 'FHY',
-      CREATED_TIME: '2022-09-29 20:42:56',
-      UPDATED_BY: 'FHY',
-      UPDATED_TIME: '2022-09-29 20:43:56',
-
+      value4: '',
       dialogVisible: false,
-
+      isClick: false, // 是否点击了确认修改
       forms: ['$form'],
-      model: {
+      modelOriginal: {
+        schedule_date: '',
         schedule_time: '',
         overdue_weight: '',
         idle_weight: '',
         line_balance_weight: '',
         big_line_weight: '',
         lock_time_idle_weight: '',
-        pack_holiday_flag: false,
-        pack_holiday_interval_str: [],
-        packline_holiday_flag: false,
+        pack_holiday_flag: true,
+        pack_holiday_interval_str: '',
+        packline_holiday_flag: true,
         led_extra_setup_time: '',
         default_unknown_require_day: '',
         threshold_duedate: '',
@@ -419,27 +388,75 @@ export default {
         unschedule_state_str: '',
         large_small_punctuated: '',
         repair_mode: '',
-        block_time_rule: false,
-        buffer_time_rule: false,
-        day_shift_time_rule: false,
-        program_as_material_rule: false,
-        skip_first_group_rule: false,
-        force_day_shift_time_rule: false,
-        force_night_shift_time_rule: false,
+        block_time_rule: true,
+        buffer_time_rule: true,
+        day_shift_time_rule: true,
+        program_as_material_rule: true,
+        skip_first_group_rule: true,
+        force_day_shift_time_rule: true,
+        force_night_shift_time_rule: true,
         sm13_buttom_new_machine_predict: '',
         sm21_top_led_threshold: '',
         sm21_top_le_predict: '',
         sm21_top_gt_predict: '',
-        need_preprocess: false,
-        need_dispatch: false,
-        need_repair: false,
-        use_insert_lock: false,
-        use_tabu: false,
-        use_parallel: false,
-        deep_search: false,
+        need_preprocess: true,
+        need_dispatch: true,
+        need_repair: true,
+        use_insert_lock: true,
+        use_tabu: true,
+        use_parallel: true,
+        deep_search: true,
         input_col: '',
         output_col: '',
-        output_line_order: ''
+        output_line_order: '',
+        CREATED_BY: '',
+        CREATED_TIME: '',
+        UPDATED_BY: '',
+        UPDATED_TIME: ''
+      },
+      model: {
+        schedule_date: '',
+        schedule_time: '',
+        overdue_weight: '',
+        idle_weight: '',
+        line_balance_weight: '',
+        big_line_weight: '',
+        lock_time_idle_weight: '',
+        pack_holiday_flag: true,
+        pack_holiday_interval_str: '',
+        packline_holiday_flag: true,
+        led_extra_setup_time: '',
+        default_unknown_require_day: '',
+        threshold_duedate: '',
+        threshold_release: '',
+        unschedule_state_str: '',
+        large_small_punctuated: '',
+        repair_mode: '',
+        block_time_rule: true,
+        buffer_time_rule: true,
+        day_shift_time_rule: true,
+        program_as_material_rule: true,
+        skip_first_group_rule: true,
+        force_day_shift_time_rule: true,
+        force_night_shift_time_rule: true,
+        sm13_buttom_new_machine_predict: '',
+        sm21_top_led_threshold: '',
+        sm21_top_le_predict: '',
+        sm21_top_gt_predict: '',
+        need_preprocess: true,
+        need_dispatch: true,
+        need_repair: true,
+        use_insert_lock: true,
+        use_tabu: true,
+        use_parallel: true,
+        deep_search: true,
+        input_col: '',
+        output_col: '',
+        output_line_order: '',
+        CREATED_BY: '',
+        CREATED_TIME: '',
+        UPDATED_BY: '',
+        UPDATED_TIME: ''
       },
       rules: {
         schedule_time: [{
@@ -698,6 +715,14 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'name'
+    ])
+  },
+  created() {
+    this.getTableData()
+  },
   mounted() {
 
   },
@@ -706,11 +731,76 @@ export default {
     handleDrag() {
       this.$refs.select.blur()
     },
-    editDataDialog() {
+    modifyDataDialog() {
       this.dialogVisible = true
     },
-    handleClose() {
+    getTableData() {
+      GetTableData().then(res => {
+        if (res.code === 20000) {
+          const data = res.table_data[0]
+          for (const key in data) {
+            this.model[key] = data[key]
+            this.modelOriginal[key] = data[key]
+          }
+          // 将包装放假的字符串改为数组（为了能够在时间选择器组件上正确显示）
+          this.model.pack_holiday_interval_str = this.model.pack_holiday_interval_str.split(',')
+          this.modelOriginal.pack_holiday_interval_str = this.modelOriginal.pack_holiday_interval_str.split(',')
+        }
+      })
+    },
+    // 表单dialog关闭前提示
+    handleFormClose() {
+      if (this.checkFormChange() && !this.isClick) {
+        this.$confirm('修改的数据未保存，请确定是否要关闭窗口？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.dialogVisible = false
+          // 如果不保存则将结果改回原来的样子
+          const data = this.modelOriginal
+          for (const key in data) {
+            this.model[key] = data[key]
+          }
+        }).catch(() => {
 
+        })
+      } else {
+        this.dialogVisible = false
+      }
+    },
+    // 检测表单数据是否发生变化，用于提示
+    checkFormChange() {
+      let isChange = false
+      for (const key in this.model) {
+        if (this.model[key] !== this.modelOriginal[key]) {
+          isChange = true
+          break
+        }
+      }
+      return isChange
+    },
+    // 修改数据
+    modifyData() {
+      this.isClick = true
+      const data = {
+        'form': this.model, // 修改后的表单
+        'form_original': this.modelOriginal, // 修改前的表单
+        'user_name': this.name // 用户名
+      }
+      ModifyData(data).then(res => {
+        if (res.code === 20000) {
+          this.$notify({
+            title: res.message,
+            message: '数据已修改',
+            type: 'success'
+          })
+          // setTimeout(() => {
+          //   this.dialogVisible = false // 1秒后自动关闭窗口
+          // }, 1000)
+          this.getTableData() // 刷新数据
+        }
+      })
     }
   }
 }
