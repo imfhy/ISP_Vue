@@ -21,6 +21,24 @@ const dayconfigRouter = {
         title: '维护时间表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'packholiday',
+      component: () => import('@/views/dayconfig/PackHoliday'),
+      name: 'PackHoliday',
+      meta: {
+        title: '包装线放假表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'programdata',
+      component: () => import('@/views/dayconfig/ProgramData'),
+      name: 'ProgramData',
+      meta: {
+        title: '程序表',
+        roles: ['admin']
+      }
     }
   ]
 }

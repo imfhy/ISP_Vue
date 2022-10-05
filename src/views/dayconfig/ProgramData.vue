@@ -55,36 +55,20 @@
             width="55"
           />
           <el-table-column
-            prop="line_name"
-            label="维护线体"
-            width="110"
+            prop="pack_line"
+            label="包装线"
             sortable
           />
           <el-table-column
-            prop="start_time"
-            label="开始时间"
+            prop="holiday_begin"
+            label="放假开始时间"
             sortable
           />
           <el-table-column
-            prop="end_time"
-            label="结束时间"
+            prop="holiday_end"
+            label="放假结束时间"
             sortable
           />
-          <el-table-column
-            prop="lock_time"
-            label="锁定时间节点"
-            sortable
-          />
-          <el-table-column
-            prop="flag"
-            label="手动修改锁定时间"
-            width="200"
-          >
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
-              <el-tag v-else-if="scope.row.flag === false" size="small" type="danger">关闭</el-tag>
-            </template>
-          </el-table-column>
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -127,54 +111,18 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.line_name" prop="line_name" label="维护线体">
-              <el-select v-model="model.line_name" placeholder="请选择" :style="{width: '100%'}">
-                <el-option v-for="(item) in line_name_data" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
-              </el-select>
+            <el-form-item :rules="rules.pack_line" prop="pack_line" label="包装线">
+              <el-input v-model="model.pack_line" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="放假开始时间">
+              <el-date-picker v-model="model.holiday_begin" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.flag" prop="flag" label="手动修改锁定时间">
-              <el-switch v-model="model.flag" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
-              <el-date-picker v-model="model.lock_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-              <el-input v-model="model.CREATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-              <el-input v-model="model.CREATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-              <el-input v-model="model.UPDATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-              <el-input v-model="model.UPDATED_TIME" disabled />
+            <el-form-item :rules="rules.holiday_end" prop="holiday_end" label="放假结束时间">
+              <el-date-picker v-model="model.holiday_end" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -217,26 +165,16 @@
         border
       >
         <el-table-column
-          prop="line_name"
-          label="维护线体"
-          width="110"
+          prop="pack_line"
+          label="包装线"
         />
         <el-table-column
-          prop="start_time"
-          label="开始时间"
+          prop="holiday_begin"
+          label="放假开始时间"
         />
         <el-table-column
-          prop="end_time"
-          label="结束时间"
-        />
-        <el-table-column
-          prop="lock_time"
-          label="锁定时间"
-        />
-        <el-table-column
-          prop="flag"
-          label="手动修改锁定时间"
-          width="200"
+          prop="holiday_end"
+          label="放假结束时间"
         />
       </el-table>
       <el-row>
@@ -253,7 +191,7 @@
               name="file"
               class="upload-demo"
               accept=".xlsx"
-              action="http://localhost:9527/sqyapi/config/blocktimedata/import_data/"
+              action="http://localhost:9527/sqyapi/config/packholiday/import_data/"
               :on-change="handleChange"
               :auto-upload="false"
               :show-file-list="true"
@@ -299,7 +237,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/BlockTimeData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProgramData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -315,17 +253,15 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          line_name: 'SM01',
-          start_time: '	2022-10-01 08:00:00',
-          end_time: '2022-10-05 08:00:00',
-          lock_time: '2022-09-28 11:00:00',
-          flag: 'FALSE'
+          id: '',
+          pack_line: 'CL01',
+          holiday_begin: '2022-10-01',
+          holiday_end: '2022-10-02'
         }, {
-          line_name: '(必填)',
-          start_time: '(必填)',
-          end_time: '(必填)',
-          lock_time: '(选填)',
-          flag: '(选填)  FALSE为关闭/TRUE为开启'
+          id: '',
+          pack_line: '(必填)',
+          holiday_begin: '(必填)',
+          holiday_end: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -347,51 +283,38 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        pack_line: '',
+        holiday_begin: '',
+        holiday_end: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        pack_line: '',
+        holiday_begin: '',
+        holiday_end: ''
       },
       rules: {
-        line_name: [{
+        pack_line: [{
           required: true,
-          message: '维护线体不能为空',
+          message: '包装线不能为空',
+          trigger: 'blur'
+        }],
+        holiday_begin: [{
+          required: true,
+          message: '放假开始时间不能为空',
+          trigger: 'change'
+        }, {
+          validator: function(e, t, i) {
+            return i()
+          },
           trigger: 'change'
         }],
-        start_time: [{
+        holiday_end: [{
           required: true,
-          message: '开始时间不能为空',
+          message: '放假结束时间不能为空',
           trigger: 'change'
-        }],
-        end_time: [{
-          required: true,
-          message: '结束时间不能为空',
-          trigger: 'change'
-        }],
-        flag: [],
-        lock_time: [],
-        CREATED_BY: [],
-        CREATED_TIME: [],
-        UPDATED_BY: [],
-        UPDATED_TIME: []
+        }]
       },
       line_name_data: LineOptions, // 维护线别
       // 分页相关
@@ -538,15 +461,9 @@ export default {
       this.scopeRow = row
       // 显示表单数据
       this.model.id = row.id
-      this.model.line_name = row.line_name
-      this.model.start_time = row.start_time
-      this.model.end_time = row.end_time
-      this.model.flag = row.flag
-      this.model.lock_time = row.lock_time
-      this.model.CREATED_BY = row.CREATED_BY
-      this.model.CREATED_TIME = row.CREATED_TIME
-      this.model.UPDATED_BY = row.UPDATED_BY
-      this.model.UPDATED_TIME = row.UPDATED_TIME
+      this.model.pack_line = row.pack_line
+      this.model.holiday_begin = row.holiday_begin
+      this.model.holiday_end = row.holiday_end
       // 保存原来的表单数据，用于对比变化
       for (const key in this.modelOriginal) {
         this.modelOriginal[key] = this.model[key]
@@ -613,27 +530,15 @@ export default {
       this.dataDialogVisible = false
       this.model = {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        pack_line: '',
+        holiday_begin: '',
+        holiday_end: ''
       }
       this.modelOriginal = {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        pack_line: '',
+        holiday_begin: '',
+        holiday_end: ''
       }
     },
     // 表格中删除数据
@@ -646,7 +551,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['line_name'] = row.line_name
+        data['pack_line'] = row.pack_line
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -768,7 +673,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/BlockTimeData.scss';
+  @import '../../assets/css/dayconfig/ProgramData.scss';
 </style>
 <style>
 .btnDanger{

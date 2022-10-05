@@ -788,17 +788,23 @@ export default {
         'form_original': this.modelOriginal, // 修改前的表单
         'user_name': this.name // 用户名
       }
-      ModifyData(data).then(res => {
-        if (res.code === 20000) {
-          this.$notify({
-            title: res.message,
-            message: '数据已修改',
-            type: 'success'
+      this.$refs['$form'].validate((valid) => {
+        if (valid) {
+          ModifyData(data).then(res => {
+            if (res.code === 20000) {
+              this.$notify({
+                title: res.message,
+                message: '数据已修改',
+                type: 'success'
+              })
+              this.getTableData() // 刷新数据
+            }
           })
-          // setTimeout(() => {
-          //   this.dialogVisible = false // 1秒后自动关闭窗口
-          // }, 1000)
-          this.getTableData() // 刷新数据
+        } else {
+          this.$message({
+            type: 'error',
+            message: '提交失败，请按照格式要求填写数据！'
+          })
         }
       })
     }
