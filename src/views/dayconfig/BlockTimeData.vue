@@ -208,7 +208,7 @@
       @dragDialog="handleDrag"
     >
       <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持一致）：
+        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
       </p>
       <el-table
         :data="tableDataExample"
@@ -308,8 +308,7 @@ export default {
       loading: true, // 表格加载动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.7)',
-        target: document.querySelector('#main-box')
+        background: 'rgba(0, 0, 0, 0.7)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
@@ -537,16 +536,10 @@ export default {
       this.scopeIndex = index
       this.scopeRow = row
       // 显示表单数据
-      this.model.id = row.id
-      this.model.line_name = row.line_name
-      this.model.start_time = row.start_time
-      this.model.end_time = row.end_time
-      this.model.flag = row.flag
-      this.model.lock_time = row.lock_time
-      this.model.CREATED_BY = row.CREATED_BY
-      this.model.CREATED_TIME = row.CREATED_TIME
-      this.model.UPDATED_BY = row.UPDATED_BY
-      this.model.UPDATED_TIME = row.UPDATED_TIME
+      // 显示表单数据
+      for (const key in this.model) {
+        this.model[key] = row[key]
+      }
       // 保存原来的表单数据，用于对比变化
       for (const key in this.modelOriginal) {
         this.modelOriginal[key] = this.model[key]
@@ -557,6 +550,13 @@ export default {
     },
     // 编辑数据发送到后端保存
     modifyData() {
+      if (!this.checkFormChange()) {
+        this.$message({
+          type: 'info',
+          message: '数据未修改，无需提交'
+        })
+        return
+      }
       this.isClick = true
       const data = this.model
       data['user_name'] = this.name
@@ -772,12 +772,12 @@ export default {
 </style>
 <style>
 .btnDanger{
-  background-color: #a52a2a !important;
-  border-color: #a52a2a !important;
+  background-color: #F56C6C !important;
+  border-color: #F56C6C !important;
 }
 .btnDanger:hover{
-  background-color: #c24848 !important;
-  border-color: #c24848 !important;
+  background-color: #f04747 !important;
+  border-color: #f04747 !important;
 }
 .el-pagination {
     text-align: center;

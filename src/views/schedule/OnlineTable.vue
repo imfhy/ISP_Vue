@@ -938,11 +938,11 @@ export default {
     padding: 0px;
 }
 .btnDanger{
-  background-color: #a52a2a !important;
-  border-color: #a52a2a !important;
+  background-color: #F56C6C !important;
+  border-color: #F56C6C !important;
 }
 .btnDanger:hover{
-  background-color: #c24848 !important;
-  border-color: #c24848 !important;
+  background-color: #f04747 !important;
+  border-color: #f04747 !important;
 }
 </style>

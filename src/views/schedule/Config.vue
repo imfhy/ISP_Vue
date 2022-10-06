@@ -4,6 +4,15 @@
       <div>
         <el-descriptions class="margin-top" title="参数配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
+            <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
+              <el-button
+                size="small"
+                icon="el-icon-refresh"
+                @click="refreshTableData"
+              />
+            </el-tooltip>
+          </template>
+          <template slot="extra">
             <el-button type="primary" size="small" @click="modifyDataDialog">
               <i class="el-icon-edit" /> 修改
             </el-button>
@@ -27,7 +36,7 @@
           </el-descriptions-item>
           <el-descriptions-item label="放假日期" :span="2">
             <el-tag
-              v-for="(val,key) in modelOriginal.pack_holiday_interval_str"
+              v-for="(val,key) in pack_holiday_interval"
               :key="key"
               style="margin-right: 5px;"
             >
@@ -136,29 +145,29 @@
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.overdue_weight" prop="overdue_weight" label="overdue权重">
-                <el-input v-model="model.overdue_weight" placeholder="请输入" clearable />
+                <el-input-number v-model="model.overdue_weight" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.idle_weight" prop="idle_weight" label="idle权重">
-                <el-input v-model="model.idle_weight" placeholder="请输入" clearable />
+                <el-input-number v-model="model.idle_weight" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.line_balance_weight" prop="line_balance_weight" label="line balance权重">
-                <el-input v-model="model.line_balance_weight" placeholder="请输入" clearable />
+                <el-input-number v-model="model.line_balance_weight" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.big_line_weight" prop="big_line_weight" label="大工单线权重">
-                <el-input v-model="model.big_line_weight" placeholder="请输入" clearable />
+                <el-input-number v-model="model.big_line_weight" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.lock_time_idle_weight" prop="lock_time_idle_weight" label="锁定时间节点内的idle权重">
-                <el-input v-model="model.lock_time_idle_weight" placeholder="请输入" clearable />
+                <el-input-number v-model="model.lock_time_idle_weight" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -173,7 +182,7 @@
                 <el-switch v-model="model.packline_holiday_flag" />
               </el-form-item>
             </el-col>
-            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.pack_holiday_interval_str" prop="pack_holiday_interval_str" label="全部包装放假日期">
                 <!-- <el-date-picker v-model="model.pack_holiday_interval_str" type="daterange" start-placeholder="请选择" end-placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" /> -->
                 <el-date-picker
@@ -190,17 +199,17 @@
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.default_unknown_require_day" prop="default_unknown_require_day" label="默认无法识别需求日期">
-                <el-input v-model="model.default_unknown_require_day" placeholder="请输入" clearable />
+                <el-input-number v-model="model.default_unknown_require_day" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.threshold_duedate" prop="threshold_duedate" label="n天需求日期参数">
-                <el-input v-model="model.threshold_duedate" placeholder="请输入" clearable />
+                <el-input-number v-model="model.threshold_duedate" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.threshold_release" prop="threshold_release" label="n天物料到达时间参数">
-                <el-input v-model="model.threshold_release" placeholder="请输入" clearable />
+                <el-input-number v-model="model.threshold_release" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -212,7 +221,7 @@
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.large_small_punctuated" prop="large_small_punctuated" label="大小穿插时间">
-                <el-input v-model="model.large_small_punctuated" placeholder="请输入" clearable />
+                <el-input-number v-model="model.large_small_punctuated" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
@@ -224,29 +233,29 @@
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm13_buttom_new_machine_predict" prop="sm13_buttom_new_machine_predict" label="SM13下板新机种每班产能点数，单位为万">
-                <el-input v-model="model.sm13_buttom_new_machine_predict" placeholder="请输入" clearable />
+                <el-input-number v-model="model.sm13_buttom_new_machine_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm21_top_led_threshold" prop="sm21_top_led_threshold" label="SM21上板产能点数预测界限，单位为点">
-                <el-input v-model="model.sm21_top_led_threshold" placeholder="请输入" clearable />
+                <el-input-number v-model="model.sm21_top_led_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm21_top_le_predict" prop="sm21_top_le_predict" label="SM21上板小于界限产能点数，单位为万">
-                <el-input v-model="model.sm21_top_le_predict" placeholder="请输入" clearable />
+                <el-input-number v-model="model.sm21_top_le_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm21_top_gt_predict" prop="sm21_top_gt_predict" label="SM21上板大于界限产能点数，单位为万">
-                <el-input v-model="model.sm21_top_gt_predict" placeholder="请输入" clearable />
+                <el-input-number v-model="model.sm21_top_gt_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.led_extra_setup_time" prop="led_extra_setup_time" label="LED额外切换时间">
-                <el-input v-model="model.led_extra_setup_time" placeholder="请输入" clearable />
+                <el-input-number v-model="model.led_extra_setup_time" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -331,21 +340,21 @@
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.input_col" prop="input_col" label="输入的列">
-                <el-input v-model="model.input_col" placeholder="请输入" :rows="2" type="textarea" clearable />
+                <el-input v-model="model.input_col" placeholder="请输入" :rows="3" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.output_col" prop="output_col" label="导出的列">
-                <el-input v-model="model.output_col" placeholder="请输入" :rows="2" type="textarea" clearable />
+                <el-input v-model="model.output_col" placeholder="请输入" :rows="3" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.output_line_order" prop="output_line_order" label="导出的线体顺序">
-                <el-input v-model="model.output_line_order" placeholder="请输入" :rows="2" type="textarea" clearable />
+                <el-input v-model="model.output_line_order" placeholder="请输入" :rows="3" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -370,6 +379,7 @@ export default {
       dialogVisible: false,
       isClick: false, // 是否点击了确认修改
       forms: ['$form'],
+      pack_holiday_interval: '',
       modelOriginal: {
         schedule_date: '',
         schedule_time: '',
@@ -468,45 +478,25 @@ export default {
           required: true,
           message: 'overdue权重不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'overdue权重格式不正确',
-          trigger: 'blur'
         }],
         idle_weight: [{
           required: true,
           message: 'idle权重不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'idle权重格式不正确',
           trigger: 'blur'
         }],
         line_balance_weight: [{
           required: true,
           message: 'line balance权重不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'line balance权重格式不正确',
-          trigger: 'blur'
         }],
         big_line_weight: [{
           required: true,
           message: '大工单线权重不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '大工单线权重格式不正确',
-          trigger: 'blur'
         }],
         lock_time_idle_weight: [{
           required: true,
           message: '锁定时间节点内的idle权重不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '锁定时间节点内的idle权重格式不正确',
           trigger: 'blur'
         }],
         pack_holiday_flag: [{
@@ -524,36 +514,20 @@ export default {
           required: true,
           message: 'LED额外切换时间不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'LED额外切换时间格式不正确',
-          trigger: 'blur'
         }],
         default_unknown_require_day: [{
           required: true,
           message: '默认无法识别需求日期不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'integer',
-          message: '默认无法识别需求日期格式不正确',
           trigger: 'blur'
         }],
         threshold_duedate: [{
           required: true,
           message: 'n天需求日期参数不能为空',
           trigger: 'blur'
-        }, {
-          type: 'integer',
-          message: 'n天需求日期参数格式不正确',
-          trigger: 'blur'
         }],
         threshold_release: [{
           required: true,
           message: 'n天物料到达时间参数不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'n天物料到达时间参数格式不正确',
           trigger: 'blur'
         }],
         unschedule_state_str: [{
@@ -568,10 +542,6 @@ export default {
         large_small_punctuated: [{
           required: true,
           message: '大小穿插时间不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '大小穿插时间格式不正确',
           trigger: 'blur'
         }],
         repair_mode: [{
@@ -620,38 +590,22 @@ export default {
         }],
         sm13_buttom_new_machine_predict: [{
           required: true,
-          message: 'SM13下板新机种每班产能点数，单位为万不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'SM13下板新机种每班产能点数，单位为万格式不正确',
+          message: 'SM13下板新机种每班产能点数不能为空',
           trigger: 'blur'
         }],
         sm21_top_led_threshold: [{
           required: true,
-          message: 'SM21上板产能点数预测界限，单位为点不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'SM21上板产能点数预测界限，单位为点格式不正确',
+          message: 'SM21上板产能点数预测界限不能为空',
           trigger: 'blur'
         }],
         sm21_top_le_predict: [{
           required: true,
-          message: 'SM21上板小于界限产能点数，单位为万不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'SM21上板小于界限产能点数，单位为万格式不正确',
+          message: 'SM21上板小于界限产能点数不能为空',
           trigger: 'blur'
         }],
         sm21_top_gt_predict: [{
           required: true,
-          message: 'SM21上板大于界限产能点数，单位为万不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: 'SM21上板大于界限产能点数，单位为万格式不正确',
+          message: 'SM21上板大于界限产能点数不能为空',
           trigger: 'blur'
         }],
         need_preprocess: [{
@@ -732,6 +686,7 @@ export default {
       this.$refs.select.blur()
     },
     modifyDataDialog() {
+      this.isClick = false
       this.dialogVisible = true
     },
     getTableData() {
@@ -743,9 +698,16 @@ export default {
             this.modelOriginal[key] = data[key]
           }
           // 将包装放假的字符串改为数组（为了能够在时间选择器组件上正确显示）
-          this.model.pack_holiday_interval_str = this.model.pack_holiday_interval_str.split(',')
-          this.modelOriginal.pack_holiday_interval_str = this.modelOriginal.pack_holiday_interval_str.split(',')
+          this.pack_holiday_interval = this.model.pack_holiday_interval_str.split(',')
         }
+      })
+    },
+    // 刷新数据
+    refreshTableData() {
+      this.getTableData()
+      this.$message({
+        type: 'success',
+        message: '刷新成功'
       })
     },
     // 表单dialog关闭前提示
@@ -773,6 +735,9 @@ export default {
     checkFormChange() {
       let isChange = false
       for (const key in this.model) {
+        if (key === 'pack') {
+          continue
+        }
         if (this.model[key] !== this.modelOriginal[key]) {
           isChange = true
           break
@@ -782,6 +747,13 @@ export default {
     },
     // 修改数据
     modifyData() {
+      if (!this.checkFormChange()) {
+        this.$message({
+          type: 'info',
+          message: '数据未修改，无需提交'
+        })
+        return
+      }
       this.isClick = true
       const data = {
         'form': this.model, // 修改后的表单

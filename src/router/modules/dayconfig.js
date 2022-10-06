@@ -39,6 +39,15 @@ const dayconfigRouter = {
         title: '程序表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'productionreportdata',
+      component: () => import('@/views/dayconfig/ProductionReportData'),
+      name: 'ProductionReportData',
+      meta: {
+        title: '生产报表',
+        roles: ['admin']
+      }
     }
   ]
 }
