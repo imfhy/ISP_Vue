@@ -46,65 +46,18 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-          max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="time"
-            label="制作时间"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="line"
-            label="线体"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="process"
-            label="制程"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="board"
-            label="板号"
-            sortable
-          />
-          <el-table-column
-            prop="SMT_machine_name"
-            label="SMT机种名"
-            sortable
-          />
-          <el-table-column
-            prop="size"
-            label="长宽厚"
-            sortable
-          />
-          <el-table-column
-            prop="connecting_plates"
-            label="联片数"
-            width="100"
-            sortable
-          />
-          <el-table-column
-            prop="single_points"
-            label="单板点数"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="program_CT"
-            label="程序CT"
-            width="120"
-            sortable
-          />
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="line" label="线别" width="120" sortable />
+          <el-table-column prop="package_line" label="包装线" width="120" sortable />
+          <el-table-column prop="machine_name" label="机种名" sortable />
+          <el-table-column prop="board" label="板号" sortable />
+          <el-table-column prop="process" label="制程面" width="120" sortable />
+          <el-table-column prop="date" label="时间" width="120" sortable />
+          <el-table-column prop="job_quantity" label="工单量" width="120" sortable />
+          <el-table-column prop="total_points" label="总点数" width="160" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -148,80 +101,179 @@
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.time" prop="time" label="制作时间">
-                <el-date-picker v-model="model.time" placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-form-item :rules="rules.date" prop="date" label="日期">
+                <el-date-picker v-model="model.date" placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.bind_state" prop="bind_state" label="合并绑定状态">
-                <el-input v-model="model.bind_state" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.line" prop="line" label="线别">
+                <el-input v-model="model.line" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.bind_detail" prop="bind_detail" label="绑定明细">
-                <el-input v-model="model.bind_detail" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.package_line" prop="package_line" label="包装线">
+                <el-input v-model="model.package_line" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line" prop="line" label="线体">
-                <el-input v-model="model.line" placeholder="请输入" clearable />
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.product_type" prop="product_type" label="产品类型">
+                <el-input v-model="model.product_type" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process" prop="process" label="制程">
-                <el-input v-model="model.process" placeholder="请输入" clearable />
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
+                <el-input v-model="model.machine_name" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.board" prop="board" label="板号">
                 <el-input v-model="model.board" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-                <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.single_hand_insert_points" prop="single_hand_insert_points" label="单板手插点数">
+                <el-input-number v-model="model.single_hand_insert_points" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.total_points" prop="total_points" label="总点数">
+                <el-input-number v-model="model.total_points" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process" prop="process" label="制程面">
+                <el-input v-model="model.process" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.job_ix" prop="job_ix" label="工单号">
+                <el-input v-model="model.job_ix" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.job_quantity" prop="job_quantity" label="工单量">
+                <el-input-number v-model="model.job_quantity" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CT" prop="CT" label="CT">
+                <el-input-number v-model="model.CT" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.completed_quantity" prop="completed_quantity" label="产出片数">
+                <el-input-number v-model="model.completed_quantity" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
+                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
+                <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.production_time" prop="production_time" label="生产时间">
+                <el-input-number v-model="model.production_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.first_plate_time" prop="first_plate_time" label="首片时间">
+                <el-input-number v-model="model.first_plate_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.setup_time" prop="setup_time" label="切换时间">
+                <el-input-number v-model="model.setup_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.wait_material_time" prop="wait_material_time" label="物料等待时间">
+                <el-input-number v-model="model.wait_material_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.small_stop_time" prop="small_stop_time" label="小停止时间">
+                <el-input-number v-model="model.small_stop_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.downtime" prop="downtime" label="设备故障时间">
+                <el-input-number v-model="model.downtime" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_adjustment_time" prop="program_adjustment_time" label="程序调整时间">
+                <el-input-number v-model="model.program_adjustment_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process_adjustment_time" prop="process_adjustment_time" label="工艺调整时间">
+                <el-input-number v-model="model.process_adjustment_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.power_failed_time" prop="power_failed_time" label="停气停电">
+                <el-input-number v-model="model.power_failed_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.clear_mantissa_time" prop="clear_mantissa_time" label="清尾数">
+                <el-input-number v-model="model.clear_mantissa_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.wait_spares_time" prop="wait_spares_time" label="待备件时间">
+                <el-input-number v-model="model.wait_spares_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.substitute_material_time" prop="substitute_material_time" label="代用料时间">
+                <el-input-number v-model="model.substitute_material_time" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.size" prop="size" label="长宽厚">
-                <el-input v-model="model.size" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.factory" prop="factory" label="工厂别">
+                <el-input v-model="model.factory" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
-                <el-input v-model="model.connecting_plates" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.package_product_type" prop="package_product_type" label="包装产品类别">
+                <el-input v-model="model.package_product_type" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
-                <el-input v-model="model.single_points" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.SMT_product_type" prop="SMT_product_type" label="SMT产品类型">
+                <el-input v-model="model.SMT_product_type" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
-                <el-input v-model="model.program_CT" placeholder="请输入" clearable />
+              <el-form-item :rules="rules.setup_type" prop="setup_type" label="切换类型">
+                <el-input v-model="model.setup_type" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item :rules="rules.unknown1" prop="unknown1" label="未知1">
-            <el-input v-model="model.unknown1" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown2" prop="unknown2" label="未知2">
-            <el-input v-model="model.unknown2" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown3" prop="unknown3" label="未知3">
-            <el-input v-model="model.unknown3" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown4" prop="unknown4" label="未知4">
-            <el-input v-model="model.unknown4" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown5" prop="unknown5" label="未知5">
-            <el-input v-model="model.unknown5" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
@@ -283,80 +335,36 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column
-          prop="time"
-          label="制作时间"
-          width="120"
-        />
-        <el-table-column
-          prop="SMT_machine_name"
-          label="SMT机种名"
-          width="130"
-        />
-        <el-table-column
-          prop="line"
-          label="线体"
-          width="60"
-        />
-        <el-table-column
-          prop="board"
-          label="板号"
-          width="180"
-        />
-        <el-table-column
-          prop="size"
-          label="长宽厚"
-          width="120"
-        />
-        <el-table-column
-          prop="process"
-          label="制程"
-          width="60"
-        />
-        <el-table-column
-          prop="connecting_plates"
-          label="联片数"
-          width="80"
-        />
-        <el-table-column
-          prop="single_points"
-          label="单板点数"
-          width="100"
-        />
-        <el-table-column
-          prop="program_CT"
-          label="程序CT"
-          width="100"
-        />
-        <el-table-column
-          prop="bind_state"
-          label="合并绑定状态"
-          width="120"
-        />
-        <el-table-column
-          prop="bind_detail"
-          label="绑定明细"
-        />
-        <el-table-column
-          prop="unknown1"
-          label="未知1"
-        />
-        <el-table-column
-          prop="unknown2"
-          label="未知2"
-        />
-        <el-table-column
-          prop="unknown3"
-          label="未知3"
-        />
-        <el-table-column
-          prop="unknown4"
-          label="未知4"
-        />
-        <el-table-column
-          prop="unknown5"
-          label="未知5"
-        />
+        <el-table-column prop="date" label="日期" width="110" />
+        <el-table-column prop="line" label="线别" width="110" />
+        <el-table-column prop="package_line" label="包装线" width="110" />
+        <el-table-column prop="product_type" label="产品类型" width="110" />
+        <el-table-column prop="machine_name" label="机种名" width="160" />
+        <el-table-column prop="board" label="板号" width="180" />
+        <el-table-column prop="job_quantity" label="工单量" width="110" />
+        <el-table-column prop="completed_quantity" label="产出片数" width="110" />
+        <el-table-column prop="connecting_plates" label="联片数" width="110" />
+        <el-table-column prop="CT" label="CT" width="110" />
+        <el-table-column prop="date" label="日期" width="110" />
+        <el-table-column prop="production_time" label="生产时间" width="110" />
+        <el-table-column prop="first_plate_time" label="首片时间" width="110" />
+        <el-table-column prop="setup_time" label="切换时间" width="110" />
+        <el-table-column prop="wait_material_time" label="物料等待时间" width="110" />
+        <el-table-column prop="small_stop_time" label="小停止时间" width="110" />
+        <el-table-column prop="downtime" label="设备故障时间" width="110" />
+        <el-table-column prop="program_adjustment_time" label="程序调整时间" width="110" />
+        <el-table-column prop="process_adjustment_time" label="工艺调整时间" width="110" />
+        <el-table-column prop="power_failed_time" label="停气停电" width="110" />
+        <el-table-column prop="clear_mantissa_time" label="清尾数" width="110" />
+        <el-table-column prop="wait_spares_time" label="待备件时间" width="110" />
+        <el-table-column prop="substitute_material_time" label="代用料时间" width="110" />
+        <el-table-column prop="total_points" label="总点数" width="110" />
+        <el-table-column prop="process" label="制程面" width="110" />
+        <el-table-column prop="factory" label="工厂别" width="110" />
+        <el-table-column prop="package_product_type" label="包装产品类别" width="110" />
+        <el-table-column prop="SMT_product_type" label="SMT产品类型" width="110" />
+        <el-table-column prop="setup_type" label="切换类型" width="110" />
+        <el-table-column prop="single_hand_insert_points" label="单板手插点数" width="110" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -433,39 +441,70 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          time: '2022-09-30',
-          bind_state: '绑定',
-          bind_detail: '',
-          line: 'SM07',
-          process: 'B',
-          board: '715GB080M0A001005K',
-          SMT_machine_name: 'SMTCPALN3QH',
-          size: '324.5*315*1.6',
-          connecting_plates: '1.0',
-          single_points: '594.0',
-          program_CT: '36.0',
-          unknown1: '',
-          unknown2: '',
-          unknown3: '',
-          unknown4: '',
-          unknown5: ''
+          date: '2022-09-26',
+          line: 'SP08B',
+          package_line: 'CL02',
+          single_hand_insert_points: 0,
+          total_points: 0,
+          process: '',
+          product_type: 'MNTPWPC',
+          machine_name: 'PLKW261XQW1SMT',
+          board: '715GA790P02004003R',
+          job_ix: '6022099',
+          job_quantity: 88,
+          CT: 48,
+          completed_quantity: 88,
+          connecting_plates: 1,
+          single_points: 355,
+          production_time: 163,
+          first_plate_time: 11,
+          setup_time: 10,
+          wait_material_time: 0,
+          small_stop_time: 0,
+          downtime: 0,
+          program_adjustment_time: 0,
+          process_adjustment_time: 0,
+          power_failed_time: 0,
+          clear_mantissa_time: 0,
+          wait_spares_time: 0,
+          substitute_material_time: 0,
+          factory: '10',
+          package_product_type: '电源板',
+          SMT_product_type: 'PWPC',
+          setup_type: '整单换料'
         }, {
           time: '(必填)',
+          date: '(必填)',
           line: '(必填)',
+          package_line: '(必填)',
+          single_hand_insert_points: '(选填)',
+          total_points: '(必填)',
           process: '(必填)',
+          product_type: '(必填)',
+          machine_name: '(必填)',
           board: '(必填)',
-          SMT_machine_name: '(必填)',
-          size: '(必填)',
+          job_ix: '(必填)',
+          job_quantity: '(必填)',
+          CT: '(必填)',
+          completed_quantity: '(必填)',
           connecting_plates: '(必填)',
           single_points: '(必填)',
-          program_CT: '(必填)',
-          bind_state: '(选填)',
-          bind_detail: '(选填)',
-          unknown1: '(选填)',
-          unknown2: '(选填)',
-          unknown3: '(选填)',
-          unknown4: '(选填)',
-          unknown5: '(选填)'
+          production_time: '(必填)',
+          first_plate_time: '(必填)',
+          setup_time: '(必填)',
+          wait_material_time: '(必填)',
+          small_stop_time: '(必填)',
+          downtime: '(必填)',
+          program_adjustment_time: '(必填)',
+          process_adjustment_time: '(必填)',
+          power_failed_time: '(必填)',
+          clear_mantissa_time: '(必填)',
+          wait_spares_time: '(必填)',
+          substitute_material_time: '(必填)',
+          factory: '(必填)',
+          package_product_type: '(必填)',
+          SMT_product_type: '(必填)',
+          setup_type: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -487,22 +526,37 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        time: '',
-        bind_state: '',
-        bind_detail: '',
+        date: '',
         line: '',
+        package_line: '',
+        single_hand_insert_points: 0,
+        total_points: 0,
         process: '',
+        product_type: '',
+        machine_name: '',
         board: '',
-        SMT_machine_name: '',
-        size: '',
-        connecting_plates: '',
-        single_points: '',
-        program_CT: '',
-        unknown1: '',
-        unknown2: '',
-        unknown3: '',
-        unknown4: '',
-        unknown5: '',
+        job_ix: '',
+        job_quantity: 0,
+        CT: 0,
+        completed_quantity: 0,
+        connecting_plates: 0,
+        single_points: 0,
+        production_time: 0,
+        first_plate_time: 0,
+        setup_time: 0,
+        wait_material_time: 0,
+        small_stop_time: 0,
+        downtime: 0,
+        program_adjustment_time: 0,
+        process_adjustment_time: 0,
+        power_failed_time: 0,
+        clear_mantissa_time: 0,
+        wait_spares_time: 0,
+        substitute_material_time: 0,
+        factory: '',
+        package_product_type: '',
+        SMT_product_type: '',
+        setup_type: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -511,43 +565,77 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        time: '',
-        bind_state: '',
-        bind_detail: '',
+        date: '',
         line: '',
+        package_line: '',
+        single_hand_insert_points: 0,
+        total_points: 0,
         process: '',
+        product_type: '',
+        machine_name: '',
         board: '',
-        SMT_machine_name: '',
-        size: '',
-        connecting_plates: '',
-        single_points: '',
-        program_CT: '',
-        unknown1: '',
-        unknown2: '',
-        unknown3: '',
-        unknown4: '',
-        unknown5: '',
+        job_ix: '',
+        job_quantity: 0,
+        CT: 0,
+        completed_quantity: 0,
+        connecting_plates: 0,
+        single_points: 0,
+        production_time: 0,
+        first_plate_time: 0,
+        setup_time: 0,
+        wait_material_time: 0,
+        small_stop_time: 0,
+        downtime: 0,
+        program_adjustment_time: 0,
+        process_adjustment_time: 0,
+        power_failed_time: 0,
+        clear_mantissa_time: 0,
+        wait_spares_time: 0,
+        substitute_material_time: 0,
+        factory: '',
+        package_product_type: '',
+        SMT_product_type: '',
+        setup_type: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
         UPDATED_TIME: ''
       },
       rules: {
-        time: [{
+        date: [{
           required: true,
-          message: '制作时间不能为空',
-          trigger: 'change'
+          message: '日期不能为空',
+          trigger: 'blur'
         }],
-        bind_state: [],
-        bind_detail: [],
         line: [{
           required: true,
-          message: '线体不能为空',
+          message: '线别不能为空',
+          trigger: 'blur'
+        }],
+        package_line: [{
+          required: true,
+          message: '包装线不能为空',
+          trigger: 'blur'
+        }],
+        single_hand_insert_points: [],
+        total_points: [{
+          required: true,
+          message: '总点数不能为空',
           trigger: 'blur'
         }],
         process: [{
           required: true,
-          message: '制程不能为空',
+          message: '制程面不能为空',
+          trigger: 'blur'
+        }],
+        product_type: [{
+          required: true,
+          message: '产品类型不能为空',
+          trigger: 'blur'
+        }],
+        machine_name: [{
+          required: true,
+          message: '机种名不能为空',
           trigger: 'blur'
         }],
         board: [{
@@ -555,54 +643,118 @@ export default {
           message: '板号不能为空',
           trigger: 'blur'
         }],
-        SMT_machine_name: [{
+        job_ix: [{
           required: true,
-          message: 'SMT机种名不能为空',
+          message: '工单号不能为空',
           trigger: 'blur'
         }],
-        size: [{
+        job_quantity: [{
           required: true,
-          message: '长宽厚不能为空',
+          message: '工单量不能为空',
+          trigger: 'blur'
+        }],
+        CT: [{
+          required: true,
+          message: 'CT不能为空',
+          trigger: 'blur'
+        }],
+        completed_quantity: [{
+          required: true,
+          message: '产出片数不能为空',
           trigger: 'blur'
         }],
         connecting_plates: [{
           required: true,
           message: '联片数不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '联片数需为整数或小数',
-          trigger: 'blur'
         }],
         single_points: [{
           required: true,
           message: '单板点数不能为空',
           trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '单板点数需为整数或小数',
-          trigger: 'blur'
         }],
-        program_CT: [{
+        production_time: [{
           required: true,
-          message: '程序CT不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'float',
-          message: '程序CT需为整数或小数',
+          message: '生产时间不能为空',
           trigger: 'blur'
         }],
-        unknown1: [],
-        unknown2: [],
-        unknown3: [],
-        unknown4: [],
-        unknown5: []
+        first_plate_time: [{
+          required: true,
+          message: '首片时间不能为空',
+          trigger: 'blur'
+        }],
+        setup_time: [],
+        wait_material_time: [{
+          required: true,
+          message: '物料等待时间不能为空',
+          trigger: 'blur'
+        }],
+        small_stop_time: [{
+          required: true,
+          message: '小停止时间不能为空',
+          trigger: 'blur'
+        }],
+        downtime: [{
+          required: true,
+          message: '设备故障时间不能为空',
+          trigger: 'blur'
+        }],
+        program_adjustment_time: [{
+          required: true,
+          message: '程序调整时间不能为空',
+          trigger: 'blur'
+        }],
+        process_adjustment_time: [{
+          required: true,
+          message: '工艺调整时间不能为空',
+          trigger: 'blur'
+        }],
+        power_failed_time: [{
+          required: true,
+          message: '停气停电不能为空',
+          trigger: 'blur'
+        }],
+        clear_mantissa_time: [{
+          required: true,
+          message: '清尾数不能为空',
+          trigger: 'blur'
+        }],
+        wait_spares_time: [{
+          required: true,
+          message: '待备件时间不能为空',
+          trigger: 'blur'
+        }],
+        substitute_material_time: [{
+          required: true,
+          message: '代用料时间不能为空',
+          trigger: 'blur'
+        }],
+        factory: [{
+          required: true,
+          message: '工厂别不能为空',
+          trigger: 'blur'
+        }],
+        package_product_type: [{
+          required: true,
+          message: '包装产品类别不能为空',
+          trigger: 'blur'
+        }],
+        SMT_product_type: [{
+          required: true,
+          message: 'SMT产品类型不能为空',
+          trigger: 'blur'
+        }],
+        setup_type: [{
+          required: true,
+          message: '切换类型不能为空',
+          trigger: 'blur'
+        }]
       },
       line_name_data: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 20, // 每页多少条数据
+      pageSize: 30, // 每页多少条数据
       dataTableSelections: [] // 表格选中的数据
     }
   },
@@ -624,7 +776,7 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 8) {
+      if (rowIndex === 1 && columnIndex <= 28) {
         return 'color: #F56C6C;font-weight: bold;'
       } else if (rowIndex === 1 && columnIndex > 2) {
         return 'color: #E6A23C;font-weight: bold;'
@@ -789,7 +941,6 @@ export default {
     checkFormChange() {
       let isChange = false
       for (const key in this.model) {
-        console.log(this.model[key], this.modelOriginal[key])
         if (this.model[key] !== this.modelOriginal[key]) {
           isChange = true
           break
@@ -816,18 +967,17 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      this.model = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
+      for (const key in this.model) {
+        var isNum = /^[0-9]+.?[0-9]*/
+        if (isNum.test(this.model[key])) { // 数字要初始化为0
+          this.model[key] = 0
+          this.modelOriginal[key] = 0
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
-      this.modelOriginal = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
-      }
+      this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
@@ -840,8 +990,8 @@ export default {
         const data = {}
         data['id'] = row.id
         data['line'] = row.line
-        data['board'] = row.SMT_machine_name
-        data['process'] = row.process
+        data['board'] = row.board
+        data['date'] = row.date
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {

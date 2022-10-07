@@ -50,25 +50,10 @@
           stripe
           @selection-change="handleSelectionChange"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="pack_line"
-            label="包装线"
-            sortable
-          />
-          <el-table-column
-            prop="holiday_begin"
-            label="放假开始时间"
-            sortable
-          />
-          <el-table-column
-            prop="holiday_end"
-            label="放假结束时间"
-            sortable
-          />
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="pack_line" label="包装线" sortable />
+          <el-table-column prop="holiday_begin" label="放假开始时间" sortable />
+          <el-table-column prop="holiday_end" label="放假结束时间" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -164,18 +149,9 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column
-          prop="pack_line"
-          label="包装线"
-        />
-        <el-table-column
-          prop="holiday_begin"
-          label="放假开始时间"
-        />
-        <el-table-column
-          prop="holiday_end"
-          label="放假结束时间"
-        />
+        <el-table-column prop="pack_line" label="包装线" />
+        <el-table-column prop="holiday_begin" label="放假开始时间" />
+        <el-table-column prop="holiday_end" label="放假结束时间" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -300,17 +276,12 @@ export default {
         holiday_begin: [{
           required: true,
           message: '放假开始时间不能为空',
-          trigger: 'change'
-        }, {
-          validator: function(e, t, i) {
-            return i()
-          },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         holiday_end: [{
           required: true,
           message: '放假结束时间不能为空',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       line_name_data: LineOptions, // 维护线别
@@ -504,7 +475,6 @@ export default {
     checkFormChange() {
       let isChange = false
       for (const key in this.model) {
-        console.log(this.model[key], this.modelOriginal[key])
         if (this.model[key] !== this.modelOriginal[key]) {
           isChange = true
           break
@@ -531,18 +501,11 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      this.model = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
+      for (const key in this.model) {
+        this.model[key] = ''
+        this.modelOriginal[key] = ''
       }
-      this.modelOriginal = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
-      }
+      this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {

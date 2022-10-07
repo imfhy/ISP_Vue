@@ -46,75 +46,19 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-          max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="time"
-            label="制作时间"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="line"
-            label="线体"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="process"
-            label="制程"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="board"
-            label="板号"
-            sortable
-          />
-          <el-table-column
-            prop="SMT_machine_name"
-            label="SMT机种名"
-            sortable
-          />
-          <el-table-column
-            prop="size"
-            label="长宽厚"
-            sortable
-          />
-          <el-table-column
-            prop="connecting_plates"
-            label="联片数"
-            width="100"
-            sortable
-          />
-          <el-table-column
-            prop="single_points"
-            label="单板点数"
-            width="120"
-            sortable
-          />
-          <el-table-column
-            prop="program_CT"
-            label="程序CT"
-            width="120"
-            sortable
-          />
-          <!-- <el-table-column
-            prop="bind_state"
-            label="合并绑定状态"
-            sortable
-          />
-          <el-table-column
-            prop="bind_detail"
-            label="绑定明细"
-            sortable
-          /> -->
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="time" label="制作时间" width="120" sortable />
+          <el-table-column prop="line" label="线体" width="120" sortable />
+          <el-table-column prop="process" label="制程" width="120" sortable />
+          <el-table-column prop="board" label="板号" sortable />
+          <el-table-column prop="SMT_machine_name" label="SMT机种名" sortable />
+          <el-table-column prop="size" label="长宽厚" width="160" sortable />
+          <el-table-column prop="connecting_plates" label="联片数" width="100" sortable />
+          <el-table-colum prop="single_points" label="单板点数" width="120" sortable />
+          <el-table-column prop="program_CT" label="程序CT" width="120" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -293,80 +237,22 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column
-          prop="time"
-          label="制作时间"
-          width="120"
-        />
-        <el-table-column
-          prop="SMT_machine_name"
-          label="SMT机种名"
-          width="130"
-        />
-        <el-table-column
-          prop="line"
-          label="线体"
-          width="60"
-        />
-        <el-table-column
-          prop="board"
-          label="板号"
-          width="180"
-        />
-        <el-table-column
-          prop="size"
-          label="长宽厚"
-          width="120"
-        />
-        <el-table-column
-          prop="process"
-          label="制程"
-          width="60"
-        />
-        <el-table-column
-          prop="connecting_plates"
-          label="联片数"
-          width="80"
-        />
-        <el-table-column
-          prop="single_points"
-          label="单板点数"
-          width="100"
-        />
-        <el-table-column
-          prop="program_CT"
-          label="程序CT"
-          width="100"
-        />
-        <el-table-column
-          prop="bind_state"
-          label="合并绑定状态"
-          width="120"
-        />
-        <el-table-column
-          prop="bind_detail"
-          label="绑定明细"
-        />
-        <el-table-column
-          prop="unknown1"
-          label="未知1"
-        />
-        <el-table-column
-          prop="unknown2"
-          label="未知2"
-        />
-        <el-table-column
-          prop="unknown3"
-          label="未知3"
-        />
-        <el-table-column
-          prop="unknown4"
-          label="未知4"
-        />
-        <el-table-column
-          prop="unknown5"
-          label="未知5"
-        />
+        <el-table-column prop="time" label="制作时间" width="120" />
+        <el-table-column prop="SMT_machine_name" label="SMT机种名" width="130" />
+        <el-table-column prop="line" label="线体" width="60" />
+        <el-table-columnprop="board" label="板号" width="180" />
+        <el-table-column prop="size" label="长宽厚" width="120" />
+        <el-table-column prop="process" label="制程" width="60" />
+        <el-table-column prop="connecting_plates" label="联片数" width="80" />
+        <el-table-column prop="single_points" label="单板点数" width="100" />
+        <el-table-column prop="program_CT" label="程序CT" width="100" />
+        <el-table-column prop="bind_state" label="合并绑定状态" width="120" />
+        <el-table-column prop="bind_detail" label="绑定明细" />
+        <el-table-column prop="unknown1" label="未知1" />
+        <el-table-column prop="unknown2" label="未知2" />
+        <el-table-column prop="unknown3" label="未知3" />
+        <el-table-column prop="unknown4" label="未知4" />
+        <el-table-column prop="unknown5" label="未知5" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -505,9 +391,9 @@ export default {
         board: '',
         SMT_machine_name: '',
         size: '',
-        connecting_plates: '',
-        single_points: '',
-        program_CT: '',
+        connecting_plates: 0,
+        single_points: 0,
+        program_CT: 0,
         unknown1: '',
         unknown2: '',
         unknown3: '',
@@ -529,9 +415,9 @@ export default {
         board: '',
         SMT_machine_name: '',
         size: '',
-        connecting_plates: '',
-        single_points: '',
-        program_CT: '',
+        connecting_plates: 0,
+        single_points: 0,
+        program_CT: 0,
         unknown1: '',
         unknown2: '',
         unknown3: '',
@@ -546,7 +432,7 @@ export default {
         time: [{
           required: true,
           message: '制作时间不能为空',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         bind_state: [],
         bind_detail: [],
@@ -600,7 +486,7 @@ export default {
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 20, // 每页多少条数据
+      pageSize: 30, // 每页多少条数据
       dataTableSelections: [] // 表格选中的数据
     }
   },
@@ -622,7 +508,7 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 8) {
+      if (rowIndex === 1 && columnIndex <= 7) {
         return 'color: #F56C6C;font-weight: bold;'
       } else if (rowIndex === 1 && columnIndex > 2) {
         return 'color: #E6A23C;font-weight: bold;'
@@ -745,7 +631,7 @@ export default {
       }
       // 保存原来的表单数据，用于对比变化
       for (const key in this.modelOriginal) {
-        this.modelOriginal[key] = this.model[key]
+        this.modelOriginal[key] = row[key]
       }
       // 显示dialog
       this.dataDialogVisible = true
@@ -787,8 +673,9 @@ export default {
     checkFormChange() {
       let isChange = false
       for (const key in this.model) {
-        console.log(this.model[key], this.modelOriginal[key])
         if (this.model[key] !== this.modelOriginal[key]) {
+          console.log(key, '原结果', this.modelOriginal[key])
+          console.log(key, '修改后:', this.model[key])
           isChange = true
           break
         }
@@ -814,18 +701,17 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      this.model = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
+      for (const key in this.model) {
+        var isNum = /^[0-9]+.?[0-9]*/
+        if (isNum.test(this.model[key])) { // 数字要初始化为0
+          this.model[key] = 0
+          this.modelOriginal[key] = 0
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
-      this.modelOriginal = {
-        id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
-      }
+      this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
@@ -838,7 +724,7 @@ export default {
         const data = {}
         data['id'] = row.id
         data['line'] = row.line
-        data['board'] = row.SMT_machine_name
+        data['board'] = row.board
         data['process'] = row.process
         data['user_name'] = this.name
         HandleDelete(data).then(res => {

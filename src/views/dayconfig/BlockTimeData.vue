@@ -50,36 +50,12 @@
           stripe
           @selection-change="handleSelectionChange"
         >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="line_name"
-            label="维护线体"
-            width="110"
-            sortable
-          />
-          <el-table-column
-            prop="start_time"
-            label="开始时间"
-            sortable
-          />
-          <el-table-column
-            prop="end_time"
-            label="结束时间"
-            sortable
-          />
-          <el-table-column
-            prop="lock_time"
-            label="锁定时间节点"
-            sortable
-          />
-          <el-table-column
-            prop="flag"
-            label="手动修改锁定时间"
-            width="200"
-          >
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="line_name" label="维护线体" width="110" sortable />
+          <el-table-column prop="start_time" label="开始时间" sortable />
+          <el-table-column prop="end_time" label="结束时间" sortable />
+          <el-table-column prop="lock_time" label="锁定时间节点" sortable />
+          <el-table-column prop="flag" label="手动修改锁定时间" width="200">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
               <el-tag v-else-if="scope.row.flag === false" size="small" type="danger">关闭</el-tag>
@@ -216,28 +192,11 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column
-          prop="line_name"
-          label="维护线体"
-          width="110"
-        />
-        <el-table-column
-          prop="start_time"
-          label="开始时间"
-        />
-        <el-table-column
-          prop="end_time"
-          label="结束时间"
-        />
-        <el-table-column
-          prop="lock_time"
-          label="锁定时间"
-        />
-        <el-table-column
-          prop="flag"
-          label="手动修改锁定时间"
-          width="200"
-        />
+        <el-table-column prop="line_name" label="维护线体" width="110" />
+        <el-table-colum prop="start_time" label="开始时间" />
+        <el-table-column prop="end_time" label="结束时间" />
+        <el-table-column prop="lock_time" label="锁定时间" />
+        <el-table-column prop="flag" label="手动修改锁定时间" width="200" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -373,17 +332,17 @@ export default {
         line_name: [{
           required: true,
           message: '维护线体不能为空',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         start_time: [{
           required: true,
           message: '开始时间不能为空',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         end_time: [{
           required: true,
           message: '结束时间不能为空',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         flag: [],
         lock_time: [],
@@ -584,7 +543,6 @@ export default {
     checkFormChange() {
       let isChange = false
       for (const key in this.model) {
-        console.log(this.model[key], this.modelOriginal[key])
         if (this.model[key] !== this.modelOriginal[key]) {
           isChange = true
           break
@@ -611,30 +569,11 @@ export default {
     // 关闭表单dialog的一些操作
     closeFormDialog() {
       this.dataDialogVisible = false
-      this.model = {
-        id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+      for (const key in this.model) {
+        this.model[key] = ''
+        this.modelOriginal[key] = ''
       }
-      this.modelOriginal = {
-        id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
-      }
+      this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据
     handleDelete(index, row) {
