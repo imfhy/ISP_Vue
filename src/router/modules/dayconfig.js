@@ -48,6 +48,15 @@ const dayconfigRouter = {
         title: '生产报表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'noprogramdata',
+      component: () => import('@/views/dayconfig/NoProgramData'),
+      name: 'NoProgramData',
+      meta: {
+        title: '无程序清单表',
+        roles: ['admin']
+      }
     }
   ]
 }

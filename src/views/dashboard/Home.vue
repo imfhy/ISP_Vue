@@ -6,6 +6,60 @@
           <div slot="header" class="clearfix">
             <span>快捷操作</span>
           </div>
+          <el-row>
+            <el-col :span="12">
+              <div @click="toCompute">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-monitor" /></span>
+                  <span style="margin-left: 10px;">计算排程</span>
+                </el-card>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div @click="toAnalysis">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-monitor" /></span>
+                  <span style="margin-left: 10px;">分析排程</span>
+                </el-card>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <div @click="toConfig">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-setting" /></span>
+                  <span style="margin-left: 10px;">查看参数配置</span>
+                </el-card>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div @click="toBlockTimeData">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-s-data" /></span>
+                  <span style="margin-left: 10px;">维护时间表</span>
+                </el-card>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <div @click="toLoggingdb">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-document" /></span>
+                  <span style="margin-left: 10px;">查看错误日志</span>
+                </el-card>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div @click="toHistory">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-document" /></span>
+                  <span style="margin-left: 10px;">查看历史操作</span>
+                </el-card>
+              </div>
+            </el-col>
+          </el-row>
         </el-card>
       </el-col>
       <el-col :span="16">
@@ -17,7 +71,7 @@
                 <el-tag v-if="(item.workingDay).indexOf(data.day.split('-').slice(2).join('-'))!=-1" type="success">
                   {{ item.yu }}√
                 </el-tag>
-                <el-tag v-if="(item.workingDay).indexOf(data.day.split('-').slice(2).join('-'))!=-1" type="danger" style="margin-left: 5px;">
+                <el-tag v-if="(item.workingDay).indexOf(data.day.split('-').slice(2).join('-'))!=-1" type="info" style="margin-left: 5px;">
                   {{ item.zheng }}×
                 </el-tag>
               </div>
@@ -29,7 +83,16 @@
     <el-card style="margin: 16px;">
       <div slot="header" class="clearfix">
         <span>历史排程数据变化趋势图</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="drawCharts">刷新图</el-button>
+        <el-dropdown style="float: right; padding: 3px 0">
+          <span class="el-dropdown-link">
+            选择结果<i class="el-icon-arrow-down el-icon--right" />
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>近三天</el-dropdown-item>
+            <el-dropdown-item>近七天</el-dropdown-item>
+            <el-dropdown-item>近一个月</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <div id="scheduleCharts" style="width: 100%; height: 420px" />
     </el-card>
@@ -91,6 +154,25 @@ export default {
     this.drawCharts()
   },
   methods: {
+    // 一些快捷路由跳转
+    toCompute() {
+      this.$router.push({ path: 'schedule/control' })
+    },
+    toAnalysis() {
+      this.$router.push({ path: 'schedule/onlinetable' })
+    },
+    toLoggingdb() {
+      this.$router.push({ path: 'logging/loggingdb' })
+    },
+    toHistory() {
+      this.$router.push({ path: 'logging/history' })
+    },
+    toConfig() {
+      this.$router.push({ path: 'schedule/config' })
+    },
+    toBlockTimeData() {
+      this.$router.push({ path: 'dayconfig/blocktimedata' })
+    },
     // 画图
     drawCharts() {
       this.getChartsData()
@@ -324,5 +406,17 @@ export default {
 }
 .el-calendar-table .el-calendar-day{
   height: 60px;
+}
+.btn-card{
+  user-select: none;
+}
+.btn-icon{
+  font-size: 22px;
+}
+.btn-card :hover{
+  color:#02bafd;
+}
+.btn-card .el-card__body{
+    padding: 20px;
 }
 </style>
