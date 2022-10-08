@@ -193,7 +193,7 @@
         border
       >
         <el-table-column prop="line_name" label="维护线体" width="110" />
-        <el-table-colum prop="start_time" label="开始时间" />
+        <el-table-column prop="start_time" label="开始时间" />
         <el-table-column prop="end_time" label="结束时间" />
         <el-table-column prop="lock_time" label="锁定时间" />
         <el-table-column prop="flag" label="手动修改锁定时间" width="200" />

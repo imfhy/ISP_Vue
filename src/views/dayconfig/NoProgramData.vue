@@ -52,24 +52,24 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="line" label="需求线体" width="110" sortable />
-          <el-table-column prop="package_stage" label="需求包装阶" sortable />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="raw_order_id" label="订单号" sortable />
-          <el-table-column prop="order_num" label="工单量" sortable />
-          <el-table-column prop="process" label="制程" sortable />
-          <el-table-column prop="board" label="板号" sortable />
-          <el-table-column prop="no_program_flag" label="有无程序" sortable />
-          <el-table-column prop="no_package_flag" label="有无包装阶" sortable />
-          <el-table-column prop="program_line" label="已有程序的线体" sortable />
-          <el-table-column prop="connecting_plates" label="联板数" sortable />
-          <el-table-column prop="single_points" label="单面点数" sortable />
-          <el-table-column prop="long" label="长" sortable />
-          <el-table-column prop="width" label="宽" sortable />
-          <el-table-column prop="thick" label="厚" sortable />
-          <el-table-column prop="program_CT" label="program_CT" sortable />
-          <el-table-column prop="component_bind" label="组件绑定" sortable />
-          <el-table-column prop="require_time" label="程序需求时间" sortable />
-          <el-table-column prop="finish_time" label="程序完成时间" sortable />
+          <el-table-column prop="package_stage" width="170" label="需求包装阶" sortable />
+          <el-table-column prop="machine_name" label="机种名" width="150" sortable />
+          <el-table-column prop="raw_order_id" label="订单号" width="100" sortable />
+          <el-table-column prop="order_num" label="工单量" width="100" sortable />
+          <el-table-column prop="process" label="制程" width="80" sortable />
+          <el-table-column prop="board" label="板号" width="200" sortable />
+          <el-table-column prop="no_program_flag" label="有无程序" width="110" sortable />
+          <el-table-column prop="no_package_flag" label="有无包装阶" width="120" sortable />
+          <!-- <el-table-column prop="program_line" label="已有程序的线体" /> -->
+          <el-table-column prop="connecting_plates" label="联板数" width="80" />
+          <el-table-column prop="single_points" label="单面点数" width="110" sortable />
+          <el-table-column prop="long" label="长" width="70" sortable />
+          <el-table-column prop="width" label="宽" width="70" sortable />
+          <el-table-column prop="thick" label="厚" width="70" sortable />
+          <el-table-column prop="program_CT" label="program_CT" width="140" sortable />
+          <el-table-column prop="component_bind" label="组件绑定" width="200" sortable />
+          <el-table-column prop="require_time" label="程序需求时间" width="180" sortable />
+          <el-table-column prop="finish_time" label="程序完成时间" width="180" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -109,61 +109,139 @@
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
-      <el-form ref="$form" :model="model" label-position="left" size="small">
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.line_name" prop="line_name" label="维护线体">
-              <el-select v-model="model.line_name" placeholder="请选择" :style="{width: '100%'}">
-                <el-option v-for="(item) in line_name_data" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.flag" prop="flag" label="手动修改锁定时间">
-              <el-switch v-model="model.flag" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
-              <el-date-picker v-model="model.lock_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-              <el-input v-model="model.CREATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-              <el-input v-model="model.CREATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-              <el-input v-model="model.UPDATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-              <el-input v-model="model.UPDATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+      <el-card class="card-form" shadow="never">
+        <el-form ref="$form" :model="model" label-position="left" size="small">
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.line" prop="line" label="需求线体">
+                <el-input v-model="model.line" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.package_stage" prop="package_stage" label="需求包装阶">
+                <el-input v-model="model.package_stage" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
+                <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.raw_order_id" prop="raw_order_id" label="订单号">
+                <el-input v-model="model.raw_order_id" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.order_num" prop="order_num" label="工单量">
+                <el-input v-model="model.order_num" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process" prop="process" label="制程">
+                <el-input v-model="model.process" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.process" prop="process" label="板号">
+                <el-input v-model="model.process" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.no_program_flag" prop="no_program_flag" label="有无程序">
+                <el-input v-model="model.no_program_flag" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.no_package_flag" prop="no_package_flag" label="有无包装阶">
+                <el-input v-model="model.no_package_flag" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_line" prop="program_line" label="已有程序的线体">
+                <el-input v-model="model.program_line" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联板数">
+                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.single_points" prop="single_points" label="单面点数">
+                <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.long" prop="long" label="长">
+                <el-input-number v-model="model.long" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.width" prop="width" label="宽">
+                <el-input-number v-model="model.width" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.thick" prop="thick" label="厚">
+                <el-input-number v-model="model.thick" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
+                <el-input-number v-model="model.program_CT" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.component_bind" prop="component_bind" label="组件绑定">
+                <el-input v-model="model.component_bind" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.require_time" prop="require_time" label="程序需求时间">
+                <el-date-picker v-model="model.require_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.finish_time" prop="finish_time" label="程序完成时间">
+                <el-date-picker v-model="model.finish_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
+                <el-input v-model="model.CREATED_BY" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
+                <el-input v-model="model.CREATED_TIME" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
+                <el-input v-model="model.UPDATED_BY" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
+                <el-input v-model="model.UPDATED_TIME" disabled />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
@@ -201,11 +279,25 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="line_name" label="维护线体" width="110" />
-        <el-table-colum prop="start_time" label="开始时间" />
-        <el-table-column prop="end_time" label="结束时间" />
-        <el-table-column prop="lock_time" label="锁定时间" />
-        <el-table-column prop="flag" label="手动修改锁定时间" width="200" />
+        <el-table-column prop="line" label="需求线体" width="110" />
+        <el-table-column prop="package_stage" width="170" label="需求包装阶" />
+        <el-table-column prop="machine_name" label="机种名" width="150" />
+        <el-table-column prop="raw_order_id" label="订单号" width="100" />
+        <el-table-column prop="order_num" label="工单量" width="100" />
+        <el-table-column prop="process" label="制程" width="80" />
+        <el-table-column prop="board" label="板号" width="200" />
+        <el-table-column prop="no_program_flag" label="有无程序" width="110" />
+        <el-table-column prop="no_package_flag" label="有无包装阶" width="120" />
+        <el-table-column prop="program_line" label="已有程序的线体" width="160" />
+        <el-table-column prop="connecting_plates" label="联板数" width="80" />
+        <el-table-column prop="single_points" label="单面点数" width="110" />
+        <el-table-column prop="long" label="长" width="70" />
+        <el-table-column prop="width" label="宽" width="70" />
+        <el-table-column prop="thick" label="厚" width="70" />
+        <el-table-column prop="program_CT" label="program_CT" width="140" />
+        <el-table-column prop="component_bind" label="组件绑定" width="200" />
+        <el-table-column prop="require_time" label="程序需求时间" width="180" />
+        <el-table-column prop="finish_time" label="程序完成时间" width="180" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -278,10 +370,6 @@ export default {
         text: '导入中，请稍等...',
         background: 'rgba(0, 0, 0, 0.7)'
       }, // 导入动画
-      exportLoading: {
-        text: '导出中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.7)'
-      }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
       tableDataExample: [
@@ -318,11 +406,24 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
+        line: '',
+        package_stage: '',
+        machine_name: '',
+        raw_order_id: '',
+        order_num: '',
+        process: '',
+        no_program_flag: '',
+        no_package_flag: '',
+        program_line: '',
+        connecting_plates: 0,
+        single_points: 0,
+        long: 0,
+        width: 0,
+        thick: 0,
+        program_CT: 0,
+        component_bind: '',
+        require_time: '',
+        finish_time: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -331,38 +432,120 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        line_name: '',
-        start_time: '',
-        end_time: '',
-        flag: false,
-        lock_time: '',
+        line: '',
+        package_stage: '',
+        machine_name: '',
+        raw_order_id: '',
+        order_num: '',
+        process: '',
+        no_program_flag: '',
+        no_package_flag: '',
+        program_line: '',
+        connecting_plates: 0,
+        single_points: 0,
+        long: 0,
+        width: 0,
+        thick: 0,
+        program_CT: 0,
+        component_bind: '',
+        require_time: '',
+        finish_time: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
         UPDATED_TIME: ''
       },
       rules: {
-        line_name: [{
+        line: [{
           required: true,
-          message: '维护线体不能为空',
+          message: '需求线体不能为空',
           trigger: 'blur'
         }],
-        start_time: [{
+        package_stage: [{
           required: true,
-          message: '开始时间不能为空',
+          message: '需求包装阶不能为空',
           trigger: 'blur'
         }],
-        end_time: [{
+        machine_name: [{
           required: true,
-          message: '结束时间不能为空',
+          message: '机种名不能为空',
           trigger: 'blur'
         }],
-        flag: [],
-        lock_time: [],
-        CREATED_BY: [],
-        CREATED_TIME: [],
-        UPDATED_BY: [],
-        UPDATED_TIME: []
+        raw_order_id: [{
+          required: true,
+          message: '订单号不能为空',
+          trigger: 'blur'
+        }],
+        order_num: [{
+          required: true,
+          message: '工单量不能为空',
+          trigger: 'blur'
+        }],
+        process: [{
+          required: true,
+          message: '板号不能为空',
+          trigger: 'blur'
+        }],
+        no_program_flag: [{
+          required: true,
+          message: '有无程序不能为空',
+          trigger: 'blur'
+        }],
+        no_package_flag: [{
+          required: true,
+          message: '有无包装阶不能为空',
+          trigger: 'blur'
+        }],
+        program_line: [{
+          required: true,
+          message: '已有程序的线体不能为空',
+          trigger: 'blur'
+        }],
+        connecting_plates: [{
+          required: true,
+          message: '联板数不能为空',
+          trigger: 'blur'
+        }],
+        single_points: [{
+          required: true,
+          message: '单面点数不能为空',
+          trigger: 'blur'
+        }],
+        long: [{
+          required: true,
+          message: '长不能为空',
+          trigger: 'blur'
+        }],
+        width: [{
+          required: true,
+          message: '宽不能为空',
+          trigger: 'blur'
+        }],
+        thick: [{
+          required: true,
+          message: '厚不能为空',
+          trigger: 'blur'
+        }],
+        program_CT: [{
+          required: true,
+          message: '程序CT不能为空',
+          trigger: 'blur'
+        }],
+        component_bind: [{
+          required: true,
+          message: '组件绑定不能为空',
+          trigger: 'blur'
+        }],
+        require_time: [{
+          required: true,
+          message: '程序需求时间不能为空',
+          trigger: 'change'
+        }],
+        finish_time: [{
+          required: true,
+          message: '程序完成时间不能为空',
+          trigger: 'change'
+        }]
       },
       line_name_data: LineOptions, // 维护线别
       // 分页相关
@@ -583,8 +766,14 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        this.model[key] = ''
-        this.modelOriginal[key] = ''
+        var isNum = /^[0-9]+.?[0-9]*/
+        if (isNum.test(this.model[key])) { // 数字要初始化为0
+          this.model[key] = 0
+          this.modelOriginal[key] = 0
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
@@ -598,7 +787,9 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['line_name'] = row.line_name
+        data['line'] = row.line
+        data['machine_name'] = row.machine_name
+        data['board'] = row.board
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {

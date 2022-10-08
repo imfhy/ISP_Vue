@@ -57,6 +57,33 @@ const dayconfigRouter = {
         title: '无程序清单表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'networkboard',
+      component: () => import('@/views/dayconfig/NetworkBoard'),
+      name: 'NetworkBoard',
+      meta: {
+        title: '网板信息表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'testprogramdata',
+      component: () => import('@/views/dayconfig/TestProgramData'),
+      name: 'TestProgramData',
+      meta: {
+        title: '试跑程序表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'Pproductprogramdata',
+      component: () => import('@/views/dayconfig/ProductProgramData'),
+      name: 'ProductProgramData',
+      meta: {
+        title: '量产程序表',
+        roles: ['admin']
+      }
     }
   ]
 }

@@ -50,15 +50,17 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="time" label="制作时间" width="120" sortable />
-          <el-table-column prop="line" label="线体" width="120" sortable />
-          <el-table-column prop="process" label="制程" width="120" sortable />
-          <el-table-column prop="board" label="板号" sortable />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" sortable />
-          <el-table-column prop="size" label="长宽厚" width="160" sortable />
-          <el-table-column prop="connecting_plates" label="联片数" width="100" sortable />
-          <el-table-column prop="single_points" label="单板点数" width="120" sortable />
-          <el-table-column prop="program_CT" label="程序CT" width="120" sortable />
+          <el-table-column prop="check_status" label="检查状态" sortable />
+          <el-table-column prop="model_name" label="SMT机种名" width="130" sortable />
+          <el-table-column prop="program_line_type" label="程序线别" sortable />
+          <el-table-column prop="board_no" label="板号" sortable />
+          <el-table-column prop="size" label="长宽厚" sortable />
+          <el-table-column prop="workmanship" label="工艺" sortable />
+          <el-table-column prop="connecting_plates" label="联片数" sortable />
+          <el-table-column prop="points" label="点数" sortable />
+          <el-table-column prop="program_CT" label="标准CT" sortable />
+          <el-table-column prop="yin_yang_board" label="阴阳板" sortable />
+          <el-table-column prop="program_time" label="程序制作时间" width="150" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -98,108 +100,93 @@
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
-      <el-card class="card-form" shadow="never">
-        <el-form ref="$form" :model="model" label-position="left" size="small">
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.time" prop="time" label="制作时间">
-                <el-date-picker v-model="model.time" placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.bind_state" prop="bind_state" label="合并绑定状态">
-                <el-input v-model="model.bind_state" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.bind_detail" prop="bind_detail" label="绑定明细">
-                <el-input v-model="model.bind_detail" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line" prop="line" label="线体">
-                <el-input v-model="model.line" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process" prop="process" label="制程">
-                <el-input v-model="model.process" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.board" prop="board" label="板号">
-                <el-input v-model="model.board" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-                <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.size" prop="size" label="长宽厚">
-                <el-input v-model="model.size" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
-                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
-                <el-input-number v-model="model.single_points" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
-                <el-input-number v-model="model.program_CT" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item :rules="rules.unknown1" prop="unknown1" label="未知1">
-            <el-input v-model="model.unknown1" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown2" prop="unknown2" label="未知2">
-            <el-input v-model="model.unknown2" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown3" prop="unknown3" label="未知3">
-            <el-input v-model="model.unknown3" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown4" prop="unknown4" label="未知4">
-            <el-input v-model="model.unknown4" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-form-item :rules="rules.unknown5" prop="unknown5" label="未知5">
-            <el-input v-model="model.unknown5" placeholder="请输入" :rows="2" type="textarea" clearable />
-          </el-form-item>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-                <el-input v-model="model.CREATED_BY" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-                <el-input v-model="model.CREATED_TIME" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-                <el-input v-model="model.UPDATED_BY" disabled />
-              </el-form-item>
-            </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-                <el-input v-model="model.UPDATED_TIME" disabled />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </el-card>
+      <el-form ref="$form" :model="model" label-position="left" size="small">
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.check_status" prop="check_status" label="检查状态">
+              <el-input v-model="model.check_status" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.model_name" prop="model_name" label="SMT机种名">
+              <el-input v-model="model.model_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.program_line_type" prop="program_line_type" label="程序线别">
+              <el-input v-model="model.program_line_type" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.board_no" prop="board_no" label="板号">
+              <el-input v-model="model.board_no" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.size" prop="size" label="长宽厚">
+              <el-input v-model="model.size" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.workmanship" prop="workmanship" label="工艺">
+              <el-input v-model="model.workmanship" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
+              <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.points" prop="points" label="点数">
+              <el-input-number v-model="model.points" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.program_CT" prop="program_CT" label="标准CT">
+              <el-input v-model="model.program_CT" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.yin_yang_board" prop="yin_yang_board" label="阴阳板">
+              <el-input v-model="model.yin_yang_board" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.program_time" prop="program_time" label="程序制作时间">
+              <el-date-picker v-model="model.program_time" placeholder="请选择" format="yyyy-MM-dd" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
+              <el-input v-model="model.CREATED_BY" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
+              <el-input v-model="model.CREATED_TIME" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
+              <el-input v-model="model.UPDATED_BY" disabled />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
+              <el-input v-model="model.UPDATED_TIME" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
@@ -237,22 +224,17 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="time" label="制作时间" width="120" />
-        <el-table-column prop="SMT_machine_name" label="SMT机种名" width="130" />
-        <el-table-column prop="line" label="线体" width="60" />
-        <el-table-column prop="board" label="板号" width="180" />
-        <el-table-column prop="size" label="长宽厚" width="120" />
-        <el-table-column prop="process" label="制程" width="60" />
-        <el-table-column prop="connecting_plates" label="联片数" width="80" />
-        <el-table-column prop="single_points" label="单板点数" width="100" />
-        <el-table-column prop="program_CT" label="程序CT" width="100" />
-        <el-table-column prop="bind_state" label="合并绑定状态" width="120" />
-        <el-table-column prop="bind_detail" label="绑定明细" />
-        <el-table-column prop="unknown1" label="未知1" />
-        <el-table-column prop="unknown2" label="未知2" />
-        <el-table-column prop="unknown3" label="未知3" />
-        <el-table-column prop="unknown4" label="未知4" />
-        <el-table-column prop="unknown5" label="未知5" />
+        <el-table-column prop="check_status" label="检查状态" />
+        <el-table-column prop="model_name" width="100" label="SMT机种名" />
+        <el-table-column prop="program_line_type" label="程序线别" />
+        <el-table-column prop="board_no" label="板号" />
+        <el-table-column prop="size" label="长宽厚" />
+        <el-table-column prop="workmanship" label="工艺" />
+        <el-table-column prop="connecting_plates" label="联片数" />
+        <el-table-column prop="points" label="点数" />
+        <el-table-column prop="program_CT" label="标准CT" />
+        <el-table-column prop="yin_yang_board" label="阴阳板" />
+        <el-table-column prop="program_time" label="程序制作时间" width="150" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -314,7 +296,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProgramData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/TestProgramData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -329,39 +311,29 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          time: '2022-09-30',
-          bind_state: '绑定',
-          bind_detail: '',
-          line: 'SM07',
-          process: 'B',
-          board: '715GB080M0A001005K',
-          SMT_machine_name: 'SMTCPALN3QH',
-          size: '324.5*315*1.6',
-          connecting_plates: '1.0',
-          single_points: '594.0',
-          program_CT: '36.0',
-          unknown1: '',
-          unknown2: '',
-          unknown3: '',
-          unknown4: '',
-          unknown5: ''
+          check_status: '',
+          model_name: '',
+          program_line_type: '',
+          board_no: '',
+          size: '',
+          workmanship: '',
+          connecting_plates: 0,
+          points: 0,
+          program_CT: '',
+          yin_yang_board: '',
+          program_time: ''
         }, {
-          time: '(必填)',
-          line: '(必填)',
-          process: '(必填)',
-          board: '(必填)',
-          SMT_machine_name: '(必填)',
-          size: '(必填)',
-          connecting_plates: '(必填)',
-          single_points: '(必填)',
-          program_CT: '(必填)',
-          bind_state: '(选填)',
-          bind_detail: '(选填)',
-          unknown1: '(选填)',
-          unknown2: '(选填)',
-          unknown3: '(选填)',
-          unknown4: '(选填)',
-          unknown5: '(选填)'
+          check_status: '(待确定)',
+          model_name: '(待确定)',
+          program_line_type: '(待确定)',
+          board_no: '(待确定)',
+          size: '(待确定)',
+          workmanship: '(待确定)',
+          connecting_plates: '(待确定)',
+          points: '(待确定)',
+          program_CT: '(待确定)',
+          yin_yang_board: '(待确定)',
+          program_time: '(待确定)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -383,22 +355,17 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        time: '',
-        bind_state: '',
-        bind_detail: '',
-        line: '',
-        process: '',
-        board: '',
-        SMT_machine_name: '',
+        check_status: '',
+        model_name: '',
+        program_line_type: '',
+        board_no: '',
         size: '',
+        workmanship: '',
         connecting_plates: 0,
-        single_points: 0,
-        program_CT: 0,
-        unknown1: '',
-        unknown2: '',
-        unknown3: '',
-        unknown4: '',
-        unknown5: '',
+        points: 0,
+        program_CT: '',
+        yin_yang_board: '',
+        program_time: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -407,80 +374,34 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        time: '',
-        bind_state: '',
-        bind_detail: '',
-        line: '',
-        process: '',
-        board: '',
-        SMT_machine_name: '',
+        check_status: '',
+        model_name: '',
+        program_line_type: '',
+        board_no: '',
         size: '',
+        workmanship: '',
         connecting_plates: 0,
-        single_points: 0,
-        program_CT: 0,
-        unknown1: '',
-        unknown2: '',
-        unknown3: '',
-        unknown4: '',
-        unknown5: '',
+        points: 0,
+        program_CT: '',
+        yin_yang_board: '',
+        program_time: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
         UPDATED_TIME: ''
       },
       rules: {
-        time: [{
-          required: true,
-          message: '制作时间不能为空',
-          trigger: 'blur'
-        }],
-        bind_state: [],
-        bind_detail: [],
-        line: [{
-          required: true,
-          message: '线体不能为空',
-          trigger: 'blur'
-        }],
-        process: [{
-          required: true,
-          message: '制程不能为空',
-          trigger: 'blur'
-        }],
-        board: [{
-          required: true,
-          message: '板号不能为空',
-          trigger: 'blur'
-        }],
-        SMT_machine_name: [{
-          required: true,
-          message: 'SMT机种名不能为空',
-          trigger: 'blur'
-        }],
-        size: [{
-          required: true,
-          message: '长宽厚不能为空',
-          trigger: 'blur'
-        }],
-        connecting_plates: [{
-          required: true,
-          message: '联片数不能为空',
-          trigger: 'blur'
-        }],
-        single_points: [{
-          required: true,
-          message: '单板点数不能为空',
-          trigger: 'blur'
-        }],
-        program_CT: [{
-          required: true,
-          message: '程序CT不能为空',
-          trigger: 'blur'
-        }],
-        unknown1: [],
-        unknown2: [],
-        unknown3: [],
-        unknown4: [],
-        unknown5: []
+        check_status: [],
+        model_name: [],
+        program_line_type: [],
+        board_no: [],
+        size: [],
+        workmanship: [],
+        connecting_plates: [],
+        points: [],
+        program_CT: [],
+        yin_yang_board: [],
+        program_time: []
       },
       line_name_data: LineOptions, // 维护线别
       // 分页相关
@@ -508,11 +429,11 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 7) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
+      // if (rowIndex === 1 && columnIndex <= -1) {
+      //   return 'color: #F56C6C;font-weight: bold;'
+      // } else if (rowIndex === 1 && columnIndex > -1) {
+      //   return 'color: #E6A23C;font-weight: bold;'
+      // }
       return ''
     },
     // 分页
@@ -723,9 +644,8 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['line'] = row.line
-        data['board'] = row.board
-        data['process'] = row.process
+        data['model_name'] = row.model_name
+        data['board_no'] = row.board_no
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -847,7 +767,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/ProgramData.scss';
+  @import '../../assets/css/dayconfig/TestProgramData.scss';
 </style>
 <style>
 .btnDanger{

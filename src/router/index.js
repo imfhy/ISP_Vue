@@ -90,11 +90,11 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/schedule',
+    path: '/schedulepanel',
     component: Layout,
-    redirect: '/schedule/control',
+    redirect: '/schedulepanel/control',
     alwaysShow: true,
-    name: 'Schedule',
+    name: 'SchedulePanel',
     meta: {
       title: '主板排程',
       icon: 'component',
