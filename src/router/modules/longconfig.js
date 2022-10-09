@@ -21,6 +21,33 @@ const longconfigRouter = {
         title: 'LED经验数据',
         roles: ['admin']
       }
+    },
+    {
+      path: 'mp1addlinedata',
+      component: () => import('@/views/longconfig/MP1AddLineData'),
+      name: 'MP1AddLineData',
+      meta: {
+        title: 'MP1补线表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'notmp1addlinedata',
+      component: () => import('@/views/longconfig/NotMP1AddLineData'),
+      name: 'NotMP1AddLineData',
+      meta: {
+        title: '非MP1补线表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'exchangelinedata',
+      component: () => import('@/views/longconfig/ExchangeLineData'),
+      name: 'ExchangeLineData',
+      meta: {
+        title: '交换线别表',
+        roles: ['admin']
+      }
     }
   ]
 }

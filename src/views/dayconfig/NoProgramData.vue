@@ -291,9 +291,9 @@
         <el-table-column prop="program_line" label="已有程序的线体" width="160" />
         <el-table-column prop="connecting_plates" label="联板数" width="80" />
         <el-table-column prop="single_points" label="单面点数" width="110" />
-        <el-table-column prop="long" label="长" width="70" />
-        <el-table-column prop="width" label="宽" width="70" />
-        <el-table-column prop="thick" label="厚" width="70" />
+        <el-table-column prop="long" label="长" width="100" />
+        <el-table-column prop="width" label="宽" width="100" />
+        <el-table-column prop="thick" label="厚" width="100" />
         <el-table-column prop="program_CT" label="program_CT" width="140" />
         <el-table-column prop="component_bind" label="组件绑定" width="200" />
         <el-table-column prop="require_time" label="程序需求时间" width="180" />
@@ -374,17 +374,43 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          line_name: 'SM01',
-          start_time: '	2022-10-01 08:00:00',
-          end_time: '2022-10-05 08:00:00',
-          lock_time: '2022-09-28 11:00:00',
-          flag: 'FALSE'
+          line: '',
+          package_stage: '',
+          machine_name: '',
+          raw_order_id: '',
+          order_num: '',
+          process: '',
+          no_program_flag: '',
+          no_package_flag: '',
+          program_line: '',
+          connecting_plates: 0,
+          single_points: 0,
+          long: 0,
+          width: 0,
+          thick: 0,
+          program_CT: 0,
+          component_bind: '',
+          require_time: '',
+          finish_time: ''
         }, {
-          line_name: '(必填)',
-          start_time: '(必填)',
-          end_time: '(必填)',
-          lock_time: '(选填)',
-          flag: '(选填)  FALSE为关闭/TRUE为开启'
+          line: '(待确定)',
+          package_stage: '(待确定)',
+          machine_name: '(待确定)',
+          raw_order_id: '(待确定)',
+          order_num: '(待确定)',
+          process: '(待确定)',
+          no_program_flag: '(待确定)',
+          no_package_flag: '(待确定)',
+          program_line: '(待确定)',
+          connecting_plates: '(待确定)',
+          single_points: '(待确定)',
+          long: '(待确定)',
+          width: '(待确定)',
+          thick: '(待确定)',
+          program_CT: '(待确定)',
+          component_bind: '(待确定)',
+          require_time: '(待确定)',
+          finish_time: '(待确定)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -573,11 +599,11 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 2) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
+      // if (rowIndex === 1 && columnIndex <= 2) {
+      //   return 'color: #F56C6C;font-weight: bold;'
+      // } else if (rowIndex === 1 && columnIndex > 2) {
+      //   return 'color: #E6A23C;font-weight: bold;'
+      // }
       return ''
     },
     // 分页

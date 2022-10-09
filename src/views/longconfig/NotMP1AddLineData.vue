@@ -51,10 +51,11 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="ct" label="CT" sortable />
-          <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" sortable />
-          <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" sortable />
+          <el-table-column prop="process" label="制程" width="160" sortable />
+          <el-table-column prop="above_connecting_points" width="160" label="联板点数[以上]" sortable />
+          <el-table-column prop="under_single_points" label="单板点数[以下]" width="160" sortable />
+          <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="160" sortable />
+          <el-table-column prop="add_feasible_line" label="补充的可排线别" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -96,46 +97,31 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.process" prop="process" label="制程">
+              <el-input v-model="model.process" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.ct" prop="ct" label="CT">
-              <el-input-number v-model="model.ct" placeholder="请输入" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.trial_run_timedelta" prop="trial_run_timedelta" label="试跑工单停线时间">
-              <el-input-number v-model="model.trial_run_timedelta" placeholder="请输入" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.batch_production_timedelta" prop="batch_production_timedelta" label="量产工单停线时间">
-              <el-input-number v-model="model.batch_production_timedelta" placeholder="请输入" :style="{width: '100%'}" />
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.add_feasible_line" prop="add_feasible_line" label="补充的可排线别">
+              <el-input v-model="model.add_feasible_line" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-              <el-input v-model="model.CREATED_BY" disabled />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.above_connecting_points" prop="above_connecting_points" label="联板点数[以上]">
+              <el-input-number v-model="model.above_connecting_points" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-              <el-input v-model="model.CREATED_TIME" disabled />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.under_single_points" prop="under_single_points" label="单板点数[以下]">
+              <el-input-number v-model="model.under_single_points" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-              <el-input v-model="model.UPDATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-              <el-input v-model="model.UPDATED_TIME" disabled />
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.above_connecting_plates" prop="above_connecting_plates" label="联板数[以上]">
+              <el-input-number v-model="model.above_connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -177,10 +163,11 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="machine_name" label="机种名" />
-        <el-table-column prop="ct" label="CT" />
-        <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" />
-        <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" />
+        <el-table-column prop="process" label="制程" width="140" />
+        <el-table-column prop="above_connecting_points" label="联板点数[以上]" width="140" />
+        <el-table-column prop="under_single_points" label="单板点数[以下]" width="140" />
+        <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="140" />
+        <el-table-column prop="add_feasible_line" label="补充的可排线别" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -242,7 +229,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/LEDCTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/NotMP1AddLineData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -257,15 +244,17 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          machine_name: 'MLPD1XLA443AEZSMT',
-          ct: 290,
-          trial_run_timedelta: 3,
-          batch_production_timedelta: 2
+          process: 'S-BPR',
+          add_feasible_line: 'SM08、SM09、SM11、SM19、SM22、SM23、SM25',
+          above_connecting_points: 800.0,
+          under_single_points: 999999.0,
+          above_connecting_plates: 1.0
         }, {
-          machine_name: '(必填)',
-          ct: '(必填)',
-          trial_run_timedelta: '(必填)',
-          batch_production_timedelta: '(必填)'
+          process: '(必填)',
+          add_feasible_line: '(必填)',
+          above_connecting_points: '(必填)',
+          under_single_points: '(必填)',
+          above_connecting_plates: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -287,46 +276,35 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        process: '',
+        add_feasible_line: '',
+        above_connecting_points: 0,
+        under_single_points: 0,
+        above_connecting_plates: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        process: '',
+        add_feasible_line: '',
+        above_connecting_points: 0,
+        under_single_points: 0,
+        above_connecting_plates: 0
       },
       rules: {
-        machine_name: [{
+        process: [{
           required: true,
-          message: '机种名不能为空',
+          message: '制程不能为空',
           trigger: 'blur'
         }],
-        ct: [{
+        under_single_points: [{
           required: true,
-          message: 'CT不能为空',
+          message: '单板点数[以下]不能为空',
           trigger: 'blur'
         }],
-        trial_run_timedelta: [{
+        add_feasible_line: [{
           required: true,
-          message: '试跑工单停线时间不能为空',
-          trigger: 'blur'
-        }],
-        batch_production_timedelta: [{
-          required: true,
-          message: '量产工单停线时间不能为空',
+          message: '补充的可排线别不能为空',
           trigger: 'blur'
         }]
       },
@@ -356,9 +334,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 3) {
+      if (rowIndex === 1 && columnIndex <= 4) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 3) {
+      } else if (rowIndex === 1 && columnIndex > 4) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -564,7 +542,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['machine_name'] = row.machine_name
+        data['process'] = row.process
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -686,7 +664,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/LEDCTData.scss';
+  @import '../../assets/css/longconfig/NotMP1AddLineData.scss';
 </style>
 <style>
 .btnDanger{

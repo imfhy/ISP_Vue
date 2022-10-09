@@ -242,7 +242,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/LEDCTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/LineData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -686,7 +686,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/LEDCTData.scss';
+  @import '../../assets/css/longconfig/LineData.scss';
 </style>
 <style>
 .btnDanger{

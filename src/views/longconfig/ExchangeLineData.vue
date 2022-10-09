@@ -44,17 +44,18 @@
           id="mytable"
           v-loading="loading"
           :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
+          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
           :cell-style="{padding: '3px'}"
           max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="ct" label="CT" sortable />
-          <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" sortable />
-          <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" sortable />
+          <el-table-column prop="start_time" label="开始时间" width="120" />
+          <el-table-column prop="end_time" label="结束时间" width="120" />
+          <el-table-column prop="exchange_line_one" label="交换线别一" width="120" />
+          <el-table-column prop="exchange_line_two" label="交换线别二" width="120" />
+          <el-table-column prop="remark" label="备注" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -97,48 +98,29 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
+              <el-date-picker v-model="model.start_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.ct" prop="ct" label="CT">
-              <el-input-number v-model="model.ct" placeholder="请输入" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
+              <el-date-picker v-model="model.end_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.trial_run_timedelta" prop="trial_run_timedelta" label="试跑工单停线时间">
-              <el-input-number v-model="model.trial_run_timedelta" placeholder="请输入" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.exchange_line_one" prop="exchange_line_one" label="交换线别一">
+              <el-input v-model="model.exchange_line_one" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.batch_production_timedelta" prop="batch_production_timedelta" label="量产工单停线时间">
-              <el-input-number v-model="model.batch_production_timedelta" placeholder="请输入" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.exchange_line_two" prop="exchange_line_two" label="交换线别二">
+              <el-input v-model="model.exchange_line_two" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-              <el-input v-model="model.CREATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-              <el-input v-model="model.CREATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-              <el-input v-model="model.UPDATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-              <el-input v-model="model.UPDATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item :rules="rules.remark" prop="remark" label="备注">
+          <el-input v-model="model.remark" placeholder="请输入" :rows="2" type="textarea" clearable />
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -177,10 +159,11 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="machine_name" label="机种名" />
-        <el-table-column prop="ct" label="CT" />
-        <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" />
-        <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" />
+        <el-table-column prop="start_time" label="开始时间" width="120" />
+        <el-table-column prop="end_time" label="结束时间" width="120" />
+        <el-table-column prop="exchange_line_one" label="交换线别一" width="120" />
+        <el-table-column prop="exchange_line_two" label="交换线别二" width="120" />
+        <el-table-column prop="remark" label="备注" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -242,7 +225,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/LEDCTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/ExchangeLineData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -257,15 +240,17 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          machine_name: 'MLPD1XLA443AEZSMT',
-          ct: 290,
-          trial_run_timedelta: 3,
-          batch_production_timedelta: 2
+          start_time: '2021-07-21',
+          end_time: '2022-01-01',
+          exchange_line_one: 'SM03',
+          exchange_line_two: 'SM06',
+          remark: 'SM03和SM06在2021年7月21日至2022年1月1日间的历史数据互相交换'
         }, {
-          machine_name: '(必填)',
-          ct: '(必填)',
-          trial_run_timedelta: '(必填)',
-          batch_production_timedelta: '(必填)'
+          start_time: '(必填)',
+          end_time: '(必填)',
+          exchange_line_one: '(必填)',
+          exchange_line_two: '(必填)',
+          remark: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -287,46 +272,45 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        start_time: '',
+        end_time: '',
+        exchange_line_one: '',
+        exchange_line_two: '',
+        remark: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
-        CREATED_BY: '',
-        CREATED_TIME: '',
-        UPDATED_BY: '',
-        UPDATED_TIME: ''
+        start_time: '',
+        end_time: '',
+        exchange_line_one: '',
+        exchange_line_two: '',
+        remark: ''
       },
       rules: {
-        machine_name: [{
+        start_time: [{
           required: true,
-          message: '机种名不能为空',
+          message: '开始时间不能为空',
+          trigger: 'change'
+        }],
+        end_time: [{
+          required: true,
+          message: '结束时间不能为空',
+          trigger: 'change'
+        }],
+        exchange_line_one: [{
+          required: true,
+          message: '交换线别一不能为空',
           trigger: 'blur'
         }],
-        ct: [{
+        exchange_line_two: [{
           required: true,
-          message: 'CT不能为空',
+          message: '交换线别二不能为空',
           trigger: 'blur'
         }],
-        trial_run_timedelta: [{
+        remark: [{
           required: true,
-          message: '试跑工单停线时间不能为空',
-          trigger: 'blur'
-        }],
-        batch_production_timedelta: [{
-          required: true,
-          message: '量产工单停线时间不能为空',
+          message: '备注不能为空',
           trigger: 'blur'
         }]
       },
@@ -356,9 +340,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 3) {
+      if (rowIndex === 1 && columnIndex <= 4) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 3) {
+      } else if (rowIndex === 1 && columnIndex > 4) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -564,7 +548,8 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['machine_name'] = row.machine_name
+        data['start_time'] = row.start_time
+        data['end_time'] = row.end_time
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -686,7 +671,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/LEDCTData.scss';
+  @import '../../assets/css/longconfig/ExchangeLineData.scss';
 </style>
 <style>
 .btnDanger{

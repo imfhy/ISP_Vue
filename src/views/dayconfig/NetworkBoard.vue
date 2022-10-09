@@ -422,30 +422,30 @@ export default {
           warehousing_number: '',
           furnace_fixture: ''
         }, {
-          serial_number: '',
-          pcb_number: '',
-          substitute_pcb: '',
-          front_back: '',
-          model_name: '',
-          storage_spaces: '',
-          state: '',
-          backup_wash: '',
-          remark: '',
-          last_used_line: '',
-          last_used_time: '',
-          used_times: 0,
-          input_1665235991812: '',
-          double_sticker_remark: '',
-          inventory_date: '',
-          big_or_small: '',
-          type: '',
-          thickness: 0,
-          status_change_time: '',
-          total_num: 0,
-          process: '',
-          supplier: '',
-          warehousing_number: '',
-          furnace_fixture: ''
+          serial_number: '(待确定)',
+          pcb_number: '(待确定)',
+          substitute_pcb: '(待确定)',
+          front_back: '(待确定)',
+          model_name: '(待确定)',
+          storage_spaces: '(待确定)',
+          state: '(待确定)',
+          backup_wash: '(待确定)',
+          remark: '(待确定)',
+          last_used_line: '(待确定)',
+          last_used_time: '(待确定)',
+          used_times: '(待确定)',
+          input_1665235991812: '(待确定)',
+          double_sticker_remark: '(待确定)',
+          inventory_date: '(待确定)',
+          big_or_small: '(待确定)',
+          type: '(待确定)',
+          thickness: '(待确定)',
+          status_change_time: '(待确定)',
+          total_num: '(待确定)',
+          process: '(待确定)',
+          supplier: '(待确定)',
+          warehousing_number: '(待确定)',
+          furnace_fixture: '(待确定)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -632,11 +632,11 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 7) {
-        return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 2) {
-        return 'color: #E6A23C;font-weight: bold;'
-      }
+      // if (rowIndex === 1 && columnIndex <= 7) {
+      //   return 'color: #F56C6C;font-weight: bold;'
+      // } else if (rowIndex === 1 && columnIndex > 2) {
+      //   return 'color: #E6A23C;font-weight: bold;'
+      // }
       return ''
     },
     // 分页
