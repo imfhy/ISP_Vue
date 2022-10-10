@@ -93,6 +93,42 @@ const longconfigRouter = {
         title: '制程配置表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'keyboardlinedata',
+      component: () => import('@/views/longconfig/KeyBoardLineData'),
+      name: 'KeyBoardLineData',
+      meta: {
+        title: '按键板表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'earlyduedateboard8',
+      component: () => import('@/views/longconfig/EarlyDueDateBoard8'),
+      name: 'EarlyDueDateBoard8',
+      meta: {
+        title: '提早交期板号表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'changelinedata',
+      component: () => import('@/views/longconfig/ChangeLineData'),
+      name: 'ChangeLineData',
+      meta: {
+        title: '线体变化表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'pairedsmtmachinedata',
+      component: () => import('@/views/longconfig/PairedSMTMachineData'),
+      name: 'PairedSMTMachineData',
+      meta: {
+        title: '配套板表',
+        roles: ['admin']
+      }
     }
   ]
 }

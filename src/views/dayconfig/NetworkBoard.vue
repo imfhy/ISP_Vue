@@ -798,8 +798,6 @@ export default {
       let isChange = false
       for (const key in this.model) {
         if (this.model[key] !== this.modelOriginal[key]) {
-          console.log(key, '原结果:', typeof this.modelOriginal[key])
-          console.log(key, '修改后:', typeof this.model[key])
           isChange = true
           break
         }

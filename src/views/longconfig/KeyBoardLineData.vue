@@ -51,8 +51,8 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="optimized_lines" label="优化线别" />
+          <el-table-column prop="line" label="线别" sortable />
+          <el-table-column prop="points_limit" label="点数界限" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -95,13 +95,13 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.line" prop="line" label="线别">
+              <el-input v-model="model.line" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.optimized_lines" prop="optimized_lines" label="优化线别">
-              <el-input v-model="model.optimized_lines" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.points_limit" prop="points_limit" label="点数界限">
+              <el-input-number v-model="model.points_limit" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -143,8 +143,8 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="machine_name" label="机种名" />
-        <el-table-column prop="optimized_lines" label="优化线别" />
+        <el-table-column prop="line" label="线别" />
+        <el-table-column prop="points_limit" label="点数界限" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -206,7 +206,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/OptimizedMachineData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/KeyBoardLineData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -221,11 +221,11 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          machine_name: 'SMTCIPACWQ1',
-          optimized_lines: 'SM07、SM06、SM03'
+          line: 'SM18',
+          points_limit: 200000.0
         }, {
-          machine_name: '(必填)',
-          optimized_lines: '(必填)'
+          line: '(必填)',
+          points_limit: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -247,24 +247,24 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        machine_name: '',
-        optimized_lines: ''
+        line: '',
+        points_limit: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        machine_name: '',
-        optimized_lines: ''
+        line: '',
+        points_limit: 0
       },
       rules: {
-        machine_name: [{
+        line: [{
           required: true,
-          message: '机种名不能为空',
+          message: '线别不能为空',
           trigger: 'blur'
         }],
-        optimized_lines: [{
+        points_limit: [{
           required: true,
-          message: '优化线别不能为空',
+          message: '点数界限不能为空',
           trigger: 'blur'
         }]
       },
@@ -487,8 +487,14 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        this.model[key] = ''
-        this.modelOriginal[key] = ''
+        var isNum = /^[0-9]+.?[0-9]*/
+        if (isNum.test(this.model[key])) { // 数字要初始化为0
+          this.model[key] = 0
+          this.modelOriginal[key] = 0
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
@@ -502,7 +508,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['machine_name'] = row.machine_name
+        data['line'] = row.line
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {

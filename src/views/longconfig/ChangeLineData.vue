@@ -44,15 +44,18 @@
           id="mytable"
           v-loading="loading"
           :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
+          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
           :cell-style="{padding: '3px'}"
           max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="optimized_lines" label="优化线别" />
+          <el-table-column prop="start_time" label="开始时间" width="120" />
+          <el-table-column prop="end_time" label="结束时间" width="120" />
+          <el-table-column prop="line_one" label="需要删除线体" width="120" />
+          <el-table-column prop="line_two" label="所更改线别" width="120" />
+          <el-table-column prop="remark" label="备注" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -94,17 +97,30 @@
     >
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
+              <el-date-picker v-model="model.start_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.optimized_lines" prop="optimized_lines" label="优化线别">
-              <el-input v-model="model.optimized_lines" placeholder="请输入" clearable />
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
+              <el-date-picker v-model="model.end_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.line_one" prop="line_one" label="需要删除线体">
+              <el-input v-model="model.line_one" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.line_two" prop="line_two" label="所更改线别">
+              <el-input v-model="model.line_two" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
+        <el-form-item :rules="rules.remark" prop="remark" label="备注">
+          <el-input v-model="model.remark" placeholder="请输入" :rows="2" type="textarea" clearable />
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -143,8 +159,11 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="machine_name" label="机种名" />
-        <el-table-column prop="optimized_lines" label="优化线别" />
+        <el-table-column prop="start_time" label="开始时间" width="120" />
+        <el-table-column prop="end_time" label="结束时间" width="120" />
+        <el-table-column prop="line_one" label="需要删除线体" width="120" />
+        <el-table-column prop="line_two" label="所更改线别" width="120" />
+        <el-table-column prop="remark" label="备注" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -206,7 +225,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/OptimizedMachineData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/ChangeLineData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -221,11 +240,17 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          machine_name: 'SMTCIPACWQ1',
-          optimized_lines: 'SM07、SM06、SM03'
+          start_time: '2022-03-15',
+          end_time: '2022-01-01',
+          line_one: 'SR01',
+          line_two: 'SR06',
+          remark: '2022年8月15日之前的SR01数据均更改为SR06数据'
         }, {
-          machine_name: '(必填)',
-          optimized_lines: '(必填)'
+          start_time: '(必填)',
+          end_time: '(必填)',
+          line_one: '(必填)',
+          line_two: '(必填)',
+          remark: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -247,24 +272,45 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        machine_name: '',
-        optimized_lines: ''
+        start_time: '',
+        end_time: '',
+        line_one: '',
+        line_two: '',
+        remark: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        machine_name: '',
-        optimized_lines: ''
+        start_time: '',
+        end_time: '',
+        line_one: '',
+        line_two: '',
+        remark: ''
       },
       rules: {
-        machine_name: [{
+        start_time: [{
           required: true,
-          message: '机种名不能为空',
+          message: '开始时间不能为空',
+          trigger: 'change'
+        }],
+        end_time: [{
+          required: true,
+          message: '结束时间不能为空',
+          trigger: 'change'
+        }],
+        line_one: [{
+          required: true,
+          message: '需要删除线体不能为空',
           trigger: 'blur'
         }],
-        optimized_lines: [{
+        line_two: [{
           required: true,
-          message: '优化线别不能为空',
+          message: '所更改线别不能为空',
+          trigger: 'blur'
+        }],
+        remark: [{
+          required: true,
+          message: '备注不能为空',
           trigger: 'blur'
         }]
       },
@@ -294,9 +340,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 3) {
+      if (rowIndex === 1 && columnIndex <= 4) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 3) {
+      } else if (rowIndex === 1 && columnIndex > 4) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -502,7 +548,8 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['machine_name'] = row.machine_name
+        data['start_time'] = row.start_time
+        data['end_time'] = row.end_time
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -624,7 +671,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/OptimizedMachineData.scss';
+  @import '../../assets/css/longconfig/ChangeLineData.scss';
 </style>
 <style>
 .btnDanger{
