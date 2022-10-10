@@ -66,6 +66,33 @@ const longconfigRouter = {
         title: '产能变化表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'optimizedmachinedata',
+      component: () => import('@/views/longconfig/OptimizedMachineData'),
+      name: 'OptimizedMachineData',
+      meta: {
+        title: '优化机种表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'setupdata',
+      component: () => import('@/views/longconfig/SetUpData'),
+      name: 'SetUpData',
+      meta: {
+        title: '切换表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'processdata',
+      component: () => import('@/views/longconfig/ProcessData'),
+      name: 'ProcessData',
+      meta: {
+        title: '制程配置表',
+        roles: ['admin']
+      }
     }
   ]
 }

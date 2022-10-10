@@ -52,10 +52,10 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="process" label="制程" width="160" sortable />
-          <el-table-column prop="above_connecting_points" width="160" label="联板点数[以上]" sortable />
-          <el-table-column prop="under_single_points" label="单板点数[以下]" width="160" sortable />
-          <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="160" sortable />
-          <el-table-column prop="add_feasible_line" label="补充的可排线别" sortable />
+          <el-table-column prop="above_connecting_points" width="160" label="联板点数[以上]" />
+          <el-table-column prop="under_single_points" label="单板点数[以下]" width="160" />
+          <el-table-column prop="above_connecting_plates" label="联板数[以上]" width="160" />
+          <el-table-column prop="add_feasible_line" label="补充的可排线别" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button

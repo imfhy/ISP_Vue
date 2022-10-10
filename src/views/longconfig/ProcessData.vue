@@ -44,18 +44,38 @@
           id="mytable"
           v-loading="loading"
           :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
+          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
           max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="line" label="线别" width="120" sortable />
-          <el-table-column prop="start_time" label="开始时间" width="120" />
-          <el-table-column prop="end_time" label="结束时间" width="120" />
-          <el-table-column prop="capacity_change" label="产能修改比例" width="120" />
-          <el-table-column prop="remark" label="备注" />
+          <el-table-column prop="name" label="制程" width="90" sortable />
+          <el-table-column prop="TB" label="面" width="50" />
+          <el-table-column prop="paired_process" label="配对制程名" width="100" />
+          <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)" width="240" />
+          <el-table-column prop="grouping_factor_hour" label="二块工单控制大小(时)" width="170" />
+          <el-table-column prop="grouping_factor_overtime" label="第三块划分参数(天)" width="160" />
+          <el-table-column prop="grouping_combination_flag" label="第三块是否可并" width="130">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.grouping_combination_flag === 1" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.grouping_combination_flag === 0" size="small" type="danger">否</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可并" width="230">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.first_second_combination_flag === 1" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.first_second_combination_flag === 0" size="small" type="danger">否</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
+          <el-table-column prop="is_point" label="是否按点数" width="110">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_point === true" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.is_point === false" size="small" type="danger">否</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -95,33 +115,68 @@
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
-      <el-form ref="$form" :model="model" label-position="left" size="small">
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.line" prop="line" label="线别">
-              <el-input v-model="model.line" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.capacity_change" prop="capacity_change" label="产能修改比例">
-              <el-input-number v-model="model.capacity_change" placeholder="请输入" step="0.01" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item :rules="rules.remark" prop="remark" label="备注">
-          <el-input v-model="model.remark" placeholder="请输入" :rows="2" type="textarea" clearable />
-        </el-form-item>
-      </el-form>
+      <el-card class="card-form" shadow="never">
+        <el-form ref="$form" :model="model" label-position="left" size="small">
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.name" prop="name" label="制程">
+                <el-input v-model="model.name" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.TB" prop="TB" label="面">
+                <el-select v-model="model.TB" placeholder="Top面/Button面/Single面" :style="{width: '100%'}">
+                  <el-option v-for="(item) in TBOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.paired_process" prop="paired_process" label="配对制程名">
+                <el-input v-model="model.paired_process" placeholder="对应的另一面，如果是单面则为空" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_day" prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)">
+                <el-input-number v-model="model.grouping_factor_day" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_hour" prop="grouping_factor_hour" label="第二块工单控制大小(时)">
+                <el-input-number v-model="model.grouping_factor_hour" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_factor_overtime" prop="grouping_factor_overtime" label="第三块划分参数(天)">
+                <el-input-number v-model="model.grouping_factor_overtime" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.grouping_combination_flag" prop="grouping_combination_flag" label="第三块是否可并">
+                <el-input v-model="model.grouping_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.first_second_combination_flag" prop="first_second_combination_flag" label="没有第三块时，前两块是否可并">
+                <el-input v-model="model.first_second_combination_flag" placeholder="0否,1是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.buffer_time" prop="buffer_time" label="上下板间隔时间">
+                <el-input-number v-model="model.buffer_time" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_point" prop="is_point" label="是否按点数">
+                <el-switch v-model="model.is_point" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
@@ -159,11 +214,16 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="line" label="线别" width="120" />
-        <el-table-column prop="start_time" label="开始时间" width="120" />
-        <el-table-column prop="end_time" label="结束时间" width="120" />
-        <el-table-column prop="capacity_change" label="产能修改比例" width="120" />
-        <el-table-column prop="remark" label="备注" />
+        <el-table-column prop="name" label="制程名" width="90" />
+        <el-table-column prop="TB" label="面" width="60" />
+        <el-table-column prop="paired_process" label="配对制程名" width="100" />
+        <el-table-column prop="grouping_factor_day" label="第一块和第二块工单划分参数(天)" width="240" />
+        <el-table-column prop="grouping_factor_hour" label="第二块工单控制大小(时)" width="190" />
+        <el-table-column prop="grouping_factor_overtime" label="第三块划分参数(天)" width="160" />
+        <el-table-column prop="grouping_combination_flag" label="第三块是否可并(0否,1是)" width="180" />
+        <el-table-column prop="first_second_combination_flag" label="没有第三块时，前两块是否可并(0否,1是)" width="280" />
+        <el-table-column prop="buffer_time" label="上下板间隔时间" width="130" />
+        <el-table-column prop="is_point" label="是否按点数" width="110" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -225,7 +285,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/CapacityChangeData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/ProcessData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -240,17 +300,27 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          line: 'SM01',
-          start_time: '2021-08-12',
-          end_time: '2021-09-19',
-          capacity_change: 0.75,
-          remark: 'SM01在2021年8月12日和2021年9月19日中产能为原先产能的75%'
+          name: 'T',
+          TB: 'T',
+          paired_process: 'B',
+          grouping_factor_day: 2.0,
+          grouping_factor_hour: 0.0,
+          grouping_factor_overtime: 4.0,
+          grouping_combination_flag: 1,
+          first_second_combination_flag: 0,
+          is_point: 'TRUE',
+          buffer_time: 8.0
         }, {
-          line: '(必填)',
-          start_time: '(必填)',
-          end_time: '(必填)',
-          capacity_change: '(必填)',
-          remark: '(必填)'
+          name: '(必填)',
+          TB: '(必填)',
+          paired_process: '(必填)',
+          grouping_factor_day: '(必填)',
+          grouping_factor_hour: '(必填)',
+          grouping_factor_overtime: '(必填)',
+          grouping_combination_flag: '(必填)',
+          first_second_combination_flag: '(必填)',
+          is_point: '(必填)',
+          buffer_time: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -272,45 +342,80 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        line: '',
-        start_time: '',
-        end_time: '',
-        capacity_change: 0,
-        remark: ''
+        name: '',
+        TB: '',
+        paired_process: '',
+        grouping_factor_day: 0,
+        grouping_factor_hour: 0,
+        grouping_factor_overtime: 0,
+        grouping_combination_flag: '',
+        first_second_combination_flag: '',
+        is_point: '',
+        buffer_time: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        line: '',
-        start_time: '',
-        end_time: '',
-        capacity_change: 0,
-        remark: ''
+        name: '',
+        TB: '',
+        paired_process: '',
+        grouping_factor_day: 0,
+        grouping_factor_hour: 0,
+        grouping_factor_overtime: 0,
+        grouping_combination_flag: '',
+        first_second_combination_flag: '',
+        is_point: '',
+        buffer_time: 0
       },
       rules: {
-        line: [{
+        name: [{
           required: true,
-          message: '线别不能为空',
+          message: '制程不能为空',
           trigger: 'blur'
         }],
-        start_time: [{
+        TB: [{
           required: true,
-          message: '开始时间不能为空',
+          message: '面不能为空',
           trigger: 'change'
         }],
-        end_time: [{
+        paired_process: [{
           required: true,
-          message: '结束时间不能为空',
-          trigger: 'change'
-        }],
-        capacity_change: [{
-          required: true,
-          message: 'capacity_change不能为空',
+          message: '配对制程名不能为空',
           trigger: 'blur'
         }],
-        remark: [{
+        grouping_factor_day: [{
           required: true,
-          message: '备注不能为空',
+          message: '第一块和第二块工单划分参数(天)不能为空',
+          trigger: 'blur'
+        }],
+        grouping_factor_hour: [{
+          required: true,
+          message: '第二块工单控制大小(时)不能为空',
+          trigger: 'blur'
+        }],
+        grouping_factor_overtime: [{
+          required: true,
+          message: '第三块划分参数(天)不能为空',
+          trigger: 'blur'
+        }],
+        grouping_combination_flag: [{
+          required: true,
+          message: '第三块是否可并不能为空',
+          trigger: 'blur'
+        }],
+        first_second_combination_flag: [{
+          required: true,
+          message: '没有第三块时，前两块是否可并不能为空',
+          trigger: 'blur'
+        }],
+        is_point: [{
+          required: true,
+          message: '是否按点数不能为空',
+          trigger: 'blur'
+        }],
+        buffer_time: [{
+          required: true,
+          message: '上下板间隔时间不能为空',
           trigger: 'blur'
         }]
       },
@@ -319,7 +424,12 @@ export default {
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
       pageSize: 20, // 每页多少条数据
-      dataTableSelections: [] // 表格选中的数据
+      dataTableSelections: [], // 表格选中的数据
+      TBOptions: [
+        { label: 'T', value: 'T' },
+        { label: 'B', value: 'B' },
+        { label: 'S', value: 'S' }
+      ]
     }
   },
   computed: {
@@ -340,9 +450,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 4) {
+      if (rowIndex === 1 && columnIndex <= 20) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 4) {
+      } else if (rowIndex === 1 && columnIndex > 20) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -396,7 +506,7 @@ export default {
               })
               setTimeout(() => {
                 this.closeFormDialog()
-              }, 1000)
+              }, 2000)
               this.refreshTableData(true)
             }
           })
@@ -554,7 +664,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['line'] = row.line
+        data['name'] = row.name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
@@ -616,7 +726,7 @@ export default {
           // 1秒后自动关闭窗口
           setTimeout(() => {
             this.handleImportClose()
-          }, 1000)
+          }, 2000)
           this.refreshTableData(true)
         }
       })
@@ -676,7 +786,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/CapacityChangeData.scss';
+  @import '../../assets/css/longconfig/ProcessData.scss';
 </style>
 <style>
 .btnDanger{

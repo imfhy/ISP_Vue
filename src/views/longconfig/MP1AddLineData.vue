@@ -52,8 +52,8 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="process" label="制程" sortable />
-          <el-table-column prop="under_single_points" label="单板点数[以下]" sortable />
-          <el-table-column prop="add_feasible_line" label="补充的可排线别" sortable />
+          <el-table-column prop="under_single_points" label="单板点数[以下]" />
+          <el-table-column prop="add_feasible_line" label="补充的可排线别" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button

@@ -44,18 +44,17 @@
           id="mytable"
           v-loading="loading"
           :data="table_data"
-          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '5px'}"
+          :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
           max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="line" label="线别" width="120" sortable />
-          <el-table-column prop="start_time" label="开始时间" width="120" />
-          <el-table-column prop="end_time" label="结束时间" width="120" />
-          <el-table-column prop="capacity_change" label="产能修改比例" width="120" />
-          <el-table-column prop="remark" label="备注" />
+          <el-table-column prop="line" label="线别" sortable />
+          <el-table-column prop="big_setup" label="大切换" />
+          <el-table-column prop="small_setup" label="小切换" />
+          <el-table-column prop="setup_program" label="切软体" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -103,24 +102,21 @@
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.big_setup" prop="big_setup" label="大切换">
+              <el-input-number v-model="model.big_setup" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.small_setup" prop="small_setup" label="小切换">
+              <el-input-number v-model="model.small_setup" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.capacity_change" prop="capacity_change" label="产能修改比例">
-              <el-input-number v-model="model.capacity_change" placeholder="请输入" step="0.01" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.setup_program" prop="setup_program" label="切软体">
+              <el-input-number v-model="model.setup_program" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item :rules="rules.remark" prop="remark" label="备注">
-          <el-input v-model="model.remark" placeholder="请输入" :rows="2" type="textarea" clearable />
-        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
@@ -159,11 +155,10 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="line" label="线别" width="120" />
-        <el-table-column prop="start_time" label="开始时间" width="120" />
-        <el-table-column prop="end_time" label="结束时间" width="120" />
-        <el-table-column prop="capacity_change" label="产能修改比例" width="120" />
-        <el-table-column prop="remark" label="备注" />
+        <el-table-column prop="line" label="线别" />
+        <el-table-column prop="big_setup" label="大切换" />
+        <el-table-column prop="small_setup" label="小切换" />
+        <el-table-column prop="setup_program" label="切软体" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -225,7 +220,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/CapacityChangeData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/SetUpData'
 import { LineOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -241,16 +236,14 @@ export default {
       tableDataExample: [
         {
           line: 'SM01',
-          start_time: '2021-08-12',
-          end_time: '2021-09-19',
-          capacity_change: 0.75,
-          remark: 'SM01在2021年8月12日和2021年9月19日中产能为原先产能的75%'
+          big_setup: 45.0,
+          small_setup: 36.0,
+          setup_program: 20.0
         }, {
           line: '(必填)',
-          start_time: '(必填)',
-          end_time: '(必填)',
-          capacity_change: '(必填)',
-          remark: '(必填)'
+          big_setup: '(必填)',
+          small_setup: '(必填)',
+          setup_program: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -273,19 +266,17 @@ export default {
       model: {
         id: '',
         line: '',
-        start_time: '',
-        end_time: '',
-        capacity_change: 0,
-        remark: ''
+        big_setup: 0,
+        small_setup: 0,
+        setup_program: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
         line: '',
-        start_time: '',
-        end_time: '',
-        capacity_change: 0,
-        remark: ''
+        big_setup: 0,
+        small_setup: 0,
+        setup_program: 0
       },
       rules: {
         line: [{
@@ -293,24 +284,19 @@ export default {
           message: '线别不能为空',
           trigger: 'blur'
         }],
-        start_time: [{
+        big_setup: [{
           required: true,
-          message: '开始时间不能为空',
-          trigger: 'change'
-        }],
-        end_time: [{
-          required: true,
-          message: '结束时间不能为空',
-          trigger: 'change'
-        }],
-        capacity_change: [{
-          required: true,
-          message: 'capacity_change不能为空',
+          message: '大切换不能为空',
           trigger: 'blur'
         }],
-        remark: [{
+        small_setup: [{
           required: true,
-          message: '备注不能为空',
+          message: '小切换不能为空',
+          trigger: 'blur'
+        }],
+        setup_program: [{
+          required: true,
+          message: '切软体不能为空',
           trigger: 'blur'
         }]
       },
@@ -340,9 +326,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 4) {
+      if (rowIndex === 1 && columnIndex <= 3) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 4) {
+      } else if (rowIndex === 1 && columnIndex > 3) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -533,14 +519,8 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        var isNum = /^[0-9]+.?[0-9]*/
-        if (isNum.test(this.model[key])) { // 数字要初始化为0
-          this.model[key] = 0
-          this.modelOriginal[key] = 0
-        } else {
-          this.model[key] = ''
-          this.modelOriginal[key] = ''
-        }
+        this.model[key] = ''
+        this.modelOriginal[key] = ''
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
@@ -676,7 +656,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/CapacityChangeData.scss';
+  @import '../../assets/css/longconfig/SetUpData.scss';
 </style>
 <style>
 .btnDanger{

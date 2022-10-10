@@ -52,7 +52,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="ct" label="CT" sortable />
+          <el-table-column prop="ct" label="CT" width="120" ortable />
           <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" sortable />
           <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" sortable />
           <el-table-column width="110" fixed="right" label="操作">
