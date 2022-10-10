@@ -48,6 +48,24 @@ const longconfigRouter = {
         title: '交换线别表',
         roles: ['admin']
       }
+    },
+    {
+      path: 'linedata',
+      component: () => import('@/views/longconfig/LineData'),
+      name: 'LineData',
+      meta: {
+        title: '产线配置表',
+        roles: ['admin']
+      }
+    },
+    {
+      path: 'capacitychangedata',
+      component: () => import('@/views/longconfig/CapacityChangeData'),
+      name: 'CapacityChangeData',
+      meta: {
+        title: '产能变化表',
+        roles: ['admin']
+      }
     }
   ]
 }

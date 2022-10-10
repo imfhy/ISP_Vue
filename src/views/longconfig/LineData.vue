@@ -51,10 +51,87 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="ct" label="CT" sortable />
-          <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" sortable />
-          <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" sortable />
+          <el-table-column prop="name" label="产线名字" width="110" sortable />
+          <el-table-column prop="min_threshold" label="最低生产阈值" width="110" />
+          <el-table-column prop="max_threshold" label="最高生产阈值" width="110" />
+          <!-- <el-table-column prop="is_points" label="是否按点分大中小工单" width="170" /> -->
+          <!-- <el-table-column prop="big_able" label="可否大工单" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.big_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.big_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="middle_able" label="可否中工单" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.middle_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.middle_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="small_able" label="可否小工单" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.small_able === 1" size="small" type="success">✔</el-tag>
+              <el-tag v-else-if="scope.row.small_able === 0" size="small" type="info">×</el-tag>
+            </template>
+          </el-table-column> -->
+          <!-- <el-table-column prop="offset_threshold" label="阈值偏差" width="85" /> -->
+          <el-table-column prop="T_unable" label="可否制程T" width="95">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.T_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.T_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="B_unable" label="可否制程B" width="95">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.B_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.B_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="T_BPR_unable" label="可否制程T-BPR" width="125">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.T_BPR_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.T_BPR_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="B_BPR_unable" label="可否制程B-BPR" width="130">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.B_BPR_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.B_BPR_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="S_BPR_unable" label="可否制程S-BPR" width="130">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.S_BPR_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.S_BPR_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.S_BPR_M_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.S_BPR_M_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="S_unable" label="可否制程S" width="95">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.S_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.S_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.S_THR_unable === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.S_THR_unable === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="is_burn_in" label="是否烧录" width="85">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_burn_in === 1" size="small" type="info">×</el-tag>
+              <el-tag v-else-if="scope.row.is_burn_in === 0" size="small" type="success">✔</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="capacity" label="日产能" width="80" /> -->
+          <el-table-column prop="config_class" label="配置类型" width="85" />
+          <el-table-column prop="program_class" label="程序类型" width="85" />
+          <el-table-column prop="balance_class" label="线平衡类型" width="100" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -94,52 +171,151 @@
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
     >
-      <el-form ref="$form" :model="model" label-position="left" size="small">
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.machine_name" prop="machine_name" label="机种名">
-              <el-input v-model="model.machine_name" placeholder="请输入" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.ct" prop="ct" label="CT">
-              <el-input-number v-model="model.ct" placeholder="请输入" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.trial_run_timedelta" prop="trial_run_timedelta" label="试跑工单停线时间">
-              <el-input-number v-model="model.trial_run_timedelta" placeholder="请输入" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.batch_production_timedelta" prop="batch_production_timedelta" label="量产工单停线时间">
-              <el-input-number v-model="model.batch_production_timedelta" placeholder="请输入" :style="{width: '100%'}" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
-              <el-input v-model="model.CREATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
-              <el-input v-model="model.CREATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
-              <el-input v-model="model.UPDATED_BY" disabled />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
-              <el-input v-model="model.UPDATED_TIME" disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+      <el-card class="card-form" shadow="never">
+        <el-form ref="$form" :model="model" label-position="left" size="small">
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.name" prop="name" label="产线名字">
+                <el-input v-model="model.name" placeholder="请输入" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_points" prop="is_points" label="是否按点分大中小工单">
+                <el-input v-model="model.is_points" placeholder="1按点数，0按工单量区分大中小工单" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.capacity" prop="capacity" label="日产能">
+                <el-input-number v-model="model.capacity" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.config_class" prop="config_class" label="配置类型">
+                <el-input v-model="model.config_class" placeholder="请输入数字" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.program_class" prop="program_class" label="程序类型">
+                <el-input v-model="model.program_class" placeholder="请输入数字" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.balance_class" prop="balance_class" label="线平衡类型">
+                <el-input v-model="model.balance_class" placeholder="请输入数字" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.big_able" prop="big_able" label="可否大工单">
+                <el-input v-model="model.big_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.middle_able" prop="middle_able" label="可否中工单">
+                <el-input v-model="model.middle_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.small_able" prop="small_able" label="可否小工单">
+                <el-input v-model="model.small_able" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.min_threshold" prop="min_threshold" label="最低生产阈值">
+                <el-input-number v-model="model.min_threshold" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.max_threshold" prop="max_threshold" label="最高生产阈值">
+                <el-input-number v-model="model.max_threshold" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.offset_threshold" prop="offset_threshold" label="阈值偏差">
+                <el-input-number v-model="model.offset_threshold" placeholder="请输入" :style="{width: '100%'}" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.T_unable" prop="T_unable" label="可否制程T">
+                <el-input v-model="model.T_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.B_unable" prop="B_unable" label="可否制程B">
+                <el-input v-model="model.B_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.T_BPR_unable" prop="T_BPR_unable" label="可否制程T-BPR">
+                <el-input v-model="model.T_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.B_BPR_unable" prop="B_BPR_unable" label="可否制程B-BPR">
+                <el-input v-model="model.B_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.S_BPR_unable" prop="S_BPR_unable" label="可否制程S-BPR">
+                <el-input v-model="model.S_BPR_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.S_BPR_M_unable" prop="S_BPR_M_unable" label="可否制程S-BPR-M">
+                <el-input v-model="model.S_BPR_M_unable" placeholder="1表示否。0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.S_unable" prop="S_unable" label="可否制程S">
+                <el-input v-model="model.S_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.S_THR_unable" prop="S_THR_unable" label="可否制程S-THR">
+                <el-input v-model="model.S_THR_unable" placeholder="1表示否，0表示是" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_burn_in" prop="is_burn_in" label="是否烧录">
+                <el-input v-model="model.is_burn_in" placeholder="1表示是，0表示否" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CREATED_BY" prop="CREATED_BY" label="创建人">
+                <el-input v-model="model.CREATED_BY" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CREATED_TIME" prop="CREATED_TIME" label="创建时间">
+                <el-input v-model="model.CREATED_TIME" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.UPDATED_BY" prop="UPDATED_BY" label="修改人">
+                <el-input v-model="model.UPDATED_BY" disabled />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.UPDATED_TIME" prop="UPDATED_TIME" label="修改时间">
+                <el-input v-model="model.UPDATED_TIME" disabled />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
         <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
@@ -177,10 +353,27 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="machine_name" label="机种名" />
-        <el-table-column prop="ct" label="CT" />
-        <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" />
-        <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" />
+        <el-table-column prop="name" label="产线名字" width="110" />
+        <el-table-column prop="is_points" label="是否按点分大中小工单" width="170" />
+        <el-table-column prop="config_class" label="配置类型" width="85" />
+        <el-table-column prop="program_class" label="程序类型" width="85" />
+        <el-table-column prop="balance_class" label="线平衡类型" width="100" />
+        <el-table-column prop="big_able" label="可否大工单" width="100" />
+        <el-table-column prop="middle_able" label="可否中工单" width="100" />
+        <el-table-column prop="small_able" label="可否小工单" width="100" />
+        <el-table-column prop="min_threshold" label="最低生产阈值" width="110" />
+        <el-table-column prop="max_threshold" label="最高生产阈值" width="110" />
+        <el-table-column prop="offset_threshold" label="阈值偏差" width="85" />
+        <el-table-column prop="T_unable" label="可否制程T" width="95" />
+        <el-table-column prop="B_unable" label="可否制程B" width="95" />
+        <el-table-column prop="T_BPR_unable" label="可否制程T-BPR" width="125" />
+        <el-table-column prop="B_BPR_unable" label="可否制程B-BPR" width="130" />
+        <el-table-column prop="S_BPR_unable" label="可否制程S-BPR" width="130" />
+        <el-table-column prop="S_BPR_M_unable" label="可否制程S-BPR-M" width="145" />
+        <el-table-column prop="S_unable" label="可否制程S" width="95" />
+        <el-table-column prop="S_THR_unable" label="可否制程S-THR" width="130" />
+        <el-table-column prop="is_burn_in" label="是否烧录" width="85" />
+        <el-table-column prop="capacity" label="日产能" width="80" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -196,7 +389,7 @@
               name="file"
               class="upload-demo"
               accept=".xlsx"
-              action="http://localhost:9527/sqyapi/config/blocktimedata/import_data/"
+              action=""
               :on-change="handleChange"
               :auto-upload="false"
               :show-file-list="true"
@@ -257,15 +450,49 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          machine_name: 'MLPD1XLA443AEZSMT',
-          ct: 290,
-          trial_run_timedelta: 3,
-          batch_production_timedelta: 2
+          name: 'SR09',
+          is_points: 1,
+          capacity: 0,
+          config_class: 1,
+          program_class: 1,
+          balance_class: 1,
+          big_able: 1,
+          middle_able: 1,
+          small_able: 0,
+          min_threshold: 0,
+          max_threshold: 0,
+          offset_threshold: 0,
+          T_unable: 0,
+          B_unable: 1,
+          T_BPR_unable: 0,
+          B_BPR_unable: 1,
+          S_BPR_unable: 0,
+          S_BPR_M_unable: 1,
+          S_unable: 0,
+          S_THR_unable: 1,
+          is_burn_in: 0
         }, {
-          machine_name: '(必填)',
-          ct: '(必填)',
-          trial_run_timedelta: '(必填)',
-          batch_production_timedelta: '(必填)'
+          name: '(必填)',
+          is_points: '(必填)',
+          capacity: '(必填)',
+          config_class: '(必填)',
+          program_class: '(必填)',
+          balance_class: '(必填)',
+          big_able: '(必填)',
+          middle_able: '(必填)',
+          small_able: '(必填)',
+          min_threshold: '(必填)',
+          max_threshold: '(必填)',
+          offset_threshold: '(必填)',
+          T_unable: '(必填)',
+          B_unable: '(必填)',
+          T_BPR_unable: '(必填)',
+          B_BPR_unable: '(必填)',
+          S_BPR_unable: '(必填)',
+          S_BPR_M_unable: '(必填)',
+          S_unable: '(必填)',
+          S_THR_unable: '(必填)',
+          is_burn_in: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -287,10 +514,27 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
+        name: '',
+        is_points: '',
+        capacity: 0,
+        config_class: '',
+        program_class: '',
+        balance_class: '',
+        big_able: '',
+        middle_able: '',
+        small_able: '',
+        min_threshold: 0,
+        max_threshold: 0,
+        offset_threshold: 0,
+        T_unable: '',
+        B_unable: '',
+        T_BPR_unable: '',
+        B_BPR_unable: '',
+        S_BPR_unable: '',
+        S_BPR_M_unable: '',
+        S_unable: '',
+        S_THR_unable: '',
+        is_burn_in: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -299,34 +543,136 @@ export default {
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        machine_name: '',
-        ct: 0,
-        trial_run_timedelta: 0,
-        batch_production_timedelta: 0,
+        name: '',
+        is_points: '',
+        capacity: 0,
+        config_class: '',
+        program_class: '',
+        balance_class: '',
+        big_able: '',
+        middle_able: '',
+        small_able: '',
+        min_threshold: 0,
+        max_threshold: 0,
+        offset_threshold: 0,
+        T_unable: '',
+        B_unable: '',
+        T_BPR_unable: '',
+        B_BPR_unable: '',
+        S_BPR_unable: '',
+        S_BPR_M_unable: '',
+        S_unable: '',
+        S_THR_unable: '',
+        is_burn_in: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
         UPDATED_TIME: ''
       },
       rules: {
-        machine_name: [{
+        name: [{
           required: true,
-          message: '机种名不能为空',
+          message: '产线名字不能为空',
           trigger: 'blur'
         }],
-        ct: [{
+        is_points: [{
           required: true,
-          message: 'CT不能为空',
+          message: '是否按点分大中小工单不能为空',
           trigger: 'blur'
         }],
-        trial_run_timedelta: [{
+        capacity: [{
           required: true,
-          message: '试跑工单停线时间不能为空',
+          message: '日产能不能为空',
           trigger: 'blur'
         }],
-        batch_production_timedelta: [{
+        config_class: [{
           required: true,
-          message: '量产工单停线时间不能为空',
+          message: '配置类型不能为空',
+          trigger: 'blur'
+        }],
+        program_class: [{
+          required: true,
+          message: '程序类型不能为空',
+          trigger: 'blur'
+        }],
+        balance_class: [{
+          required: true,
+          message: '线平衡类型不能为空',
+          trigger: 'blur'
+        }],
+        big_able: [{
+          required: true,
+          message: '可否大工单不能为空',
+          trigger: 'blur'
+        }],
+        middle_able: [{
+          required: true,
+          message: '可否中工单不能为空',
+          trigger: 'blur'
+        }],
+        small_able: [{
+          required: true,
+          message: '可否小工单不能为空',
+          trigger: 'blur'
+        }],
+        min_threshold: [{
+          required: true,
+          message: '最低生产阈值不能为空',
+          trigger: 'blur'
+        }],
+        max_threshold: [{
+          required: true,
+          message: '最高生产阈值不能为空',
+          trigger: 'blur'
+        }],
+        offset_threshold: [{
+          required: true,
+          message: '阈值偏差不能为空',
+          trigger: 'blur'
+        }],
+        T_unable: [{
+          required: true,
+          message: '可否制程T不能为空',
+          trigger: 'blur'
+        }],
+        B_unable: [{
+          required: true,
+          message: '可否制程B不能为空',
+          trigger: 'blur'
+        }],
+        T_BPR_unable: [{
+          required: true,
+          message: '可否制程T-BPR不能为空',
+          trigger: 'blur'
+        }],
+        B_BPR_unable: [{
+          required: true,
+          message: '可否制程B-BPR不能为空',
+          trigger: 'blur'
+        }],
+        S_BPR_unable: [{
+          required: true,
+          message: '可否制程S-BPR不能为空',
+          trigger: 'blur'
+        }],
+        S_BPR_M_unable: [{
+          required: true,
+          message: '可否制程S-BPR-M不能为空',
+          trigger: 'blur'
+        }],
+        S_unable: [{
+          required: true,
+          message: '可否制程S不能为空',
+          trigger: 'blur'
+        }],
+        S_THR_unable: [{
+          required: true,
+          message: '可否制程S-THR不能为空',
+          trigger: 'blur'
+        }],
+        is_burn_in: [{
+          required: true,
+          message: '是否烧录不能为空',
           trigger: 'blur'
         }]
       },
@@ -356,9 +702,9 @@ export default {
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 1 && columnIndex <= 3) {
+      if (rowIndex === 1 && columnIndex <= 20) {
         return 'color: #F56C6C;font-weight: bold;'
-      } else if (rowIndex === 1 && columnIndex > 3) {
+      } else if (rowIndex === 1 && columnIndex > 20) {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
@@ -549,8 +895,14 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        this.model[key] = ''
-        this.modelOriginal[key] = ''
+        var isNum = /^[0-9]+.?[0-9]*/
+        if (isNum.test(this.model[key])) { // 数字要初始化为0
+          this.model[key] = 0
+          this.modelOriginal[key] = 0
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
@@ -564,7 +916,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['machine_name'] = row.machine_name
+        data['name'] = row.name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {

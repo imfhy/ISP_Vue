@@ -58,7 +58,7 @@
           <el-table-column prop="flag" label="手动修改锁定时间" width="200">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
-              <el-tag v-else-if="scope.row.flag === false" size="small" type="danger">关闭</el-tag>
+              <el-tag v-else-if="scope.row.flag === false" size="small" type="info">关闭</el-tag>
             </template>
           </el-table-column>
           <el-table-column width="110" fixed="right" label="操作">
@@ -212,7 +212,7 @@
               name="file"
               class="upload-demo"
               accept=".xlsx"
-              action="http://localhost:9527/sqyapi/config/blocktimedata/import_data/"
+              action=""
               :on-change="handleChange"
               :auto-upload="false"
               :show-file-list="true"

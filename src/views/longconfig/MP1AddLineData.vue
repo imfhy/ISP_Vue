@@ -167,7 +167,7 @@
               name="file"
               class="upload-demo"
               accept=".xlsx"
-              action="http://localhost:9527/sqyapi/config/blocktimedata/import_data/"
+              action=""
               :on-change="handleChange"
               :auto-upload="false"
               :show-file-list="true"
