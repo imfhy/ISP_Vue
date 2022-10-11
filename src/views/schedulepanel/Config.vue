@@ -2,7 +2,7 @@
   <div id="main">
     <el-card>
       <div>
-        <el-descriptions class="margin-top" title="参数配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
+        <el-descriptions class="margin-top" title="排程配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
@@ -125,7 +125,7 @@
     <el-dialog
       v-el-drag-dialog
       :visible.sync="dialogVisible"
-      title="修改参数配置"
+      title="修改排程配置"
       width="70%"
       :before-close="handleFormClose"
       @dragDialog="handleDrag"
@@ -370,7 +370,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
-import { GetTableData, ModifyData } from '@/api/schedule/Config'
+import { GetTableData, ModifyData } from '@/api/schedulepanel/Config'
 export default {
   directives: { elDragDialog },
   data() {
@@ -784,7 +784,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/schedule/Config.scss';
+  @import '../../assets/css/schedulepanel/Config.scss';
 </style>
 <style>
 .card-form .el-card__body{

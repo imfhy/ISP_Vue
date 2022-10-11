@@ -96,23 +96,23 @@ export const asyncRoutes = [
     alwaysShow: true,
     name: 'SchedulePanel',
     meta: {
-      title: '主板排程',
+      title: '排程面板',
       icon: 'component',
       roles: ['admin', 'editor']
     },
     children: [
       {
         path: 'control',
-        component: () => import('@/views/schedule/Control'),
+        component: () => import('@/views/schedulepanel/Control'),
         name: 'Control',
         meta: {
-          title: '控制面板',
+          title: '控制中心',
           roles: ['admin']
         }
       },
       {
         path: 'onlinetable',
-        component: () => import('@/views/schedule/OnlineTable'),
+        component: () => import('@/views/schedulepanel/OnlineTable'),
         name: 'OnlineTable',
         meta: {
           title: '在线表格',
@@ -121,10 +121,10 @@ export const asyncRoutes = [
       },
       {
         path: 'config',
-        component: () => import('@/views/schedule/Config'),
+        component: () => import('@/views/schedulepanel/Config'),
         name: 'Config',
         meta: {
-          title: '参数配置',
+          title: '排程配置',
           roles: ['admin']
         }
       }

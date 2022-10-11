@@ -335,7 +335,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
-import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedule/Control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedulepanel/Control'
 export default {
   data() {
     return {
@@ -738,7 +738,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/schedule/Control.scss';
+  @import '../../assets/css/schedulepanel/Control.scss';
 </style>
 <style>
 .my-table .el-table th.is-leaf{

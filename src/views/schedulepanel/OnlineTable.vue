@@ -286,7 +286,7 @@ import { mapGetters } from 'vuex'
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedule/OnlineTable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedulepanel/OnlineTable'
 export default {
   data() {
     return {
@@ -909,7 +909,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/schedule/OnlineTable.scss';
+  @import '../../assets/css/schedulepanel/OnlineTable.scss';
 </style>
 <style>
 .card-control .el-card__body{

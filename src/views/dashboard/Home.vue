@@ -29,7 +29,7 @@
               <div @click="toConfig">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-setting" /></span>
-                  <span style="margin-left: 10px;">查看参数配置</span>
+                  <span style="margin-left: 10px;">查看排程配置</span>
                 </el-card>
               </div>
             </el-col>
