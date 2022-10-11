@@ -115,7 +115,7 @@ export default {
         label: 'Error'
       }],
       levelValue: '', // 搜索level
-      isSearch: false // true
+      isSearch: false
     }
   },
   created() {
@@ -133,7 +133,7 @@ export default {
     // 分页
     handlePageChange(val) {
       this.currentPage = val
-      this.getTableData(val, this.pageSize, this.isSearch, this.isSearch) // 翻页
+      this.getTableData(val, this.pageSize, this.isSearch) // 翻页
     },
     // 分页展示表格数据
     getTableData(currentPage, pageSize, isSearch) {

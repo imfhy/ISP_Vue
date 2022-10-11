@@ -62,11 +62,13 @@
       <div id="luckysheet" class="my-luckysheet" />
     </el-card>
     <el-dialog
+      v-el-drag-dialog
       title="分析排程"
       :visible.sync="analysisDialogVisible"
       width="60%"
       :before-close="handleCloseAnalysis"
       class="dialog-analysis"
+      @dragDialog="handleDrag"
     >
       <el-steps :active="stepNow" finish-status="success" simple>
         <el-step title="检查表格" />
@@ -286,8 +288,10 @@ import { mapGetters } from 'vuex'
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
+import elDragDialog from '@/directive/el-drag-dialog'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedulepanel/OnlineTable'
 export default {
+  directives: { elDragDialog },
   data() {
     return {
       uploadFileName: '', // 上传的文件名
@@ -348,6 +352,10 @@ export default {
     this.initLuckysheet()
   },
   methods: {
+    // dialog可拖拽
+    handleDrag() {
+      this.$refs.select.blur()
+    },
     // 初始化luckysheet
     initLuckysheet() {
       const options = {
@@ -760,7 +768,7 @@ export default {
     },
     // 是否关闭分析排程
     handleCloseAnalysis() {
-      this.$confirm('请确认是否要关闭分析排程窗口？', '提示', {
+      this.$confirm('确认关闭分析排程窗口？', '提示', {
         type: 'warning',
         confirmButtonText: '确认',
         cancelButtonText: '取消'
@@ -770,7 +778,7 @@ export default {
     },
     // 是否关闭量化结果
     handleCloseStatistics() {
-      this.$confirm('请确认是否要关闭量化窗口？', '提示', {
+      this.$confirm('确认关闭量化窗口？', '提示', {
         type: 'warning',
         confirmButtonText: '确认',
         cancelButtonText: '取消'

@@ -27,11 +27,11 @@
           <el-descriptions-item label="锁定时间节点内的idle权重" :span="4">{{ modelOriginal.lock_time_idle_weight }}</el-descriptions-item>
 
           <el-descriptions-item label="是否开启全部包装放假">
-            <el-tag v-if="modelOriginal.pack_holiday_flag === true" size="small">开启</el-tag>
+            <el-tag v-if="modelOriginal.pack_holiday_flag === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.pack_holiday_flag === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="是否开启部分包装线放假">
-            <el-tag v-if="modelOriginal.packline_holiday_flag === true" size="small">开启</el-tag>
+            <el-tag v-if="modelOriginal.packline_holiday_flag === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.packline_holiday_flag === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="放假日期" :span="2">
@@ -81,10 +81,10 @@
             <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}</el-descriptions-item>
+          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}</el-descriptions-item>
+          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}</el-descriptions-item>
 
           <el-descriptions-item label="是否执行分组">
             <el-tag v-if="modelOriginal.need_dispatch === true" size="small" type="success">开启</el-tag>

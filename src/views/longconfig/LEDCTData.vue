@@ -52,7 +52,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="machine_name" label="机种名" sortable />
-          <el-table-column prop="ct" label="CT" width="120" ortable />
+          <el-table-column prop="ct" label="CT" sortable />
           <el-table-column prop="trial_run_timedelta" label="试跑工单停线时间" sortable />
           <el-table-column prop="batch_production_timedelta" label="量产工单停线时间" sortable />
           <el-table-column width="110" fixed="right" label="操作">
@@ -251,7 +251,7 @@ export default {
       loading: true, // 表格加载动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
@@ -670,7 +670,10 @@ export default {
             message: '本次共导出了 ' + dataCount + ' 条数据',
             type: 'success'
           })
-          this.handleExportClose() // 导出后自动关闭窗口
+          // 1秒后自动关闭窗口
+          setTimeout(() => {
+            this.handleExportClose() // 导出后自动关闭窗口
+          }, 1000)
         }
       })
     },

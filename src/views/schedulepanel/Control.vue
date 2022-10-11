@@ -236,7 +236,7 @@
                 </el-button>
               </div>
               <el-alert
-                title="下载相关"
+                title="其它操作"
                 type="info"
                 :closable="false"
               />
@@ -261,10 +261,12 @@
       </div>
     </el-card>
     <el-dialog
+      v-el-drag-dialog
       title="计算导入排程"
       :visible.sync="computeDialogVisible"
       width="50%"
       :before-close="handleClose"
+      @dragDialog="handleDrag"
     >
       <el-steps :active="stepNow" finish-status="success" simple>
         <el-step title="上传排程" />
@@ -299,7 +301,7 @@
         </el-col>
       </el-row>
       <el-alert
-        title="更新排程信息"
+        title="更新数据"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -307,7 +309,10 @@
       <el-row>
         <el-col :span="24">
           <el-button type="primary">
-            更新钢板程序信息
+            更新钢网信息
+          </el-button>
+          <el-button type="primary">
+            更新程序信息
           </el-button>
           <el-button type="success">
             导出检查
@@ -324,8 +329,8 @@
         开始计算排程
       </el-button>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="computeDialogVisible = false">
-          关 闭
+        <el-button @click="handleClose">
+          关闭
         </el-button>
       </span>
     </el-dialog>
@@ -335,8 +340,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
+import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedulepanel/Control'
 export default {
+  directives: { elDragDialog },
   data() {
     return {
       progressColor: '#02bafd', // 进度条颜色
@@ -380,7 +387,7 @@ export default {
         line_balance: '23.30'
       }],
       progress_refresh: null, // 刷新进度条
-      computeTip: '' // 计算排程按钮左上角的小红标
+      computeTip: '未开始' // 计算排程按钮左上角的小红标
     }
   },
   computed: {
@@ -395,6 +402,10 @@ export default {
     // this.listenProgress()
   },
   methods: {
+    // dialog可拖拽
+    handleDrag() {
+      this.$refs.select.blur()
+    },
     // 监听进度条
     listenProgress() {
       this.progress_refresh = setInterval(() => { // 每隔2秒监听进度条
@@ -405,6 +416,16 @@ export default {
     clearListenProgress() {
       clearInterval(this.progress_refresh)
       this.progress_refresh = null
+    },
+    // 关闭计算排程前提示
+    handleClose() {
+      this.$confirm('确认关闭计算排程窗口？', '提示', {
+        type: 'warning',
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(_ => {
+        this.computeDialogVisible = false
+      }).catch(_ => {})
     },
     // 获取进度条
     getProgress() {

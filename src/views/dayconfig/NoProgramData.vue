@@ -368,7 +368,7 @@ export default {
       loading: true, // 表格加载动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据
@@ -921,7 +921,10 @@ export default {
             message: '本次共导出了 ' + dataCount + ' 条数据',
             type: 'success'
           })
-          this.handleExportClose() // 导出后自动关闭窗口
+          // 1秒后自动关闭窗口
+          setTimeout(() => {
+            this.handleExportClose() // 导出后自动关闭窗口
+          }, 1000)
         }
       })
     },

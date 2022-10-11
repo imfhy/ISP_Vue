@@ -323,8 +323,12 @@ export default {
       loading: true, // 表格加载动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入动画
+      exportLoading: {
+        text: '导出中，请稍等...',
+        background: 'rgba(0, 0, 0, 0.3)'
+      }, // 导出动画
       loadingInstance: null,
       table_data: [], // 表格数据
       tableDataExample: [
@@ -812,6 +816,7 @@ export default {
     },
     // 确认导出
     exportData() {
+      this.loadingInstance = Loading.service(this.exportLoading)
       ExportData().then(res => {
         if (res.code === 20000) {
           const dataCount = res.data_count
@@ -829,7 +834,11 @@ export default {
             message: '本次共导出了 ' + dataCount + ' 条数据',
             type: 'success'
           })
-          this.handleExportClose() // 导出后自动关闭窗口
+          this.loadingInstance.close() // 清除动画
+          // 1秒后自动关闭窗口
+          setTimeout(() => {
+            this.handleExportClose() // 导出后自动关闭窗口
+          }, 1000)
         }
       })
     },

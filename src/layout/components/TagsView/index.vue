@@ -17,10 +17,10 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">刷新</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭当前页面</li>
-      <li @click="closeOthersTags">关闭其他页面</li>
-      <li @click="closeAllTags(selectedTag)">关闭所有页面</li>
+      <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭当前标签</li>
+      <li @click="closeOthersTags">关闭其他标签</li>
+      <li @click="closeAllTags(selectedTag)">关闭所有标签</li>
     </ul>
   </div>
 </template>
