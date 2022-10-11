@@ -50,24 +50,10 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="board" label="板号前八位" width="120" sortable />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" width="200" sortable />
-          <el-table-column prop="line" label="线体" width="80" sortable />
-          <el-table-column prop="line_classify" label="线别类" width="95" sortable />
-          <el-table-column prop="connecting_plates" label="联片数" width="95" sortable />
-          <el-table-column prop="passing_plates" label="过板数" width="95" sortable />
-          <el-table-column prop="single_points" label="单板点数" width="110" sortable />
-          <el-table-column prop="process" label="制程" width="80" sortable />
-          <!-- <el-table-column prop="long" label="长" width="60" />
-          <el-table-column prop="wide" label="宽" width="60" />
-          <el-table-column prop="thick" label="厚" width="60" /> -->
-          <el-table-column prop="completed_quantity" label="产出片数" width="110" sortable />
-          <el-table-column prop="total_points" label="总点数" width="95" sortable />
-          <el-table-column prop="process_time" label="加工时间" width="110" sortable />
-          <el-table-column prop="other_time" label="其他时间" width="110" sortable />
-          <el-table-column prop="program_CT" label="程序CT" width="100" sortable />
-          <el-table-column prop="average_CT" label="平均CT" width="110" sortable />
-          <el-table-column prop="data_time" label="数据时间" width="110" sortable />
+          <el-table-column prop="line" label="线别" sortable />
+          <el-table-column prop="SMT_machine_name" label="SMT机种名" sortable />
+          <el-table-column prop="process" label="制程" sortable />
+          <el-table-column prop="CT" label="指定CT" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -110,108 +96,28 @@
       <el-card class="card-form" shadow="never">
         <el-form ref="$form" :model="model" label-position="left" size="small">
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.board" prop="board" label="板号前八位">
-                <el-input v-model="model.board" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
-                <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line" prop="line" label="线体">
-                <el-select v-model="model.line" placeholder="请选择线体" :style="{width: '100%'}">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.line" prop="line" label="线别">
+                <el-select v-model="model.line" placeholder="请选择线别" :style="{width: '100%'}">
                   <el-option v-for="(item) in lineOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.line_classify" prop="line_classify" label="线别类">
-                <el-input v-model="model.line_classify" placeholder="请输入" clearable />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.SMT_machine_name" prop="SMT_machine_name" label="SMT机种名">
+                <el-input v-model="model.SMT_machine_name" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.process" prop="process" label="制程">
                 <el-select v-model="model.process" placeholder="请选择制程" :style="{width: '100%'}">
                   <el-option v-for="(item) in processOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.connecting_plates" prop="connecting_plates" label="联片数">
-                <el-input-number v-model="model.connecting_plates" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.passing_plates" prop="passing_plates" label="过板数">
-                <el-input-number v-model="model.passing_plates" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.single_points" prop="single_points" label="单板点数">
-                <el-input-number v-model="model.single_points" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.completed_quantity" prop="completed_quantity" label="产出片数">
-                <el-input-number v-model="model.completed_quantity" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.long" prop="long" label="长">
-                <el-input v-model="model.long" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.wide" prop="wide" label="宽">
-                <el-input v-model="model.wide" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.thick" prop="thick" label="厚">
-                <el-input v-model="model.thick" placeholder="请输入" clearable />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.total_points" prop="total_points" label="总点数">
-                <el-input-number v-model="model.total_points" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.process_time" prop="process_time" label="加工时间">
-                <el-input-number v-model="model.process_time" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.other_time" prop="other_time" label="其他时间">
-                <el-input-number v-model="model.other_time" placeholder="请输入" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
-                <el-input-number v-model="model.program_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.average_CT" prop="average_CT" label="平均CT">
-                <el-input-number v-model="model.average_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.data_time" prop="data_time" label="数据时间">
-                <el-date-picker v-model="model.data_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.CT" prop="CT" label="指定CT">
+                <el-input-number v-model="model.CT" placeholder="请输入" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -254,24 +160,10 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="board" label="板号前八位" width="120" />
-        <el-table-column prop="SMT_machine_name" label="SMT机种名" width="200" />
-        <el-table-column prop="line" label="线体" width="80" />
-        <el-table-column prop="line_classify" label="线别类" width="95" />
-        <el-table-column prop="connecting_plates" label="联片数" width="95" />
-        <el-table-column prop="passing_plates" label="过板数" width="95" />
-        <el-table-column prop="single_points" label="单板点数" width="110" />
-        <el-table-column prop="process" label="制程" width="80" />
-        <el-table-column prop="long" label="长" width="60" />
-        <el-table-column prop="wide" label="宽" width="60" />
-        <el-table-column prop="thick" label="厚" width="60" />
-        <el-table-column prop="completed_quantity" label="产出片数" width="110" />
-        <el-table-column prop="total_points" label="总点数" width="95" />
-        <el-table-column prop="process_time" label="加工时间" width="110" />
-        <el-table-column prop="other_time" label="其他时间" width="110" />
-        <el-table-column prop="program_CT" label="程序CT" width="100" />
-        <el-table-column prop="average_CT" label="平均CT" width="110" />
-        <el-table-column prop="data_time" label="数据时间" width="110" />
+        <el-table-column prop="line" label="线别" />
+        <el-table-column prop="SMT_machine_name" label="SMT机种名" />
+        <el-table-column prop="process" label="制程" />
+        <el-table-column prop="CT" label="指定CT" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -333,7 +225,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/TrainLEDTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/FixedCTData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -352,43 +244,15 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          board: '715GC159',
-          SMT_machine_name: 'MLPD1DFA426AE4SMT',
-          line: 'SM19',
-          line_classify: 'c5',
+          line: 'SM02',
+          SMT_machine_name: 'SMTCPK1PAQ2',
           process: 'T',
-          connecting_plates: 1.0,
-          passing_plates: 25.0,
-          single_points: 10816.0,
-          completed_quantity: 0,
-          long: '0',
-          wide: '0',
-          thick: '0',
-          total_points: 270400.0,
-          process_time: 438,
-          other_time: 20,
-          program_CT: 0.0,
-          average_CT: 422.40,
-          data_time: '2021-04-09'
+          CT: '95.0'
         }, {
-          board: '(必填)',
-          SMT_machine_name: '(必填)',
           line: '(必填)',
-          line_classify: '(必填)',
+          SMT_machine_name: '(必填)',
           process: '(必填)',
-          connecting_plates: '(必填)',
-          passing_plates: '(必填)',
-          single_points: '(必填)',
-          completed_quantity: '(必填)',
-          long: '(必填)',
-          wide: '(必填)',
-          thick: '(必填)',
-          total_points: '(必填)',
-          process_time: '(必填)',
-          other_time: '(必填)',
-          program_CT: '(必填)',
-          average_CT: '(必填)',
-          data_time: '(必填)'
+          CT: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -410,51 +274,23 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        board: '',
-        SMT_machine_name: '',
         line: '',
-        line_classify: '',
+        SMT_machine_name: '',
         process: '',
-        connecting_plates: 0,
-        passing_plates: 0,
-        single_points: 0,
-        completed_quantity: 0,
-        long: '',
-        wide: '',
-        thick: '',
-        total_points: 0,
-        process_time: 0,
-        other_time: 0,
-        program_CT: 0,
-        average_CT: 0,
-        data_time: ''
+        CT: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        board: '',
-        SMT_machine_name: '',
         line: '',
-        line_classify: '',
+        SMT_machine_name: '',
         process: '',
-        connecting_plates: 0,
-        passing_plates: 0,
-        single_points: 0,
-        completed_quantity: 0,
-        long: '',
-        wide: '',
-        thick: '',
-        total_points: 0,
-        process_time: 0,
-        other_time: 0,
-        program_CT: 0,
-        average_CT: 0,
-        data_time: ''
+        CT: 0
       },
       rules: {
-        board: [{
+        line: [{
           required: true,
-          message: '板号前八位不能为空',
+          message: '线别不能为空',
           trigger: 'blur'
         }],
         SMT_machine_name: [{
@@ -462,85 +298,15 @@ export default {
           message: 'SMT机种名不能为空',
           trigger: 'blur'
         }],
-        line: [{
-          required: true,
-          message: '线体不能为空',
-          trigger: 'blur'
-        }],
-        line_classify: [{
-          required: true,
-          message: '线别类不能为空',
-          trigger: 'blur'
-        }],
         process: [{
           required: true,
           message: '制程不能为空',
           trigger: 'blur'
         }],
-        connecting_plates: [{
+        CT: [{
           required: true,
-          message: '联片数不能为空',
+          message: '指定CT不能为空',
           trigger: 'blur'
-        }],
-        passing_plates: [{
-          required: true,
-          message: '过板数不能为空',
-          trigger: 'blur'
-        }],
-        single_points: [{
-          required: true,
-          message: '单板点数不能为空',
-          trigger: 'blur'
-        }],
-        completed_quantity: [{
-          required: true,
-          message: '产出片数不能为空',
-          trigger: 'blur'
-        }],
-        long: [{
-          required: true,
-          message: '长不能为空',
-          trigger: 'blur'
-        }],
-        wide: [{
-          required: true,
-          message: '宽不能为空',
-          trigger: 'blur'
-        }],
-        thick: [{
-          required: true,
-          message: '厚不能为空',
-          trigger: 'blur'
-        }],
-        total_points: [{
-          required: true,
-          message: '总点数不能为空',
-          trigger: 'blur'
-        }],
-        process_time: [{
-          required: true,
-          message: '加工时间不能为空',
-          trigger: 'blur'
-        }],
-        other_time: [{
-          required: true,
-          message: '其他时间不能为空',
-          trigger: 'blur'
-        }],
-        program_CT: [{
-          required: true,
-          message: '程序CT不能为空',
-          trigger: 'blur'
-        }],
-        average_CT: [{
-          required: true,
-          message: '平均CT不能为空',
-          trigger: 'blur'
-        }],
-        data_time: [{
-          required: true,
-          message: '数据时间不能为空',
-          trigger: 'change'
         }]
       },
       lineOptions: LineOptions, // 维护线别
@@ -783,7 +549,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['board'] = row.board
+        data['line'] = row.line
         data['SMT_machine_name'] = row.SMT_machine_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
@@ -911,7 +677,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/predict/TrainLEDTData.scss';
+  @import '../../assets/css/predict/FixedCTData.scss';
 </style>
 <style>
 .btnDanger{

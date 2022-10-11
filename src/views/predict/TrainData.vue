@@ -51,7 +51,7 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="board" label="板号前八位" width="120" sortable />
-          <el-table-column prop="SMT_machine_name" label="SMT机种名" width="200" sortable />
+          <el-table-column prop="SMT_machine_name" label="SMT机种名" width="160" sortable />
           <el-table-column prop="line" label="线体" width="80" sortable />
           <el-table-column prop="line_classify" label="线别类" width="95" sortable />
           <el-table-column prop="connecting_plates" label="联片数" width="95" sortable />
@@ -63,6 +63,12 @@
           <el-table-column prop="thick" label="厚" width="60" /> -->
           <el-table-column prop="completed_quantity" label="产出片数" width="110" sortable />
           <el-table-column prop="total_points" label="总点数" width="95" sortable />
+          <el-table-column prop="is_irr_spilt" label="是否irr剔除" width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.is_irr_spilt === 1" size="small" type="success">是</el-tag>
+              <el-tag v-else-if="scope.row.is_irr_spilt === 0" size="small" type="info">否</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="process_time" label="加工时间" width="110" sortable />
           <el-table-column prop="other_time" label="其他时间" width="110" sortable />
           <el-table-column prop="program_CT" label="程序CT" width="100" sortable />
@@ -199,17 +205,22 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.program_CT" prop="program_CT" label="程序CT">
                 <el-input-number v-model="model.program_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.average_CT" prop="average_CT" label="平均CT">
                 <el-input-number v-model="model.average_CT" placeholder="请输入" step="0.1" :style="{width: '100%'}" />
               </el-form-item>
             </el-col>
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_irr_spilt" prop="is_irr_spilt" label="是否irr剔除">
+                <el-input v-model="model.is_irr_spilt" placeholder="请输入" oninput="this.value=this.value.replace(/[^0-1]/g, '')" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.data_time" prop="data_time" label="数据时间">
                 <el-date-picker v-model="model.data_time" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
               </el-form-item>
@@ -267,6 +278,7 @@
         <el-table-column prop="thick" label="厚" width="60" />
         <el-table-column prop="completed_quantity" label="产出片数" width="110" />
         <el-table-column prop="total_points" label="总点数" width="95" />
+        <el-table-column prop="is_irr_spilt" label="是否irr剔除" width="120" />
         <el-table-column prop="process_time" label="加工时间" width="110" />
         <el-table-column prop="other_time" label="其他时间" width="110" />
         <el-table-column prop="program_CT" label="程序CT" width="100" />
@@ -333,7 +345,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/TrainLEDTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/TrainData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
@@ -365,6 +377,7 @@ export default {
           wide: '0',
           thick: '0',
           total_points: 270400.0,
+          is_irr_spilt: 0,
           process_time: 438,
           other_time: 20,
           program_CT: 0.0,
@@ -384,6 +397,7 @@ export default {
           wide: '(必填)',
           thick: '(必填)',
           total_points: '(必填)',
+          is_irr_spilt: '(必填)',
           process_time: '(必填)',
           other_time: '(必填)',
           program_CT: '(必填)',
@@ -423,6 +437,7 @@ export default {
         wide: '',
         thick: '',
         total_points: 0,
+        is_irr_spilt: 0,
         process_time: 0,
         other_time: 0,
         program_CT: 0,
@@ -445,6 +460,7 @@ export default {
         wide: '',
         thick: '',
         total_points: 0,
+        is_irr_spilt: 0,
         process_time: 0,
         other_time: 0,
         program_CT: 0,
@@ -467,81 +483,38 @@ export default {
           message: '线体不能为空',
           trigger: 'blur'
         }],
-        line_classify: [{
-          required: true,
-          message: '线别类不能为空',
-          trigger: 'blur'
-        }],
+        line_classify: [],
         process: [{
           required: true,
           message: '制程不能为空',
           trigger: 'blur'
         }],
-        connecting_plates: [{
-          required: true,
-          message: '联片数不能为空',
-          trigger: 'blur'
-        }],
+        connecting_plates: [],
         passing_plates: [{
           required: true,
           message: '过板数不能为空',
           trigger: 'blur'
         }],
-        single_points: [{
-          required: true,
-          message: '单板点数不能为空',
-          trigger: 'blur'
-        }],
+        single_points: [],
         completed_quantity: [{
           required: true,
           message: '产出片数不能为空',
           trigger: 'blur'
         }],
-        long: [{
-          required: true,
-          message: '长不能为空',
-          trigger: 'blur'
-        }],
-        wide: [{
-          required: true,
-          message: '宽不能为空',
-          trigger: 'blur'
-        }],
-        thick: [{
-          required: true,
-          message: '厚不能为空',
-          trigger: 'blur'
-        }],
-        total_points: [{
-          required: true,
-          message: '总点数不能为空',
-          trigger: 'blur'
-        }],
+        long: [],
+        wide: [],
+        thick: [],
+        total_points: [],
         process_time: [{
           required: true,
           message: '加工时间不能为空',
           trigger: 'blur'
         }],
-        other_time: [{
-          required: true,
-          message: '其他时间不能为空',
-          trigger: 'blur'
-        }],
-        program_CT: [{
-          required: true,
-          message: '程序CT不能为空',
-          trigger: 'blur'
-        }],
-        average_CT: [{
-          required: true,
-          message: '平均CT不能为空',
-          trigger: 'blur'
-        }],
-        data_time: [{
-          required: true,
-          message: '数据时间不能为空',
-          trigger: 'change'
-        }]
+        other_time: [],
+        program_CT: [],
+        average_CT: [],
+        data_time: [],
+        is_irr_spilt: []
       },
       lineOptions: LineOptions, // 维护线别
       processOptions: ProcessOptions, // 制程
@@ -911,7 +884,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/predict/TrainLEDTData.scss';
+  @import '../../assets/css/predict/TrainData.scss';
 </style>
 <style>
 .btnDanger{

@@ -105,7 +105,7 @@
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.line_name" prop="line_name" label="维护线体">
               <el-select v-model="model.line_name" placeholder="请选择" :style="{width: '100%'}">
-                <el-option v-for="(item) in line_name_data" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
+                <el-option v-for="(item) in lineOptions" :key="item.value" :label="item.label" :value="item.value" :disabled="!!item.disabled" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -351,7 +351,7 @@ export default {
         UPDATED_BY: [],
         UPDATED_TIME: []
       },
-      line_name_data: LineOptions, // 维护线别
+      lineOptions: LineOptions, // 维护线别
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
