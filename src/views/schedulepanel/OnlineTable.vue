@@ -87,6 +87,8 @@
               :stroke-width="16"
               :percentage="percentage_1"
               :color="progressColor"
+              class="layui-progress-bar"
+              style="margin-top: 0px;"
             />
             <el-alert
               :title="progress_text_1"
@@ -98,7 +100,7 @@
               :stroke-width="16"
               :percentage="percentage_2"
               :color="progressColor"
-              class="my-progress"
+              class="layui-progress-bar"
             />
             <el-alert
               :title="progress_text_2"
@@ -110,7 +112,7 @@
               :stroke-width="16"
               :percentage="percentage_3"
               :color="progressColor"
-              class="my-progress"
+              class="layui-progress-bar"
             />
             <el-alert
               :title="progress_text_3"
@@ -952,5 +954,17 @@ export default {
 .btnDanger:hover{
   background-color: #f04747 !important;
   border-color: #f04747 !important;
+}
+.layui-progress-bar{
+    margin-top: 10px;
+}
+.layui-progress-bar .el-progress-bar__inner:before {
+    content:"";
+    width:100%;
+    height:100%;
+    display:block;
+    background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,0.3) 0,rgba(255,255,255,0.3) 12.5%,transparent 0,transparent 25%);
+    background-size:80px 80px;
+    animation:move 2.5s linear infinite;
 }
 </style>
