@@ -87,7 +87,7 @@
               :stroke-width="16"
               :percentage="percentage_1"
               :color="progressColor"
-              class="layui-progress-bar"
+              class="layui-progress-bar-ol"
               style="margin-top: 0px;"
             />
             <el-alert
@@ -100,7 +100,7 @@
               :stroke-width="16"
               :percentage="percentage_2"
               :color="progressColor"
-              class="layui-progress-bar"
+              class="layui-progress-bar-ol"
             />
             <el-alert
               :title="progress_text_2"
@@ -112,7 +112,7 @@
               :stroke-width="16"
               :percentage="percentage_3"
               :color="progressColor"
-              class="layui-progress-bar"
+              class="layui-progress-bar-ol"
             />
             <el-alert
               :title="progress_text_3"
@@ -955,10 +955,10 @@ export default {
   background-color: #f04747 !important;
   border-color: #f04747 !important;
 }
-.layui-progress-bar{
+.layui-progress-bar-ol{
     margin-top: 10px;
 }
-.layui-progress-bar .el-progress-bar__inner:before {
+.layui-progress-bar-ol .el-progress-bar__inner:before {
     content:"";
     width:100%;
     height:100%;
