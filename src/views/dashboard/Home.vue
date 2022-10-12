@@ -67,10 +67,10 @@
           <el-calendar v-model="value">
             <template slot="dateCell" slot-scope="{data}">
               {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : '' }}
-              <div v-for="item in scheduleData" :key="item" style="width:100%;">
-                <el-tag v-if="item.scheduleDate === data.day && item.isYuPai === true" type="success">预排√</el-tag>
-                <el-tag v-if="item.scheduleDate === data.day && item.isZhengPai === true" type="success">正排√</el-tag>
-                <el-tag v-if="item.scheduleDate === data.day && item.isHoliday === true">放假</el-tag>
+              <div v-for="item in calendarData" :key="item" style="width:100%;">
+                <el-tag v-if="item.date === data.day && item.isYuPai === true" type="success">预排√</el-tag>
+                <el-tag v-if="item.date === data.day && item.isZhengPai === true" type="success">正排√</el-tag>
+                <el-tag v-if="item.date === data.day && item.isHoliday === true">放假</el-tag>
               </div>
             </template>
           </el-calendar>
@@ -80,14 +80,14 @@
     <el-card style="margin: 16px;">
       <div slot="header" class="clearfix">
         <span>历史排程数据变化趋势图</span>
-        <el-dropdown style="float: right; padding: 3px 0">
+        <el-dropdown style="float: right; padding: 3px 0" @command="handleCommand">
           <span class="el-dropdown-link">
             选择结果<i class="el-icon-arrow-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>近三天</el-dropdown-item>
-            <el-dropdown-item>近七天</el-dropdown-item>
-            <el-dropdown-item>近十五天</el-dropdown-item>
+            <el-dropdown-item command="3">近三天</el-dropdown-item>
+            <el-dropdown-item command="7">近七天</el-dropdown-item>
+            <el-dropdown-item command="15">近十五天</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -97,7 +97,7 @@
 </template>
 <script>
 import * as echarts from 'echarts'
-import { GetChartsData } from '@/api/Home'
+import { GetChartsData, GetCalendarData } from '@/api/Home'
 export default {
   data() {
     return {
@@ -110,45 +110,15 @@ export default {
       run_time_list: [],
       value: new Date(),
 
-      scheduleData: [
-        {
-          scheduleDate: '2022-10-08',
-          isYuPai: true,
-          isZhengPai: true,
-          isHoliday: false
-        },
-        {
-          scheduleDate: '2022-10-09',
-          isYuPai: true,
-          isZhengPai: true,
-          isHoliday: false
-        },
-        {
-          scheduleDate: '2022-10-10',
-          isYuPai: true,
-          isZhengPai: true,
-          isHoliday: false
-        },
-        {
-          scheduleDate: '2022-10-11',
-          isYuPai: true,
-          isZhengPai: true,
-          isHoliday: false
-        },
-        {
-          scheduleDate: '2022-10-12',
-          isYuPai: false,
-          isZhengPai: false,
-          isHoliday: true
-        }
-      ]
+      calendarData: []
     }
   },
   created() {
     // this.getChartsData()
+    this.getCalendarData()
   },
   mounted() {
-    this.drawCharts()
+    this.drawCharts(7)
   },
   methods: {
     // 一些快捷路由跳转
@@ -171,15 +141,18 @@ export default {
       this.$router.push({ path: 'dayconfig/blocktimedata' })
     },
     // 画图
-    drawCharts() {
-      this.getChartsData()
+    drawCharts(days) {
+      this.getChartsData(days)
       // 等待2秒获取数据
       setTimeout(() => {
         this.initScheduleEcharts()
       }, 1000)
     },
-    getChartsData() {
-      GetChartsData().then(res => {
+    handleCommand(command) {
+      this.drawCharts(parseInt(command))
+    },
+    getChartsData(days) {
+      GetChartsData(days).then(res => {
         if (res.code === 20000) {
           this.date_list = res.date_list
           this.obj_value_list = res.obj_value_list
@@ -188,6 +161,13 @@ export default {
           this.line_balance_list = res.line_balance_list
           this.group_count_list = res.group_count_list
           this.run_time_list = res.run_time_list
+        }
+      })
+    },
+    getCalendarData() {
+      GetCalendarData().then(res => {
+        if (res.code === 20000) {
+          this.calendarData = res.calendar_data
         }
       })
     },
