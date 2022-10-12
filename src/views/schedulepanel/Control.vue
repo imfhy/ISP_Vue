@@ -22,7 +22,7 @@
             <i class="el-icon-timer" />
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="8">
           <div class="card-panel-description">
             <div class="card-panel-text-upper">
               排程运行时长
@@ -32,7 +32,7 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="14" style="float:right;">
+        <el-col :span="10" style="float:right;">
           <div class="my-table">
             <el-table
               :data="schedule_result"
@@ -42,31 +42,11 @@
               header-cell-style="font-weight:normal;text-align:right;"
               cell-style="font-size: 20px;font-weight:20px;text-align:right;"
             >
-              <el-table-column
-                prop="enable"
-                label="是否可行解"
-                width="100px;"
-              />
-              <el-table-column
-                prop="obj_value"
-                label="目标值"
-                width="110px;"
-              />
-              <el-table-column
-                prop="idle_value"
-                label="停顿(天)"
-                width="100px;"
-              />
-              <el-table-column
-                prop="overdue_value"
-                label="逾期(天)"
-                width="100px;"
-              />
-              <el-table-column
-                prop="line_balance"
-                label="线平衡"
-                width="80px;"
-              />
+              <el-table-column prop="enable" label="是否可行解" width="100px;" />
+              <el-table-column prop="obj_value" label="目标值" width="110px;" />
+              <el-table-column prop="idle_value" label="停顿(天)" width="100px;" />
+              <el-table-column prop="overdue_value" label="逾期(天)" width="100px;" />
+              <el-table-column prop="line_balance" label="线平衡" width="80px;" />
             </el-table>
           </div>
         </el-col>
@@ -85,6 +65,7 @@
             :color="progressColor"
             class="layui-progress-bar"
             style="margin-top: 0px;"
+            :indeterminate="true"
           />
           <el-alert
             :title="progress_text_1"
@@ -169,12 +150,13 @@
                       ref="upload"
                       class="upload-demo"
                       action="http://localhost:9527/sqyapi/preprocess/control/check_input_excel/"
-                      :limit="1"
+                      accept=".xlsx"
                       :on-change="handleChange"
                       :on-progress="handleProgress"
                       :on-success="handleSuccess"
                       :auto-upload="false"
                       :show-file-list="false"
+                      :file-list="uploadFileList"
                     >
                       <el-button slot="trigger" type="primary" plain>
                         <i class="el-icon-circle-check" />
@@ -289,12 +271,14 @@
             ref="upload"
             class="upload-demo"
             action="http://localhost:9527/sqyapi/preprocess/control/check_input_excel/"
-            :limit="1"
+            accept=".xlsx"
             :on-change="handleChange"
             :on-progress="handleProgress"
             :on-success="handleSuccess"
+            :before-upload="handleBeforeUpload"
             :auto-upload="false"
             :show-file-list="false"
+            :file-list="uploadFileList"
             style="margin-left: 10px;"
           >
             <el-button slot="trigger" type="primary">
@@ -347,7 +331,7 @@
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag } from '@/api/schedulepanel/Control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu, GeScheduleRes } from '@/api/schedulepanel/Control'
 export default {
   directives: { elDragDialog },
   data() {
@@ -357,18 +341,17 @@ export default {
       stepNow: 0, // 计算导入排程进行到第几步
       checkLoading: {
         text: '检查中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.3)'
       }, // 检查动画
       importLoading: {
         text: '导入中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.6)'
+        background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       trainDate: new Date(), // 训练预测模型日期
-      uploadFiles: [], // 上传的文件列表
-      uploadFile: null, // 上传到文件
-      fileName: '', // 文件名
-      uploadFileName: '', // 当前选中的文件名
+      uploadFileList: [], // 上传的文件列表
+      uploadFile: null, // 上传的文件
+      uploadFileName: '', // 文件名
       options_history_log: [], // 历史日志列表
       selectLogValue: '', // 当前选中的历史日志
       isImport: false, // 是否上传文件
@@ -382,15 +365,15 @@ export default {
       progress_text_3: '未开始初始解|0%',
       progress_text_4: '未开始深度搜索|0%',
       // 排程结果
-      schedule_run_time: '00 时 00 分 00 秒', // 排程时间 未开始 计算完毕，共耗时：00 时 00 分 00 秒
-      schedule_time: '2022年09月28日', // 排程时间
-      schedule_mode: '预排', // 正排或预排
+      schedule_run_time: '未开始', // 排程时间 未开始 计算完毕，共耗时：00 时 00 分 00 秒
+      schedule_time: '', // 排程时间
+      schedule_mode: '', // 正排或预排
       schedule_result: [{
-        obj_value: '1210.30',
-        idle_value: '22.30',
-        overdue_value: '63.30',
-        enable: '可行',
-        line_balance: '23.30'
+        obj_value: '',
+        idle_value: '',
+        overdue_value: '',
+        enable: '',
+        line_balance: ''
       }],
       progress_refresh: null, // 刷新进度条
       computeTip: '未开始' // 计算排程按钮左上角的小红标
@@ -403,9 +386,11 @@ export default {
   },
   created() {
     this.getLogSelectItem()
+    this.listenProgress()
+    this.getScheduleRes()
   },
   mounted() {
-    // this.listenProgress()
+
   },
   methods: {
     // dialog可拖拽
@@ -425,13 +410,26 @@ export default {
     },
     // 关闭计算排程前提示
     handleClose() {
-      this.$confirm('确认关闭计算排程窗口？', '提示', {
-        type: 'warning',
-        confirmButtonText: '确认',
-        cancelButtonText: '取消'
-      }).then(_ => {
+      if (this.stepNow !== 4) {
+        this.$confirm('未开始计算，确认关闭计算排程窗口？', '提示', {
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(_ => {
+          this.computeDialogVisible = false
+        }).catch(_ => {})
+      } else {
         this.computeDialogVisible = false
-      }).catch(_ => {})
+      }
+    },
+    getScheduleRes() {
+      GeScheduleRes().then(res => {
+        if (res.code === 20000) {
+          this.schedule_result = res.table_data
+          this.schedule_mode = res.mode
+          this.schedule_time = res.date
+        }
+      })
     },
     // 获取进度条
     getProgress() {
@@ -475,6 +473,7 @@ export default {
           this.clearListenProgress()
           this.computeTip = '已完成'
           this.schedule_run_time = '计算完毕，总耗时: ' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+          this.getScheduleRes() // 获取排程结果
         } else {
           this.computeTip = '未开始'
           this.schedule_run_time = '未开始'
@@ -489,11 +488,10 @@ export default {
     handleChange(file, fileList) {
       if (file.status === 'ready') {
         if (fileList.length > 0) {
-          this.uploadFiles = fileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
-          this.file_name = this.uploadFiles[0].name // 更新文件名
+          this.uploadFileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
+          this.uploadFileName = this.uploadFileList[0].name // 更新文件名
+          this.uploadFile = this.uploadFileList[0].raw // 更新文件
         }
-        this.uploadFileName = file.name
-        this.uploadFile = file
         this.$refs.upload.submit()
       }
     },
@@ -517,6 +515,20 @@ export default {
       }
       this.stepNow = 1
     },
+    // 文件上传前的检查
+    handleBeforeUpload(file) {
+      const fileName = file.name
+      return new Promise((resolve, reject) => {
+        if (!fileName.includes('预排') && !fileName.includes('正排')) {
+          this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '提示', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+          reject()
+        }
+        resolve()
+      })
+    },
     // 终止深度搜索
     stopTabu() {
       this.$confirm('请确定是否要终止深度搜索?', '提示', {
@@ -524,9 +536,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '终止成功'
+        StopTabu().then(res => {
+          if (res.code === 20000) {
+            this.$message({
+              message: res.message,
+              type: 'success'
+            })
+          }
         })
       }).catch(() => {
         this.$message({
@@ -586,7 +602,7 @@ export default {
     async submitUploadFile() {
       this.loadingInstance = Loading.service(this.importLoading)
       const form = new FormData()
-      form.append('file', this.uploadFile.raw)
+      form.append('file', this.uploadFile)
       await ImportSchedule(form).then(res => {
         this.$message({
           message: res.message,
@@ -640,10 +656,11 @@ export default {
         type: 'success'
       })
       this.stepNow = 4
+      this.listenProgress()
       ComputeSchedule({ 'file_name': this.uploadFileName, 'user_name': this.name }).then(res => {
         if (res.code === 20000) {
-          this.$message({
-            message: '排程计算完毕',
+          this.$alert(res.message, '提示', {
+            confirmButtonText: '确定',
             type: 'success'
           })
         } else {
@@ -786,21 +803,20 @@ export default {
   border-color: #f04747 !important;
 }
 .layui-progress-bar{
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .layui-progress-bar .el-progress-bar__inner:before {
-    content:"";
-    width:100%;
-    height:100%;
-    display:block;
-    background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,0.3) 0,rgba(255,255,255,0.3) 12.5%,transparent 0,transparent 25%);
-    background-size:80px 80px;
-    animation:move 2.5s linear infinite;
+  content:"";
+  width:100%;
+  height:100%;
+  display:block;
+  background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,0.3) 0,rgba(255,255,255,0.3) 12.5%,transparent 0,transparent 25%);
+  background-size:30px 30px;
+  animation:move 2.5s linear infinite;
 }
-
 @keyframes move {
   from {
-    background-position: 80px 0;
+    background-position: 30px 0;
   }
   to {
     background-position:  0;

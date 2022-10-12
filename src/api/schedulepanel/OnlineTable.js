@@ -27,6 +27,7 @@ export function AnalysisExcel(data) {
   return request({
     url: '/preprocess/onlinetable/begin_analysis/',
     method: 'post',
+    timeout: 10 * 60 * 1000,
     data
   })
 }

@@ -21,6 +21,7 @@ export function ComputeSchedule(data) {
   return request({
     url: '/preprocess/control/compute_schedule/',
     method: 'post',
+    timeout: 60 * 60 * 1000,
     data
   })
 }
@@ -91,5 +92,12 @@ export function GetRunFlag() {
   return request({
     method: 'get',
     url: '/preprocess/control/get_run_flag/'
+  })
+}
+// 获取排程结果
+export function GeScheduleRes() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/get_schedule_res/'
   })
 }

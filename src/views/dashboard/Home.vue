@@ -66,14 +66,11 @@
         <el-card class="calendar-card">
           <el-calendar v-model="value">
             <template slot="dateCell" slot-scope="{data}">
-              {{ data.day.split('-').slice(1).join('-') }}
+              {{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : '' }}
               <div v-for="item in scheduleData" :key="item" style="width:100%;">
-                <el-tag v-if="(item.workingDay).indexOf(data.day.split('-').slice(2).join('-'))!=-1" type="success">
-                  {{ item.yu }}√
-                </el-tag>
-                <el-tag v-if="(item.workingDay).indexOf(data.day.split('-').slice(2).join('-'))!=-1" type="info" style="margin-left: 5px;">
-                  {{ item.zheng }}×
-                </el-tag>
+                <el-tag v-if="item.scheduleDate === data.day && item.isYuPai === true" type="success">预排√</el-tag>
+                <el-tag v-if="item.scheduleDate === data.day && item.isZhengPai === true" type="success">正排√</el-tag>
+                <el-tag v-if="item.scheduleDate === data.day && item.isHoliday === true">放假</el-tag>
               </div>
             </template>
           </el-calendar>
@@ -90,7 +87,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>近三天</el-dropdown-item>
             <el-dropdown-item>近七天</el-dropdown-item>
-            <el-dropdown-item>近一个月</el-dropdown-item>
+            <el-dropdown-item>近十五天</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -111,38 +108,38 @@ export default {
       line_balance_list: [],
       group_count_list: [],
       run_time_list: [],
-      value: '',
+      value: new Date(),
 
       scheduleData: [
         {
-          workingDay: '02',
-          yu: '预排',
-          zheng: '正排'
+          scheduleDate: '2022-10-08',
+          isYuPai: true,
+          isZhengPai: true,
+          isHoliday: false
         },
         {
-          workingDay: '03',
-          yu: '预排',
-          zheng: '正排'
+          scheduleDate: '2022-10-09',
+          isYuPai: true,
+          isZhengPai: true,
+          isHoliday: false
         },
         {
-          workingDay: '04',
-          yu: '预排',
-          zheng: '正排'
+          scheduleDate: '2022-10-10',
+          isYuPai: true,
+          isZhengPai: true,
+          isHoliday: false
         },
         {
-          workingDay: '05',
-          yu: '预排',
-          zheng: '正排'
+          scheduleDate: '2022-10-11',
+          isYuPai: true,
+          isZhengPai: true,
+          isHoliday: false
         },
         {
-          workingDay: '06',
-          yu: '预排',
-          zheng: '正排'
-        },
-        {
-          workingDay: '07',
-          yu: '预排',
-          zheng: '正排'
+          scheduleDate: '2022-10-12',
+          isYuPai: false,
+          isZhengPai: false,
+          isHoliday: true
         }
       ]
     }

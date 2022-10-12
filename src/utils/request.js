@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 const service = axios.create({
   baseURL: '/sqyapi', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 1000 * 300 // request timeout
+  timeout: 1000 * 60 // request timeout
 })
 
 // request interceptor
