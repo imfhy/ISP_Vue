@@ -98,7 +98,7 @@ export const asyncRoutes = [
     meta: {
       title: '排程面板',
       icon: 'component',
-      roles: ['admin', 'editor']
+      roles: ['admin', 'common']
     },
     children: [
       {
@@ -107,7 +107,7 @@ export const asyncRoutes = [
         name: 'Control',
         meta: {
           title: '控制面板',
-          roles: ['admin']
+          roles: ['admin', 'common']
         }
       },
       {
@@ -116,7 +116,7 @@ export const asyncRoutes = [
         name: 'OnlineTable',
         meta: {
           title: '在线表格',
-          roles: ['admin']
+          roles: ['admin', 'common']
         }
       },
       {
@@ -125,7 +125,7 @@ export const asyncRoutes = [
         name: 'Config',
         meta: {
           title: '排程配置',
-          roles: ['admin']
+          roles: ['admin', 'common']
         }
       }
     ]
@@ -145,7 +145,7 @@ export const asyncRoutes = [
     meta: {
       title: '权限管理',
       icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['admin']
     },
     children: [
       {
@@ -168,7 +168,7 @@ export const asyncRoutes = [
     meta: {
       title: '日志系统',
       icon: 'documentation',
-      roles: ['admin']
+      roles: ['admin', 'common']
     },
     children: [
       {
@@ -177,7 +177,7 @@ export const asyncRoutes = [
         name: 'LoggingDB',
         meta: {
           title: '错误日志',
-          roles: ['admin']
+          roles: ['admin', 'common']
         }
       },
       {
@@ -185,7 +185,8 @@ export const asyncRoutes = [
         component: () => import('@/views/logging/History'),
         name: 'LoggingHistory',
         meta: {
-          title: '历史操作'
+          title: '历史操作',
+          roles: ['admin', 'common']
         }
       }
     ]

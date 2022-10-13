@@ -8,7 +8,8 @@ const outsourceRouter = {
   name: 'Outsource',
   meta: {
     title: '外包相关',
-    icon: 'nested'
+    icon: 'nested',
+    roles: ['admin', 'common']
   },
   children: [
     {
@@ -16,7 +17,8 @@ const outsourceRouter = {
       name: 'Constraint',
       meta: {
         title: '外包约束数据',
-        icon: 'el-icon-s-data'
+        icon: 'el-icon-s-data',
+        roles: ['admin', 'common']
       },
       redirect: '/outsource/constraint/modelnamerestrictions',
       children: [
@@ -24,13 +26,19 @@ const outsourceRouter = {
           path: 'modelnamerestrictions',
           component: () => import('@/views/outsource/constraint/ModelNameRestrictions'),
           name: 'ModelNameRestrictions',
-          meta: { title: 'SMT/AI组件优先分配' }
+          meta: {
+            title: 'SMT/AI组件优先分配',
+            roles: ['admin', 'common']
+          }
         },
         {
           path: 'capacity',
           component: () => import('@/views/outsource/constraint/Capacity'),
           name: 'Capacity',
-          meta: { title: '产能限制' }
+          meta: {
+            title: '产能限制',
+            roles: ['admin', 'common']
+          }
         }
       ]
     },
@@ -39,7 +47,8 @@ const outsourceRouter = {
       name: 'BaseData',
       meta: {
         title: '外包基本数据',
-        icon: 'el-icon-s-data'
+        icon: 'el-icon-s-data',
+        roles: ['admin', 'common']
       },
       redirect: '/outsource/basedata/customer',
       children: [
@@ -47,13 +56,19 @@ const outsourceRouter = {
           path: 'customer',
           component: () => import('@/views/outsource/basedata/Customer'),
           name: 'Customer',
-          meta: { title: '客户表' }
+          meta: {
+            title: '客户表',
+            roles: ['admin', 'common']
+          }
         },
         {
           path: 'factorytype',
           component: () => import('@/views/outsource/basedata/FactoryType'),
           name: 'FactoryType',
-          meta: { title: '厂别表' }
+          meta: {
+            title: '厂别表',
+            roles: ['admin', 'common']
+          }
         }
       ]
     },
@@ -62,7 +77,8 @@ const outsourceRouter = {
       name: 'OtherData',
       meta: {
         title: '外包数据',
-        icon: 'el-icon-s-data'
+        icon: 'el-icon-s-data',
+        roles: ['admin', 'common']
       },
       redirect: '/outsource/otherdata/schedule',
       children: [
@@ -70,13 +86,19 @@ const outsourceRouter = {
           path: 'schedule',
           component: () => import('@/views/outsource/otherdata/Schedule'),
           name: 'Schedule',
-          meta: { title: '业务排程明细' }
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
         },
         {
           path: 'summary',
           component: () => import('@/views/outsource/otherdata/Summary'),
           name: 'Summary',
-          meta: { title: '业务排程汇总' }
+          meta: {
+            title: '业务排程汇总',
+            roles: ['admin', 'common']
+          }
         }
       ]
     }

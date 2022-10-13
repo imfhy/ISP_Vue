@@ -46,6 +46,7 @@
             <template slot-scope="scope">
               <el-tag v-if="scope.row.roles === 'admin'" size="small">超级管理员</el-tag>
               <el-tag v-else-if="scope.row.roles === 'common'" size="small">普通管理员</el-tag>
+              <el-tag v-else-if="scope.row.roles === 'program'" size="small">程序员</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="email" label="电子邮件地址" width="200" />
@@ -214,6 +215,13 @@ import { PermissionOptions } from '@/utils/items'
 export default {
   directives: { elDragDialog },
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (this.checkPass(value) < 4) {
+        callback(new Error('密码应由字母、数字、符号三种组成，且必须包含大小写'))
+      } else {
+        callback()
+      }
+    }
     return {
       loading: true, // 表格加载动画
       loadingInstance: null,
@@ -263,9 +271,9 @@ export default {
           trigger: 'blur'
         }, {
           type: 'string',
-          min: 6,
+          min: 5,
           max: 20,
-          message: '长度必须为 6 到 20 个字符',
+          message: '用户名长度必须为 5 到 20 个字符',
           trigger: 'blur'
         }],
         password: [{
@@ -277,6 +285,9 @@ export default {
           min: 8,
           max: 20,
           message: '密码长度必须为 8 到 20 个字符',
+          trigger: 'blur'
+        }, {
+          validator: validatePass,
           trigger: 'blur'
         }],
         roles: [{
@@ -314,16 +325,22 @@ export default {
           max: 20,
           message: '密码长度必须为 8 到 20 个字符',
           trigger: 'blur'
+        }, {
+          validator: validatePass,
+          trigger: 'blur'
         }],
         password_twice: [{
           required: true,
-          message: '密码不能为空',
+          message: '请再次输入密码',
           trigger: 'blur'
         }, {
           type: 'string',
           min: 8,
           max: 20,
           message: '密码长度必须为 8 到 20 个字符',
+          trigger: 'blur'
+        }, {
+          validator: validatePass,
           trigger: 'blur'
         }]
       },
@@ -361,6 +378,31 @@ export default {
     // 刷新表格数据
     refreshTableData() {
       this.getAllUserInfo()
+    },
+    checkPass(pass) {
+      // 密码长度大于6开始判断密码强度
+      if (pass.length < 6) {
+        return 0
+      }
+      //  判断密码中是否有数字、大小写字母、特殊符号
+      var ls = 0 // 默认等级是0
+      // 判断有没有小写字母
+      if (pass.match(/([a-z])+/)) {
+        ls++
+      }
+      // 判断有没有大写字母
+      if (pass.match(/([A-Z])+/)) {
+        ls++
+      }
+      // 判断数字
+      if (pass.match(/([0-9])+/)) {
+        ls++
+      }
+      // 判断有没有特殊符号
+      if (pass.match(/[^a-zA-Z0-9]+/)) {
+        ls++
+      }
+      return ls // 默认传出是1
     },
     // 创建用户dialog
     createUserDialog() {
@@ -412,7 +454,7 @@ export default {
       if (this.pwdModel['password'] !== this.pwdModel['password_twice']) {
         this.$message({
           type: 'error',
-          message: '两次输入的密码不一样，请重新输入！'
+          message: '两次输入密码不一致，请重新输入！'
         })
         return
       }

@@ -10,7 +10,7 @@ const dayconfigRouter = {
   meta: {
     title: '每日配置',
     icon: 'el-icon-setting',
-    roles: ['admin', 'editor']
+    roles: ['admin', 'common', 'program']
   },
   children: [
     {
@@ -19,7 +19,7 @@ const dayconfigRouter = {
       name: 'BlockTimeData',
       meta: {
         title: '维护时间表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -28,7 +28,7 @@ const dayconfigRouter = {
       name: 'PackHoliday',
       meta: {
         title: '包装线放假表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -37,7 +37,7 @@ const dayconfigRouter = {
       name: 'ProgramData',
       meta: {
         title: '程序表',
-        roles: ['admin']
+        roles: ['admin', 'common', 'program']
       }
     },
     {
@@ -46,7 +46,7 @@ const dayconfigRouter = {
       name: 'ProductionReportData',
       meta: {
         title: '生产报表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -55,7 +55,7 @@ const dayconfigRouter = {
       name: 'NoProgramData',
       meta: {
         title: '无程序清单表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -64,7 +64,7 @@ const dayconfigRouter = {
       name: 'NetworkBoard',
       meta: {
         title: '网板信息表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -73,7 +73,7 @@ const dayconfigRouter = {
       name: 'TestProgramData',
       meta: {
         title: '试跑程序表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -82,7 +82,7 @@ const dayconfigRouter = {
       name: 'ProductProgramData',
       meta: {
         title: '量产程序表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     }
   ]

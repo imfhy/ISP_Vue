@@ -10,7 +10,7 @@ const longconfigRouter = {
   meta: {
     title: '长期配置',
     icon: 'el-icon-setting',
-    roles: ['admin', 'editor']
+    roles: ['admin', 'common']
   },
   children: [
     {
@@ -19,7 +19,7 @@ const longconfigRouter = {
       name: 'LEDCTData',
       meta: {
         title: 'LED经验数据',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -28,7 +28,7 @@ const longconfigRouter = {
       name: 'MP1AddLineData',
       meta: {
         title: 'MP1补线表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -37,7 +37,7 @@ const longconfigRouter = {
       name: 'NotMP1AddLineData',
       meta: {
         title: '非MP1补线表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -46,7 +46,7 @@ const longconfigRouter = {
       name: 'ExchangeLineData',
       meta: {
         title: '交换线别表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -55,7 +55,7 @@ const longconfigRouter = {
       name: 'LineData',
       meta: {
         title: '产线配置表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -64,7 +64,7 @@ const longconfigRouter = {
       name: 'CapacityChangeData',
       meta: {
         title: '产能变化表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -73,7 +73,7 @@ const longconfigRouter = {
       name: 'OptimizedMachineData',
       meta: {
         title: '优化机种表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -82,7 +82,7 @@ const longconfigRouter = {
       name: 'SetUpData',
       meta: {
         title: '切换表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -91,7 +91,7 @@ const longconfigRouter = {
       name: 'ProcessData',
       meta: {
         title: '制程配置表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -100,7 +100,7 @@ const longconfigRouter = {
       name: 'KeyBoardLineData',
       meta: {
         title: '按键板表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -109,7 +109,7 @@ const longconfigRouter = {
       name: 'EarlyDueDateBoard8',
       meta: {
         title: '提早交期板号表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -118,7 +118,7 @@ const longconfigRouter = {
       name: 'ChangeLineData',
       meta: {
         title: '线体变化表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     },
     {
@@ -127,7 +127,7 @@ const longconfigRouter = {
       name: 'PairedSMTMachineData',
       meta: {
         title: '配套板表',
-        roles: ['admin']
+        roles: ['admin', 'common']
       }
     }
   ]
