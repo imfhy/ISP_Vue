@@ -411,7 +411,7 @@ export default {
     // 关闭计算排程前提示
     handleClose() {
       if (this.stepNow !== 4) {
-        this.$confirm('未开始计算，确认关闭计算排程窗口？', '提示', {
+        this.$confirm('未开始计算，确定关闭计算排程窗口？', '提示', {
           type: 'warning',
           confirmButtonText: '确认',
           cancelButtonText: '取消'
@@ -531,7 +531,7 @@ export default {
     },
     // 终止深度搜索
     stopTabu() {
-      this.$confirm('请确定是否要终止深度搜索?', '提示', {
+      this.$confirm('确定要终止深度搜索？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -571,7 +571,7 @@ export default {
         })
         return
       }
-      const confirmText = ['目前正在运行排程，请确定是否要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
+      const confirmText = ['目前正在运行排程，确定要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
@@ -622,7 +622,7 @@ export default {
         })
         return
       }
-      const confirmText = ['目前正在运行排程，请确定是否要重新开始计算？', '注意：此操作将会中断当前的排程！']
+      const confirmText = ['目前正在运行排程，确定要重新开始计算？', '注意：此操作将会中断当前的排程！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
@@ -700,7 +700,7 @@ export default {
         return
       } else {
         this.$confirm('提示', {
-          message: '请确认是否更新钢网信息',
+          message: '确定要更新钢网信息？',
           confirmButtonText: '确认更新',
           cancelButtonText: '取消',
           type: 'info'

@@ -149,29 +149,11 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: '页面权限',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: '指令权限'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
         path: 'role',
-        component: () => import('@/views/permission/role'),
+        component: () => import('@/views/permission/RolePermission'),
         name: 'RolePermission',
         meta: {
-          title: '角色权限',
+          title: '用户权限',
           roles: ['admin']
         }
       }

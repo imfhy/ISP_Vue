@@ -417,7 +417,7 @@ export default {
     // 开始分析
     beginAnalysis() {
       if (this.checkSuccess === false) {
-        this.$confirm('数据未检查，请确认是否要开始分析排程?', '提示', {
+        this.$confirm('数据未检查，确定要开始分析排程?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -436,7 +436,7 @@ export default {
     // 计算前判断是否在跑排程
     beforeAnalysis() {
       const run_flag = 1
-      const confirmText = ['目前正在运行排程，请确定是否要继续分析？', '注意：此操作将会同时影响跑排程和分析排程！']
+      const confirmText = ['目前正在运行排程，确定要分析排程？', '注意：此操作将会同时影响跑排程和分析排程！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
@@ -445,7 +445,7 @@ export default {
       if (run_flag === 1) {
         this.$confirm('提示', {
           message: h('div', null, newDatas),
-          confirmButtonText: '确定，仍要分析',
+          confirmButtonText: '确定分析',
           cancelButtonText: '取消',
           confirmButtonClass: 'btnDanger',
           type: 'warning'
@@ -770,7 +770,7 @@ export default {
     },
     // 是否关闭分析排程
     handleCloseAnalysis() {
-      this.$confirm('确认关闭分析排程窗口？', '提示', {
+      this.$confirm('确定关闭分析排程窗口？', '提示', {
         type: 'warning',
         confirmButtonText: '确认',
         cancelButtonText: '取消'

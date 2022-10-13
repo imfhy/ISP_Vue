@@ -713,7 +713,7 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('修改的数据未保存，请确定是否要关闭窗口？', '提示', {
+        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -775,7 +775,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照格式要求填写数据！'
+            message: '提交失败，请按照要求填写数据！'
           })
         }
       })

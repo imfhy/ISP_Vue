@@ -36,4 +36,9 @@ const ProcessOptions = [
   { value: 'S-THR', label: 'S-THR' },
   { value: 'T-BPR', label: 'T-BPR' }
 ]
-export { LineOptions, ProcessOptions }
+// 用户权限
+const PermissionOptions = [
+  { value: 'admin', label: '超级管理员' },
+  { value: 'common', label: '普通管理员' }
+]
+export { LineOptions, ProcessOptions, PermissionOptions }

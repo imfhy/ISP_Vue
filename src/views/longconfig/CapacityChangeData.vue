@@ -403,7 +403,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照格式要求填写数据！'
+            message: '提交失败，请按照要求填写数据！'
           })
         }
       })
@@ -426,7 +426,7 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('请确定是否要删除掉这些数据?', '提示', {
+      this.$confirm('确定要删除所有选中的数据？', '提示', {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         confirmButtonClass: 'btnDanger',
@@ -497,7 +497,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: '提交失败，请按照格式要求填写数据！'
+            message: '提交失败，请按照要求填写数据！'
           })
         }
       })
@@ -516,7 +516,7 @@ export default {
     // 表单dialog关闭前提示
     handleFormClose() {
       if (this.checkFormChange() && !this.isClick) {
-        this.$confirm('修改的数据未保存，请确定是否要关闭窗口？', '提示', {
+        this.$confirm('数据未提交，确定要关闭窗口？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -546,7 +546,7 @@ export default {
     },
     // 表格中删除数据
     handleDelete(index, row) {
-      this.$confirm('请确定是否要删除该数据?', '提示', {
+      this.$confirm('确定要删除该数据？', '提示', {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         confirmButtonClass: 'btnDanger',
@@ -580,8 +580,8 @@ export default {
     // 确认导入
     confirmImport() {
       if (this.importMode === 'replace') {
-        this.$confirm('此操作将会清空所有原有内容, 请确认是否要继续替换?', '提示', {
-          confirmButtonText: '继续替换',
+        this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
+          confirmButtonText: '确定替换',
           cancelButtonText: '取消',
           confirmButtonClass: 'btnDanger',
           type: 'warning'
