@@ -298,7 +298,7 @@
       />
       <el-row>
         <el-col :span="24">
-          <el-button type="primary">
+          <el-button type="primary" @click="getApsMtool">
             更新钢网信息
           </el-button>
           <el-button type="primary">
@@ -670,6 +670,50 @@ export default {
           })
         }
       })
+    },
+    // 更新钢网信息
+    getApsMtool() {
+      const tip = '服务器正在计算排程，无法更新数据！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$alert(tip, '错误', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true,
+            type: 'error'
+          })
+        } else {
+          this.continueGetApsMtool()
+        }
+      })
+    },
+    continueGetApsMtool() {
+      const updateLoading = {
+        text: '钢网信息更新中，请稍等...',
+        background: 'rgba(0, 0, 0, 0.3)'
+      }
+      this.loadingInstance = Loading.service(updateLoading)
+      if (this.isImport === false) {
+        this.$message({
+          type: 'warning',
+          message: '未导入文件，无法更新数据'
+        })
+        return
+      } else {
+        this.$confirm('提示', {
+          message: '请确认是否更新钢网信息',
+          confirmButtonText: '确认更新',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          this.computeSchedule()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消更新'
+          })
+        })
+      }
+      this.loadingInstance.close()
     },
     // 下载文件
     downloadFile(res) {
