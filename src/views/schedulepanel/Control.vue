@@ -173,7 +173,7 @@
                     </el-badge>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="stopTabu">
+                    <el-button type="stopBtn" plain @click="stopTabu">
                       <i class="el-icon-warning-outline" />
                       终止深度搜索
                     </el-button>
@@ -183,7 +183,7 @@
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="stopSchedule">
+                    <el-button type="stopBtn" plain @click="stopSchedule">
                       <i class="el-icon-warning-outline" />
                       终止计算排程
                     </el-button>
@@ -258,6 +258,7 @@
         <span>甘特图</span>
       </div>
     </el-card>
+
     <el-dialog
       v-el-drag-dialog
       title="计算导入排程"
@@ -940,5 +941,6 @@ export default {
     background-position:  0;
   }
 }
+
 </style>
 

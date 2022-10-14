@@ -36,14 +36,14 @@
           <el-button type="primary" @click="downloadLuckyExcel">
             <i class="el-icon-download" />下载
           </el-button>
-          <el-button>
+          <!-- <el-button>
             <i class="el-icon-position" />接口更新
-          </el-button>
-          <el-button>
+          </el-button> -->
+          <el-button type="apiBtn" @click="pushSchedule">
             <i class="el-icon-position" />推送排程
           </el-button>
         </div>
-        <div class="history">
+        <!-- <div class="history">
           <el-select v-model="selectFileName" clearable placeholder="选择历史排程">
             <el-option
               v-for="item in options_history_excel"
@@ -55,7 +55,7 @@
           <el-button type="primary" @click="getHistoryExcelData">
             获取
           </el-button>
-        </div>
+        </div> -->
       </div>
     </el-card>
     <el-card class="card-luckysheet">
@@ -283,6 +283,71 @@
         </el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="推送排程（分析排程后推送）"
+      :visible.sync="pushDialogVisible"
+      width="520px"
+      :before-close="handlePushClose"
+      @dragDialog="handleDrag"
+    >
+      <el-alert
+        title="推送主板"
+        type="info"
+        :closable="false"
+        style="margin-top: 10px;margin-bottom: 10px;"
+      />
+      <el-row style="text-align: center;">
+        <el-col :span="24">
+          <el-tooltip class="item" effect="dark" :content="smtUnscheduledTip" placement="top">
+            <el-button type="apiBtn" @click="post_unscheduled">
+              <i class="el-icon-position" />推送SMT未排
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="smtPrescheduledTip" placement="top">
+            <el-button type="apiBtn" @click="post_pre_scheduled">
+              <i class="el-icon-position" />推送SMT预排
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="smtScheduledTip" placement="top">
+            <el-button type="apiBtn" @click="post_scheduled">
+              <i class="el-icon-position" />推送SMT正排
+            </el-button>
+          </el-tooltip>
+        </el-col>
+      </el-row>
+      <el-alert
+        title="推送AI"
+        type="info"
+        :closable="false"
+        style="margin-top: 10px;margin-bottom: 10px;"
+      />
+      <el-row style="text-align: center;">
+        <el-col :span="24">
+          <el-tooltip class="item" effect="dark" :content="aiUnscheduledTip" placement="top">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_unscheduled">
+              <i class="el-icon-position" />推送AI未排
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="aitPrescheduledTip" placement="top">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_pre_scheduled">
+              <i class="el-icon-position" />推送AI预排
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="aitScheduledTip" placement="top">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_scheduled">
+              <i class="el-icon-position" />推送AI正排
+            </el-button>
+          </el-tooltip>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handlePushClose">
+          关闭
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -338,8 +403,14 @@ export default {
       loading_table1: true,
       loading_table2: true,
       loading_table3: true,
-      loading_table4: true
-
+      loading_table4: true,
+      pushDialogVisible: false, // 推送排程接口
+      smtUnscheduledTip: '未推送',
+      smtPrescheduledTip: '未推送',
+      smtScheduledTip: '未推送',
+      aiUnscheduledTip: '未推送',
+      aitPrescheduledTip: '未推送',
+      aitScheduledTip: '未推送'
     }
   },
   computed: {
@@ -366,6 +437,31 @@ export default {
         showinfobar: false // 不显示luckysheet图标
       }
       window.luckysheet.create(options)
+    },
+    // 以下函数都是推送排程相关
+    pushSchedule() {
+      this.pushDialogVisible = true
+    },
+    handlePushClose() {
+      this.pushDialogVisible = false
+    },
+    post_unscheduled() {
+
+    },
+    post_pre_scheduled() {
+
+    },
+    post_scheduled() {
+
+    },
+    post_ai_unscheduled() {
+
+    },
+    post_ai_pre_scheduled() {
+
+    },
+    post_ai_scheduled() {
+
     },
     // 上传文件
     loadExcelFile(file, fileList) {

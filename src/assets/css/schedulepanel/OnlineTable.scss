@@ -48,3 +48,21 @@
 .ana-res-text{
     line-height: 32px;
 }
+
+.el-button--apiBtn {
+  background-color: #3b5998;
+  font-family: "STHeiti";
+  border-radius: 5px;
+  border-color:#3b5998;
+  color: #fff;
+}
+.el-button--apiBtn:hover {
+  background-color: #4f6da9;
+  border-radius: 5px;
+  color: #fff;
+}
+.el-button--apiBtnn:focus {
+  background-color: #4f6da9;
+  border-radius: 5px;
+  color: #fff;
+}

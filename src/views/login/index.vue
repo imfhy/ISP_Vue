@@ -295,9 +295,4 @@ img{width:100%;}
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-/* .el-button {
-  background:-webkit-gradient(linear, 100% 0%, 0% 0%,from(#59C2FD), to(#2B99FF));
-  border-radius: 20px;
-  color: #fff;
-} */
 </style>
