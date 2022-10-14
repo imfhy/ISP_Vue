@@ -42,4 +42,9 @@ const PermissionOptions = [
   { value: 'common', label: '普通管理员' },
   { value: 'program', label: '程序员' }
 ]
-export { LineOptions, ProcessOptions, PermissionOptions }
+const lineOptions = [
+  'SM01', 'SM02', 'SM03', 'SM05', 'SM06', 'SM07', 'SM08', 'SM09', 'SM11', 'SM13',
+  'SM15', 'SM19', 'SM21', 'SM22', 'SM23', 'SM25', 'SR01', 'SR02', 'SR03', 'SR06',
+  'SR09', 'ST01'
+]
+export { LineOptions, ProcessOptions, PermissionOptions, lineOptions }

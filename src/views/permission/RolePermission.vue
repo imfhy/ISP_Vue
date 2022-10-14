@@ -175,9 +175,9 @@
       width="60%"
       @dragDialog="handleDrag"
     >
-      <p>分为超级管理员和普通管理员</p>
-      <p>普通管理员没有管理用户的权限</p>
-      <p>超级管理员可以创建，但无法被删除</p>
+      <p>超级管理员：拥有最高权限，支持管理所有表格和用户</p>
+      <p>普通管理员：支持管理所有表格，但无法管理用户</p>
+      <p>程序员：仅支持对程序表进行操作</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="helpDialogVisible = false">关闭</el-button>
       </span>

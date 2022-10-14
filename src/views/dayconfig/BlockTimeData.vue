@@ -7,6 +7,9 @@
             <el-button type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
+            <!-- <el-button type="primary" @click="addMultiDataDialog">
+              <i class="el-icon-plus" />添加多个维护线体
+            </el-button> -->
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
@@ -111,12 +114,12 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.start_time" prop="start_time" label="开始时间">
-              <el-date-picker v-model="model.start_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.start_time" value-format="yyyy-MM-dd HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.end_time" prop="end_time" label="结束时间">
-              <el-date-picker v-model="model.end_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.end_time" value-format="yyyy-MM-dd HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -128,7 +131,7 @@
           </el-col>
           <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
-              <el-date-picker v-model="model.lock_time" value-format="HH:00:00" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.lock_time" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -157,7 +160,8 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addDataAndContinue">添加并继续</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
         <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
       </span>
     </el-dialog>
@@ -445,6 +449,42 @@ export default {
         }
       })
     },
+    // 添加数据并继续添加下一个
+    addDataAndContinue() {
+      this.isClick = true
+      const data = this.model
+      data['user_name'] = this.name
+      this.$refs['$form'].validate((valid) => {
+        if (valid) {
+          AddData(data).then(res => {
+            if (res.code === 20000) {
+              this.$notify({
+                title: '添加成功',
+                message: '成功添加 1 条数据',
+                type: 'success'
+              })
+              for (const key in this.model) {
+                if (key === 'flag') {
+                  this.model[key] = false
+                  this.modelOriginal[key] = false
+                } else {
+                  this.model[key] = ''
+                  this.modelOriginal[key] = ''
+                }
+              }
+              this.isClick = false
+              this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
+              this.refreshTableData(true)
+            }
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '提交失败，请按照要求填写数据！'
+          })
+        }
+      })
+    },
     // 获取表格勾选数据
     handleSelectionChange(val) {
       this.dataTableSelections = val
@@ -570,8 +610,13 @@ export default {
     closeFormDialog() {
       this.dataDialogVisible = false
       for (const key in this.model) {
-        this.model[key] = ''
-        this.modelOriginal[key] = ''
+        if (key === 'flag') {
+          this.model[key] = false
+          this.modelOriginal[key] = false
+        } else {
+          this.model[key] = ''
+          this.modelOriginal[key] = ''
+        }
       }
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },

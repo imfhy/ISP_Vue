@@ -114,7 +114,8 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleFormClose">关闭</el-button>
-        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">确认添加</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addDataAndContinue">添加并继续</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addData">添加</el-button>
         <el-button v-else-if="dialogBtnType === false" type="primary" @click="modifyData">确认修改</el-button>
       </span>
     </el-dialog>
@@ -367,6 +368,36 @@ export default {
               setTimeout(() => {
                 this.closeFormDialog()
               }, 1000)
+              this.refreshTableData(true)
+            }
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '提交失败，请按照要求填写数据！'
+          })
+        }
+      })
+    },
+    // 添加数据
+    addDataAndContinue() {
+      this.isClick = true
+      const data = this.model
+      data['user_name'] = this.name
+      this.$refs['$form'].validate((valid) => {
+        if (valid) {
+          AddData(data).then(res => {
+            if (res.code === 20000) {
+              this.$notify({
+                title: '添加成功',
+                message: '成功添加 1 条数据',
+                type: 'success'
+              })
+              for (const key in this.model) {
+                this.model[key] = ''
+                this.modelOriginal[key] = ''
+              }
+              this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
               this.refreshTableData(true)
             }
           })

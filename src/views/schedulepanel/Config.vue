@@ -14,7 +14,7 @@
           </template>
           <template slot="extra">
             <el-button type="primary" size="small" @click="modifyDataDialog">
-              <i class="el-icon-edit" /> 修改
+              <i class="el-icon-edit-outline" /> 修改配置
             </el-button>
           </template>
           <el-descriptions-item label="排程日期" :span="2">{{ modelOriginal.schedule_date }}</el-descriptions-item>

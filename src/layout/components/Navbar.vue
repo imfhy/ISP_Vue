@@ -121,7 +121,7 @@ export default {
       display: inline-block;
       padding: 0 8px;
       height: 100%;
-      font-size: 18px;
+      font-size: 16px;
       color: #5a5e66;
       vertical-align: text-bottom;
 
@@ -142,7 +142,7 @@ export default {
         margin-top: 2px;
         position: relative;
         .el-icon-user-solid{
-          font-size: 22px;
+          font-size: 20px;
         }
 
         .user-avatar {
