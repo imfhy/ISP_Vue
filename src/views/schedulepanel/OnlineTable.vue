@@ -352,15 +352,25 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { Loading } from 'element-ui'
 import LuckyExcel from 'luckyexcel'
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress, GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData, StatisticsSchedule } from '@/api/schedulepanel/OnlineTable'
+import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress,
+  GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
+  StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
+  AiPrescheduled, AiScheduled
+} from '@/api/schedulepanel/OnlineTable'
 export default {
   directives: { elDragDialog },
   data() {
     return {
+      pushLoading: {
+        text: '推送中，请稍等...',
+        background: 'rgba(0, 0, 0, 0.3)'
+      }, // 导入排程动画
+      loadingInstance: null, // 动画实例
       uploadFileName: '', // 上传的文件名
       uploadFiles: [], // 上传的文件列表（限制1个）
       analysisDialogVisible: false, // 分析排程dialog显示
@@ -446,22 +456,112 @@ export default {
       this.pushDialogVisible = false
     },
     post_unscheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      SmtUnscheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.smtUnscheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     post_pre_scheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      SmtPrescheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.smtPrescheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     post_scheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      SmtScheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.smtScheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     post_ai_unscheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      AiUnscheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.aiUnscheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     post_ai_pre_scheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      AiPrescheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.aiPrescheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     post_ai_scheduled() {
-
+      this.loadingInstance = Loading.service(this.pushLoading)
+      AiScheduled().then(res => {
+        if (res.code === 20000) {
+          this.$alert(res.message, '推送排程成功', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.aiScheduledTip = '已推送'
+        } else {
+          this.$alert('错误', '推送失败', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        }
+      })
+      this.loadingInstance.close() // 清除动画
     },
     // 上传文件
     loadExcelFile(file, fileList) {

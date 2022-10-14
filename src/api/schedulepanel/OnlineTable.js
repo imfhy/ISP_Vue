@@ -92,4 +92,57 @@ export function GetRunFlag() {
     url: '/preprocess/onlinetable/get_run_flag_ana/'
   })
 }
-
+// 推送SMT未排接口
+export function SmtUnscheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsScheduleSmtWplan/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+// 推送SMT预排接口
+export function SmtPrescheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsSmtScheduleResultFirst/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+// 推送SMT正排接口
+export function SmtScheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsSmtScheduleResultSecond/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+// 推送AI未排接口
+export function AiUnscheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsScheduleAiWplan/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+// 推送AI预排接口
+export function AiPrescheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsAiScheduleResultFirst/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+// 推送AI正排接口
+export function AiScheduled(data) {
+  return request({
+    url: '/schedule/api/saveApsAiScheduleResultSecond/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
