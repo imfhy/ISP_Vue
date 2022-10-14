@@ -225,15 +225,15 @@
                     </el-button>
                   </el-col>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadNoProgram">
-                      <i class="el-icon-download" />
-                      下载无程序表
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
                     <el-button type="primary" plain @click="downloadLatestLog">
                       <i class="el-icon-download" />
                       下载最新日志
+                    </el-button>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-button type="primary" plain @click="downloadIdleInfo">
+                      <i class="el-icon-download" />
+                      下载idle明细
                     </el-button>
                   </el-col>
                 </el-row>
@@ -241,9 +241,9 @@
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadIdleInfo">
+                    <el-button type="primary" plain @click="downloadNoProgram">
                       <i class="el-icon-download" />
-                      下载idle明细
+                      下载无程序表
                     </el-button>
                   </el-col>
                 </el-row>
