@@ -2,7 +2,8 @@
   <body>
     <el-card class="login-box">
       <div class="img-box">
-        <img src="../../assets/img/login.jpg">
+        <img class="login-img" src="../../assets/img/login.jpg">
+        <div class="company">数驱优科技</div>
       </div>
       <div class="form-box">
         <div class="login-container">
@@ -77,6 +78,7 @@
               style="width:100%;margin-top:10px;"
               round
               size="big"
+              class="gradientBtn"
               @click.native.prevent="handleLogin"
             >
               登录
@@ -208,6 +210,16 @@ export default {
       // font-weight: bold;
     }
   }
+.el-button {
+  background:-webkit-gradient(linear, 100% 0%, 0% 0%,from(#59C2FD), to(#2B99FF));
+  border-radius: 20px;
+  color: #fff;
+}
+.el-button:hover {
+  background:-webkit-gradient(linear, 100% 0%, 0% 0%,from(#3eaff0), to(#218ff5));
+  border-radius: 20px;
+  color: #fff;
+}
 </style>
 
 <style>
@@ -229,14 +241,63 @@ export default {
   height: 520px;
   float: right;
 }
-.img-box{
+.login-img{
   width: 50%;
   height: 100%;
   float: left;
+  position: absolute;
+  z-index: 2;
 }
 img{width:100%;}
-.login-input .el-input__inner {
+/* .login-input .el-input__inner {
   border: 0;
   background-color: rgba(209, 202, 202, 0.247) !important;
+} */
+.company{
+  -webkit-line-clamp: 2;
+  font-size: 20px;
+  background-image: -webkit-linear-gradient(bottom, #59C2FD,#3F79F4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 9;
+  position: absolute;
+  display: inline;
+  margin-top: 20px;
+  margin-left: 20px;
+  text-align: left;
 }
+.login-input .el-input__inner {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #C0C4CC;
+}
+.login-input .el-input__inner:hover {
+  border-bottom: 1px solid #409EFF;
+}
+.login-input .el-icon-user:before{
+  -webkit-line-clamp: 2;
+  font-size: 25px;
+  background-image: -webkit-linear-gradient(bottom, #59C2FD,#3F79F4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.login-input .el-icon-lock:before {
+  -webkit-line-clamp: 2;
+  font-size: 25px;
+  background-image: -webkit-linear-gradient(bottom, #59C2FD,#3F79F4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.login-input .el-icon-lock:before {
+  -webkit-line-clamp: 2;
+  font-size: 25px;
+  background-image: -webkit-linear-gradient(bottom, #59C2FD,#3F79F4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* .el-button {
+  background:-webkit-gradient(linear, 100% 0%, 0% 0%,from(#59C2FD), to(#2B99FF));
+  border-radius: 20px;
+  color: #fff;
+} */
 </style>

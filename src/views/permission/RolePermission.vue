@@ -53,8 +53,8 @@
           <el-table-column prop="description" label="描述" />
           <el-table-column prop="enable" label="是否启用" width="120">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.enable === true" size="small" type="success">启用</el-tag>
-              <el-tag v-else-if="scope.row.enable === false" size="small" type="danger">关闭</el-tag>
+              <el-tag v-if="scope.row.enable === true" size="small" type="success">已启用</el-tag>
+              <el-tag v-else-if="scope.row.enable === false" size="small" type="danger">未启用</el-tag>
             </template>
           </el-table-column>
           <el-table-column width="150" fixed="right" label="操作">
@@ -617,22 +617,6 @@ export default {
 .el-pagination {
     text-align: center;
 }
-
-.upload-demo {
-  display: flex;
- }
-.el-list-enter-active,
-.el-list-leave-active {
-  transition: none;
-}
-.el-list-enter,
-.el-list-leave-active {
-  opacity: 0;
-}
-.el-upload-list {
-  height: 40px;
- }
-
 .el-table .warning-row {
   color: #E6A23C;
 }

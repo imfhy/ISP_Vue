@@ -101,3 +101,21 @@ export function GeScheduleRes() {
     url: '/preprocess/control/get_schedule_res/'
   })
 }
+// 终止计算排程
+export function StopSchedule(user_name) {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/stop_schedule/',
+    params: { user_name }
+  })
+}
+// 更新钢网信息接口
+export function GetApsMtool(data) {
+  return request({
+    url: '/schedule/api/getApsMtool/',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
+

@@ -183,21 +183,9 @@
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadSchedule">
-                      <i class="el-icon-download" />
-                      下载最新排程
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadNoProgram">
-                      <i class="el-icon-download" />
-                      下载无程序表
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadLatestLog">
-                      <i class="el-icon-download" />
-                      下载最新日志
+                    <el-button type="primary" plain @click="stopSchedule">
+                      <i class="el-icon-warning-outline" />
+                      终止计算排程
                     </el-button>
                   </el-col>
                 </el-row>
@@ -224,10 +212,32 @@
                 </el-button>
               </div>
               <el-alert
-                title="其它操作"
+                title="下载相关"
                 type="info"
                 :closable="false"
               />
+              <div class="box-button">
+                <el-row>
+                  <el-col :span="8">
+                    <el-button type="primary" plain @click="downloadSchedule">
+                      <i class="el-icon-download" />
+                      下载最新排程
+                    </el-button>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-button type="primary" plain @click="downloadNoProgram">
+                      <i class="el-icon-download" />
+                      下载无程序表
+                    </el-button>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-button type="primary" plain @click="downloadLatestLog">
+                      <i class="el-icon-download" />
+                      下载最新日志
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </div>
               <div class="box-button">
                 <el-row>
                   <el-col :span="8">
@@ -298,12 +308,11 @@
       />
       <el-row>
         <el-col :span="24">
-          <el-button type="primary" @click="getApsMtool">
-            更新钢网信息
-          </el-button>
-          <el-button type="primary">
-            更新程序信息
-          </el-button>
+          <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
+            <el-button type="primary" @click="getApsMtool">
+              更新钢网信息
+            </el-button>
+          </el-tooltip>
           <el-button type="success">
             导出检查
           </el-button>
@@ -324,6 +333,20 @@
         </el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="提示"
+      :visible.sync="stopScheduleDialog"
+      width="30%"
+      :before-close="handleCloseStop"
+    >
+      <span style="font-size:16px;">请在下方输入框输入<span style="color:#F56C6C;font-weight:bold;"> 确认终止 </span>后点击确定以终止排程！</span>
+      <el-input v-model="stopInput" placeholder="请输入" style="width: 200px;margin-top:10px;" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseStop">取 消</el-button>
+        <el-button type="primary" @click="confirmStopSchedule">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -331,7 +354,9 @@
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog, DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu, GeScheduleRes } from '@/api/schedulepanel/Control'
+import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
+  DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
+  GeScheduleRes, StopSchedule, GetApsMtool } from '@/api/schedulepanel/Control'
 export default {
   directives: { elDragDialog },
   data() {
@@ -376,7 +401,10 @@ export default {
         line_balance: ''
       }],
       progress_refresh: null, // 刷新进度条
-      computeTip: '未开始' // 计算排程按钮左上角的小红标
+      computeTip: '未开始', // 计算排程按钮左上角的小红标
+      apsMtoolMsg: '未更新', // 钢网信息更新提示
+      stopScheduleDialog: false, // 终止计算排程dialog
+      stopInput: '' // 确认终止
     }
   },
   computed: {
@@ -407,6 +435,43 @@ export default {
     clearListenProgress() {
       clearInterval(this.progress_refresh)
       this.progress_refresh = null
+    },
+    // 终止计算排程
+    handleCloseStop() {
+      this.stopScheduleDialog = false
+      this.stopInput = ''
+    },
+    stopSchedule() {
+      GetRunFlag().then(res => {
+        if (res.run_flag !== 1) {
+          this.$message({
+            type: 'warning',
+            message: '未在计算排程，无需终止！'
+          })
+        } else {
+          this.stopScheduleDialog = true
+        }
+      })
+    },
+    confirmStopSchedule() {
+      if (this.stopInput !== '确认终止') {
+        this.$message({
+          type: 'error',
+          message: '输入错误！'
+        })
+      } else {
+        StopSchedule(this.name).then(res => {
+          if (res.code === 20000) {
+            this.$alert(res.message, '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            setTimeout(() => {
+              this.handleCloseStop()
+            }, 1000)
+          }
+        })
+      }
     },
     // 关闭计算排程前提示
     handleClose() {
@@ -671,7 +736,7 @@ export default {
         }
       })
     },
-    // 更新钢网信息
+    // 更新钢网信息前的提示
     getApsMtool() {
       const tip = '服务器正在计算排程，无法更新数据！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
@@ -686,12 +751,8 @@ export default {
         }
       })
     },
+    // 更新钢网信息
     continueGetApsMtool() {
-      const updateLoading = {
-        text: '钢网信息更新中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.3)'
-      }
-      this.loadingInstance = Loading.service(updateLoading)
       if (this.isImport === false) {
         this.$message({
           type: 'warning',
@@ -701,11 +762,25 @@ export default {
       } else {
         this.$confirm('提示', {
           message: '确定要更新钢网信息？',
-          confirmButtonText: '确认更新',
+          confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'info'
         }).then(() => {
-          this.computeSchedule()
+          const updateLoading = {
+            text: '钢网信息更新中，请稍等...',
+            background: 'rgba(0, 0, 0, 0.3)'
+          }
+          this.loadingInstance = Loading.service(updateLoading)
+          GetApsMtool().then(res => {
+            if (res.code === 20000) {
+              this.loadingInstance.close()
+              this.$alert('钢网信息更新成功！', '提示', {
+                confirmButtonText: '确定',
+                type: 'success'
+              })
+              this.apsMtoolMsg = '已更新'
+            }
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -713,7 +788,6 @@ export default {
           })
         })
       }
-      this.loadingInstance.close()
     },
     // 下载文件
     downloadFile(res) {
