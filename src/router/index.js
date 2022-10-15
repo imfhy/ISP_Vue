@@ -76,7 +76,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/Home'),
+        component: () => import('@/views/dashboard/Dashboard'),
         name: 'Dashboard',
         meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
       }
@@ -174,16 +174,16 @@ export const asyncRoutes = [
       {
         path: 'loggingdb',
         component: () => import('@/views/logging/Loggingdb'),
-        name: 'LoggingDB',
+        name: 'Loggingdb',
         meta: {
           title: '错误日志',
           roles: ['admin', 'common']
         }
       },
       {
-        path: 'history',
-        component: () => import('@/views/logging/History'),
-        name: 'LoggingHistory',
+        path: 'operahistory',
+        component: () => import('@/views/logging/OperaHistory'),
+        name: 'OperaHistory',
         meta: {
           title: '历史操作',
           roles: ['admin', 'common']

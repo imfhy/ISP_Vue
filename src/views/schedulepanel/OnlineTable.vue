@@ -363,6 +363,7 @@ import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, Ge
   AiPrescheduled, AiScheduled
 } from '@/api/schedulepanel/OnlineTable'
 export default {
+  name: 'OnlineTable',
   directives: { elDragDialog },
   data() {
     return {
@@ -465,7 +466,7 @@ export default {
           })
           this.smtUnscheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
@@ -483,7 +484,7 @@ export default {
           })
           this.smtPrescheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
@@ -501,7 +502,7 @@ export default {
           })
           this.smtScheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
@@ -519,7 +520,7 @@ export default {
           })
           this.aiUnscheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
@@ -537,7 +538,7 @@ export default {
           })
           this.aiPrescheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
@@ -555,7 +556,7 @@ export default {
           })
           this.aiScheduledTip = '已推送'
         } else {
-          this.$alert('错误', '推送失败', {
+          this.$alert('推送失败', '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })

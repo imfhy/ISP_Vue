@@ -429,6 +429,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProductionReportData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'ProductionReportData',
   directives: { elDragDialog },
   data() {
     return {

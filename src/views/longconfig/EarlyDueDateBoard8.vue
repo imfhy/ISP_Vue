@@ -209,6 +209,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/EarlyDueDateBoard8'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'EarlyDueDateBoard8',
   directives: { elDragDialog },
   data() {
     return {

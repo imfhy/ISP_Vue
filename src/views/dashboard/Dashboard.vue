@@ -82,7 +82,11 @@
         <span>历史排程数据变化趋势图</span>
         <el-dropdown style="float: right; padding: 3px 0" @command="handleCommand">
           <span class="el-dropdown-link">
-            选择结果<i class="el-icon-arrow-down el-icon--right" />
+            <span v-if="command === '3'">近三天</span>
+            <span v-else-if="command === '7' ">近七天</span>
+            <span v-else-if="command === '15'">近十五天</span>
+            <span v-else>选择结果</span>
+            <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="3">近三天</el-dropdown-item>
@@ -97,8 +101,9 @@
 </template>
 <script>
 import * as echarts from 'echarts'
-import { GetChartsData, GetCalendarData } from '@/api/Home'
+import { GetChartsData, GetCalendarData } from '@/api/Dashboard'
 export default {
+  name: 'Dashboard',
   data() {
     return {
       date_list: [],
@@ -109,8 +114,8 @@ export default {
       group_count_list: [],
       run_time_list: [],
       value: new Date(),
-
-      calendarData: []
+      calendarData: [],
+      command: '3'
     }
   },
   created() {
@@ -149,6 +154,8 @@ export default {
       }, 1000)
     },
     handleCommand(command) {
+      this.command = command
+      echarts.init(document.getElementById('scheduleCharts')).dispose() // 销毁实例
       this.drawCharts(parseInt(command))
     },
     getChartsData(days) {

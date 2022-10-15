@@ -98,6 +98,7 @@
 <script>
 import { GetTableData, SearchData } from '@/api/logging/Loggingdb'
 export default {
+  name: 'Loggingdb',
   data() {
     return {
       loading: true, // 表格加载动画

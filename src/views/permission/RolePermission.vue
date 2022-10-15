@@ -213,6 +213,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetAllUserInfo, CreateUser, ModifyUserPassword, ModifyUserInfo, DeleteUser } from '@/api/permission/RolePermission'
 import { PermissionOptions } from '@/utils/items'
 export default {
+  name: 'RolePermission',
   directives: { elDragDialog },
   data() {
     var validatePass = (rule, value, callback) => {

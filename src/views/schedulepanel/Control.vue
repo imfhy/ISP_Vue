@@ -359,6 +359,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSched
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool } from '@/api/schedulepanel/Control'
 export default {
+  name: 'Control',
   directives: { elDragDialog },
   data() {
     return {

@@ -228,6 +228,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/FixedCTData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
+  name: 'FixedCTData',
   directives: { elDragDialog },
   data() {
     return {

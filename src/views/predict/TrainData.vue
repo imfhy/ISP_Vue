@@ -348,6 +348,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/TrainData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
+  name: 'TrainData',
   directives: { elDragDialog },
   data() {
     return {

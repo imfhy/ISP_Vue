@@ -363,6 +363,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProductProgramData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'ProductProgramData',
   directives: { elDragDialog },
   data() {
     return {

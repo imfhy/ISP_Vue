@@ -18,10 +18,6 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
-// import { BootstrapVue } from 'bootstrap-vue'
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
-// Vue.use(BootstrapVue)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

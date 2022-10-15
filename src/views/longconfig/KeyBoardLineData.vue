@@ -209,6 +209,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/KeyBoardLineData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'KeyBoardLineData',
   directives: { elDragDialog },
   data() {
     return {

@@ -372,6 +372,7 @@ import { mapGetters } from 'vuex'
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
 import { GetTableData, ModifyData } from '@/api/schedulepanel/Config'
 export default {
+  name: 'Config',
   directives: { elDragDialog },
   data() {
     return {

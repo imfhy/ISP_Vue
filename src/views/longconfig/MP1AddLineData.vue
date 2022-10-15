@@ -216,6 +216,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/MP1AddLineData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'MP1AddLineData',
   directives: { elDragDialog },
   data() {
     return {

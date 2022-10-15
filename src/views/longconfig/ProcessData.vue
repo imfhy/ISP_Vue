@@ -288,6 +288,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/ProcessData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'ProcessData',
   directives: { elDragDialog },
   data() {
     return {

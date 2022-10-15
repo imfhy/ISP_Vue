@@ -265,6 +265,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/BlockTimeData'
 import { LineOptions } from '@/utils/items'
 export default {
+  name: 'BlockTimeData',
   directives: { elDragDialog },
   data() {
     return {
