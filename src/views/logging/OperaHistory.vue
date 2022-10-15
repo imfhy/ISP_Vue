@@ -94,6 +94,7 @@
             <el-tag v-else-if="scope.row.action_type === 'import'" size="small" type="info">导入</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'export'" size="small" type="info">导出</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'run'" size="small" type="warning">运行</el-tag>
+            <el-tag v-else-if="scope.row.action_type === 'backup'" size="small" type="success">备份</el-tag>
             <el-tag v-else size="small" type="info">其它</el-tag>
           </template>
         </el-table-column>

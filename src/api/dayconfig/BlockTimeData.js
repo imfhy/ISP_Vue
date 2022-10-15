@@ -54,3 +54,35 @@ export function ExportData() {
     method: 'get'
   })
 }
+// 获取备份名
+export function GetBackupName() {
+  return request({
+    method: 'get',
+    url: '/config/blocktimedata/get_backup_name/'
+  })
+}
+// 备份数据
+export function BackupData(data) {
+  return request({
+    method: 'post',
+    url: '/config/blocktimedata/backup_data/',
+    data
+  })
+}
+// 恢复备份
+export function RecoverBackupData(data) {
+  return request({
+    method: 'post',
+    url: '/config/blocktimedata/recover_backup_data/',
+    data
+  })
+}
+// 删除备份数据
+export function DeleteBackupData(data) {
+  return request({
+    method: 'post',
+    url: '/config/blocktimedata/delete_backup_data/',
+    data
+  })
+}
+

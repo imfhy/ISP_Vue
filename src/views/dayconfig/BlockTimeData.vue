@@ -13,6 +13,15 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
+            <el-button type="backupBtn" @click="backupData">
+              <i class="el-icon-document-copy" />备份数据
+            </el-button>
+            <el-button type="backupBtn" @click="recoverBackupData">
+              <i class="el-icon-refresh-left" />恢复备份
+            </el-button>
+            <el-button type="backupBtn" @click="manageBackupData">
+              <i class="el-icon-edit-outline" />备份管理
+            </el-button>
             <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
@@ -49,21 +58,27 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-          max-height="1000px"
           stripe
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="line_name" label="维护线体" width="110" sortable />
-          <el-table-column prop="start_time" label="开始时间" sortable />
-          <el-table-column prop="end_time" label="结束时间" sortable />
-          <el-table-column prop="lock_time" label="锁定时间节点" sortable />
-          <el-table-column prop="flag" label="手动修改锁定时间" width="200">
+          <el-table-column prop="start_time" label="开始时间" width="180" sortable />
+          <el-table-column prop="end_time" label="结束时间" width="180" sortable />
+          <!-- <el-table-column prop="lock_time" label="锁定时间节点" sortable /> -->
+          <el-table-column prop="lock_time" width="180" label="锁定时间节点">
+            <template slot-scope="scope">
+              <span v-if="scope.row.flag === true">{{ scope.row.lock_time }}</span>
+              <span v-else-if="scope.row.flag === false" size="small" type="info">未开启</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="flag" label="手动修改锁定时间" width="160">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.flag === true" size="small" type="success">开启</el-tag>
               <el-tag v-else-if="scope.row.flag === false" size="small" type="info">关闭</el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="remark" label="备注" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -129,9 +144,14 @@
               <el-switch v-model="model.flag" />
             </el-form-item>
           </el-col>
-          <el-col :span="16" :offset="0" :push="0" :pull="0" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
               <el-date-picker v-model="model.lock_time" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.remark" prop="remark" label="备注">
+              <el-input v-model="model.remark" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -173,9 +193,73 @@
       width="60%"
       @dragDialog="handleDrag"
     >
-      <span>关于表格的各种说明可以写在这</span>
+      <p>自动备份的备份名为当前时间</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="helpDialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="备份数据"
+      :visible.sync="backupDialog"
+      width="30%"
+      :before-close="handleCloseBackup"
+      @dragDialog="handleDrag"
+    >
+      <span style="font-size:16px;">请输入备份名称：</span>
+      <el-input v-model="backupName" placeholder="请输入" style="width: 200px;" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseBackup">关闭</el-button>
+        <el-button type="primary" @click="confirmBackup">确定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="恢复备份"
+      :visible.sync="recoverBackupDialog"
+      width="30%"
+      :before-close="handleCloseRecoverBackup"
+      @dragDialog="handleDrag"
+    >
+      <span style="font-size:16px;">请选择备份名称：</span>
+      <el-select v-model="backupName" placeholder="选择备份">
+        <el-option
+          v-for="item in backupOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+      <p>（注意：恢复备份将会覆盖当前表）</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseRecoverBackup">关闭</el-button>
+        <el-button type="primary" @click="confirmRecoverBackup">恢复</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="备份管理"
+      :visible.sync="manageBackupDialog"
+      width="40%"
+      :before-close="handleCloseManageBackup"
+      @dragDialog="handleDrag"
+    >
+      <el-table
+        :header-cell-style="{background:'#eef1f6', color:'#606266', padding: '3px'}"
+        :cell-style="{padding: '3px'}"
+        :data="backupTableData"
+        max-height="400px"
+        @selection-change="handleBackupSelection"
+      >
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="backup_name" label="备份名称" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseManageBackup">关闭</el-button>
+        <el-button type="danger" @click="deleteBackupData">删除</el-button>
       </span>
     </el-dialog>
 
@@ -201,15 +285,19 @@
         <el-table-column prop="end_time" label="结束时间" />
         <el-table-column prop="lock_time" label="锁定时间" />
         <el-table-column prop="flag" label="手动修改锁定时间" width="200" />
+        <el-table-column prop="remark" label="备注" />
       </el-table>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
             <el-radio label="add">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="6">
+          <el-checkbox v-model="autoBackup" style="margin-top:26px;">自动备份</el-checkbox>
+        </el-col>
+        <el-col :span="12">
           <div style="display: flex;margin-top: 16px;margin-bottom: 16px;">
             <el-upload
               ref="upload"
@@ -262,7 +350,8 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/BlockTimeData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete,
+  ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData } from '@/api/dayconfig/BlockTimeData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
@@ -282,13 +371,15 @@ export default {
           start_time: '	2022-10-01 08:00:00',
           end_time: '2022-10-05 08:00:00',
           lock_time: '2022-09-28 11:00:00',
-          flag: 'FALSE'
+          flag: 'FALSE',
+          remark: '停机'
         }, {
           line_name: '(必填)',
           start_time: '(必填)',
           end_time: '(必填)',
           lock_time: '(选填)',
-          flag: '(选填)  FALSE为关闭/TRUE为开启'
+          flag: '(选填)  FALSE为关闭/TRUE为开启',
+          remark: '(选填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -315,6 +406,7 @@ export default {
         end_time: '',
         flag: false,
         lock_time: '',
+        remark: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -328,6 +420,7 @@ export default {
         end_time: '',
         flag: false,
         lock_time: '',
+        remark: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -351,6 +444,7 @@ export default {
         }],
         flag: [],
         lock_time: [],
+        remark: [],
         CREATED_BY: [],
         CREATED_TIME: [],
         UPDATED_BY: [],
@@ -360,8 +454,17 @@ export default {
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 20, // 每页多少条数据
-      dataTableSelections: [] // 表格选中的数据
+      pageSize: 30, // 每页多少条数据
+      dataTableSelections: [], // 表格选中的数据
+      // 备份相关
+      backupOptions: [], // 恢复备份选项
+      backupName: '', // 备份名
+      backupDialog: false, // 备份数据dialog
+      recoverBackupDialog: false, // 恢复备份dialog
+      manageBackupDialog: false, // 备份管理dialog
+      backupTableData: [], // 备份管理数据
+      backupTableSelections: [], // 备份管理选中的数据
+      autoBackup: true // 是否自动备份，默认开启
     }
   },
   computed: {
@@ -504,7 +607,7 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除所有选中的数据？', '提示', {
+      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         confirmButtonClass: 'btnDanger',
@@ -578,6 +681,103 @@ export default {
             message: '提交失败，请按照要求填写数据！'
           })
         }
+      })
+    },
+    // 以下是备份数据相关
+    getBackupName() {
+      GetBackupName().then(res => {
+        if (res.code === 20000) {
+          this.backupOptions = res.backup_options
+          this.backupTableData = res.backup_table_data
+        }
+      })
+    },
+    handleCloseBackup() {
+      this.backupDialog = false
+      this.backupName = ''
+    },
+    backupData() {
+      this.backupDialog = true
+    },
+    confirmBackup() {
+      BackupData({ 'user_name': this.name, 'backup_name': this.backupName }).then(res => {
+        if (res.code === 20000) {
+          this.$notify({
+            title: res.title,
+            message: res.message,
+            type: 'success'
+          })
+          setTimeout(() => {
+            this.handleCloseBackup()
+          }, 1000)
+        }
+      })
+    },
+    handleCloseRecoverBackup() {
+      this.recoverBackupDialog = false
+      this.backupName = ''
+    },
+    recoverBackupData() {
+      this.getBackupName()
+      this.recoverBackupDialog = true
+    },
+    confirmRecoverBackup() {
+      RecoverBackupData({ 'backup_name': this.backupName, 'user_name': this.name }).then(res => {
+        if (res.code === 20000) {
+          this.$notify({
+            title: res.title,
+            message: res.message,
+            type: 'success'
+          })
+          this.refreshTableData(true)
+        }
+      })
+    },
+    manageBackupData() {
+      this.getBackupName()
+      this.manageBackupDialog = true
+    },
+    handleCloseManageBackup() {
+      this.manageBackupDialog = false
+    },
+    handleBackupSelection(val) {
+      this.backupTableSelections = val
+    },
+    deleteBackupData() {
+      const dataLength = this.backupTableSelections.length
+      if (dataLength === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请至少选中一条数据'
+        })
+        return
+      }
+      const nameList = []
+      for (let i = 0; i < dataLength; i++) {
+        nameList.push(this.backupTableSelections[i].backup_name)
+      }
+      this.$confirm('确定要删除选中的 ' + dataLength + ' 个备份？', '提示', {
+        confirmButtonText: '确定删除',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'btnDanger',
+        type: 'warning'
+      }).then(() => {
+        const data = { 'name_list': nameList, 'user_name': this.name }
+        DeleteBackupData(data).then(res => {
+          if (res.code === 20000) {
+            this.$notify({
+              title: '删除成功',
+              message: '成功删除选中的 ' + dataLength + ' 个备份',
+              type: 'success'
+            })
+            this.getBackupName()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消删除'
+        })
       })
     },
     // 检测表单数据是否发生变化，用于提示
@@ -682,6 +882,7 @@ export default {
       form.append('file_name', this.uploadFileName)
       form.append('user_name', this.name)
       form.append('import_mode', this.importMode)
+      form.append('auto_backup', this.autoBackup)
       ImportData(form).then(res => {
         if (res.code === 20000) {
           this.$notify({

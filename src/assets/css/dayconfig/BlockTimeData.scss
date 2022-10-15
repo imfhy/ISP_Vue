@@ -4,3 +4,21 @@
     margin-top: 16px;
   }
 }
+
+.el-button--backupBtn {
+  background-color: #3b5998;
+  font-family: "STHeiti";
+  border-radius: 5px;
+  border-color:#3b5998;
+  color: #fff;
+}
+.el-button--backupBtn:hover {
+  background-color: #4f6da9;
+  border-radius: 5px;
+  color: #fff;
+}
+.el-button--backupBtn:focus {
+  background-color: #4f6da9;
+  border-radius: 5px;
+  color: #fff;
+}

@@ -95,6 +95,9 @@
         </div>
       </div>
     </el-card>
+    <div style="position:fixed;text-align:center;bottom:0;margin:0 auto;width:100%;color: #5c6b77">
+      <el-link style="text-align: center;" href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2021015611号</el-link>
+    </div>
   </body>
 </template>
 
@@ -191,7 +194,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+body {
+	background: #5D4157;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #ffffff, #eeecec);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #ffffff, #eeecec);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background-size: 400%;
+	animation: backdiv 12s infinite;
+}
+@keyframes backdiv {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
   .login-form {
     text-align: center;
     position: relative;
@@ -234,7 +257,7 @@ export default {
   left: 0;
   right:0;
   bottom: 0;
-  margin: auto
+  margin: auto;
 }
 .form-box{
   width: 50%;
@@ -255,10 +278,8 @@ img{width:100%;}
 } */
 .company{
   -webkit-line-clamp: 2;
-  font-size: 20px;
-  background-image: -webkit-linear-gradient(bottom, #59C2FD,#3F79F4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 16px;
+  color:#2ba6c4;
   z-index: 9;
   position: absolute;
   display: inline;

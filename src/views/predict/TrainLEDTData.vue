@@ -657,7 +657,7 @@ export default {
       for (let i = 0; i < dataLength; i++) {
         idList.push(this.dataTableSelections[i].id)
       }
-      this.$confirm('确定要删除所有选中的数据？', '提示', {
+      this.$confirm('确定要删除选中的 ' + dataLength + ' 条数据？', '提示', {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         confirmButtonClass: 'btnDanger',

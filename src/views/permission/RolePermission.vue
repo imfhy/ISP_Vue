@@ -37,7 +37,7 @@
           :data="table_data"
           :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '3px'}"
           :cell-style="{padding: '3px'}"
-          max-height="1000px"
+
           stripe
         >
           <el-table-column prop="username" label="用户名" width="160" />
