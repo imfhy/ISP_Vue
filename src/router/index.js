@@ -176,7 +176,7 @@ export const asyncRoutes = [
         component: () => import('@/views/logging/Loggingdb'),
         name: 'Loggingdb',
         meta: {
-          title: '错误日志',
+          title: '运行日志',
           roles: ['admin', 'common']
         }
       },

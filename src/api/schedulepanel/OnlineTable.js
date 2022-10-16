@@ -22,6 +22,13 @@ export function ClearAnaProgress() {
     method: 'get'
   })
 }
+// 获取分析排程中的错误信息
+export function GetAnaError() {
+  return request({
+    url: '/preprocess/onlinetable/get_ana_error/',
+    method: 'get'
+  })
+}
 // 分析排程
 export function AnalysisExcel(data) {
   return request({

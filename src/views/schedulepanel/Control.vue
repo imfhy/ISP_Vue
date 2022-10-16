@@ -39,8 +39,8 @@
               style="width: 490px;"
               :border="false"
               algin="right"
-              header-cell-style="font-weight:normal;text-align:right;"
-              cell-style="font-size: 20px;font-weight:20px;text-align:right;"
+              :header-cell-style="{'font-weight':'normal', 'text-align':'right'}"
+              :cell-style="{'font-size':'20px', 'font-weight':'20px', 'text-align': 'right'}"
             >
               <el-table-column prop="enable" label="是否可行解" width="100px;" />
               <el-table-column prop="obj_value" label="目标值" width="110px;" />
@@ -265,9 +265,10 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="计算导入排程"
+      title="计算排程"
       :visible.sync="computeDialogVisible"
       width="50%"
+      :close-on-click-modal="false"
       :before-close="handleClose"
       @dragDialog="handleDrag"
     >
@@ -574,22 +575,24 @@ export default {
       this.loadingInstance = Loading.service(checkLoading)
     },
     handleProgressDialog() {
-      const checkLoading = {
+      const checkLoadingDialog = {
         text: '拼命检查中...',
         background: 'rgba(0, 0, 0, 0.5)'
       } // 检查动画
-      this.loadingInstance = Loading.service(checkLoading)
+      this.loadingInstance = Loading.service(checkLoadingDialog)
     },
     // 文件上传成功
     handleSuccess(res) {
       this.loadingInstance.close() // 清除动画
       if (res.type === 'success') {
-        this.$alert(res.message, '提示', {
+        this.$alert(res.message, '检查结果', {
           confirmButtonText: '确定',
           type: 'success'
         })
       } else {
-        this.$alert(res.message, '提示', {
+        this.$alert(res.message, '检查结果', {
+          customClass: 'checkAlertBox',
+          dangerouslyUseHTMLString: true,
           confirmButtonText: '确定',
           type: 'warning'
         })
@@ -955,6 +958,10 @@ export default {
   to {
     background-position:  0;
   }
+}
+
+.checkAlertBox{
+  width: 60%;
 }
 </style>
 

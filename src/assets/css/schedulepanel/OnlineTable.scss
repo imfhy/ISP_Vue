@@ -66,3 +66,21 @@
   border-radius: 5px;
   color: #fff;
 }
+
+.el-button--cutBtn {
+  background-color: #70b5eb;
+  font-family: "STHeiti";
+  border-radius: 5px;
+  border-color:#55acee;
+  color: #fff;
+}
+.el-button--cutBtn:hover {
+  background-color: #50a4d5;
+  border-radius: 5px;
+  color: #fff;
+}
+.el-button--cutBtn:focus {
+  background-color: #3ba0db;
+  border-radius: 5px;
+  color: #fff;
+}

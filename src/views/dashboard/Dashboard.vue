@@ -47,7 +47,7 @@
               <div @click="toLoggingdb">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-document" /></span>
-                  <span style="margin-left: 10px;">查看错误日志</span>
+                  <span style="margin-left: 10px;">查看运行日志</span>
                 </el-card>
               </div>
             </el-col>

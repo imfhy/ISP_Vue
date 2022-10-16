@@ -7,56 +7,74 @@
         :closable="false"
         style="margin-bottom: 10px;"
       />
-      <div class="control-button">
-        <el-input
-          :value="uploadFileName"
-          placeholder="未上传文件"
-        />
-        <el-upload
-          ref="upload"
-          class="upload-demo"
-          action="alert"
-          accept=".xlsx"
-          :show-file-list="false"
-          :auto-upload="false"
-          :file-list="uploadFiles"
-          :on-change="loadExcelFile"
-        >
-          <el-button slot="trigger" type="primary">
-            <i class="el-icon-upload2" />上传表格
-          </el-button>
-        </el-upload>
-        <div>
-          <el-button type="primary" @click="checkData">
-            <i class="el-icon-circle-check" />检查
-          </el-button>
-          <el-button type="primary" @click="analysisDialog">
-            <i class="el-icon-monitor" />分析
-          </el-button>
-          <el-button type="primary" @click="downloadLuckyExcel">
-            <i class="el-icon-download" />下载
-          </el-button>
-          <!-- <el-button>
-            <i class="el-icon-position" />接口更新
-          </el-button> -->
-          <el-button type="apiBtn" @click="pushSchedule">
-            <i class="el-icon-position" />推送排程
-          </el-button>
-        </div>
-        <!-- <div class="history">
-          <el-select v-model="selectFileName" clearable placeholder="选择历史排程">
-            <el-option
-              v-for="item in options_history_excel"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+      <el-row>
+        <el-col :span="18">
+          <div class="control-button">
+            <el-input
+              :value="uploadFileName"
+              placeholder="未上传文件"
             />
-          </el-select>
-          <el-button type="primary" @click="getHistoryExcelData">
-            获取
-          </el-button>
-        </div> -->
-      </div>
+            <el-upload
+              ref="upload"
+              class="upload-demo"
+              action="alert"
+              accept=".xlsx"
+              :show-file-list="false"
+              :auto-upload="false"
+              :file-list="uploadFiles"
+              :on-change="loadExcelFile"
+            >
+              <el-button slot="trigger" type="primary">
+                <i class="el-icon-upload2" />上传表格
+              </el-button>
+            </el-upload>
+            <div>
+              <el-button type="primary" @click="checkData">
+                <i class="el-icon-circle-check" />检查
+              </el-button>
+              <el-button type="primary" @click="analysisDialog">
+                <i class="el-icon-monitor" />分析
+              </el-button>
+              <el-button type="primary" @click="downloadLuckyExcel">
+                <i class="el-icon-download" />下载
+              </el-button>
+              <!-- <el-button>
+                <i class="el-icon-position" />接口更新
+              </el-button> -->
+              <el-button type="apiBtn" @click="pushSchedule">
+                <i class="el-icon-position" />推送排程
+              </el-button>
+            </div>
+            <!-- <div class="history">
+              <el-select v-model="selectFileName" clearable placeholder="选择历史排程">
+                <el-option
+                  v-for="item in options_history_excel"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-button type="primary" @click="getHistoryExcelData">
+                获取
+              </el-button>
+            </div> -->
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div style="float: right;margin-right:10px;">
+            <el-tooltip class="item" effect="dark" content="仅支持今日排程Sheet" placement="top">
+              <el-button type="cutBtn" @click="cut">
+                <i class="el-icon-scissors" />剪切
+              </el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="仅支持今日排程Sheet" placement="top">
+              <el-button type="cutBtn" @click="insertCut">
+                <i class="el-icon-scissors" />插入剪切
+              </el-button>
+            </el-tooltip>
+          </div>
+        </el-col>
+      </el-row>
     </el-card>
     <el-card class="card-luckysheet">
       <div id="luckysheet" class="my-luckysheet" />
@@ -68,6 +86,7 @@
       width="60%"
       :before-close="handleCloseAnalysis"
       class="dialog-analysis"
+      :close-on-click-modal="false"
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNow" finish-status="success" simple>
@@ -168,12 +187,15 @@
         <div slot="header" class="clearfix">
           <span>提示信息</span>
         </div>
+        <br>{{ errorLineOne }}
+        <br>{{ errorLineTwo }}
+        <br>{{ errorLineThree }}
       </el-card>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseAnalysis">
           关 闭
         </el-button>
-        <el-button type="primary" :disabled="beginAnaBtn" @click="beforeAnalysis">
+        <el-button type="primary" :disabled="beginAnaBtn" @click="beginAnalysis">
           开始分析
         </el-button>
         <el-button type="primary" :disabled="generateAnaBtn" @click="generateAnaExcel">
@@ -366,7 +388,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress,
   GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
-  AiPrescheduled, AiScheduled, GetRunFlag
+  AiPrescheduled, AiScheduled, GetRunFlag, GetAnaError
 } from '@/api/schedulepanel/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
@@ -385,6 +407,9 @@ export default {
       statisticsTitle: '量化结果', // 量化的dialog名称
       statisticsDialogVisible: false, // 量化结果dialog显示
       stepNow: 0, // 分析排程进行到第几步
+      errorLineOne: '', // 分析排程错误提示
+      errorLineTwo: '', // 分析排程错误提示
+      errorLineThree: '', // 分析排程错误提示
       progressColor: '#02bafd', // 进度条颜色
       checkSuccess: false, // 是否检查数据
       schedule_time: '', // 排程时间
@@ -405,6 +430,7 @@ export default {
       statisticsBtn: true, // 获取量化禁用按钮
       downloadAnaBtn: true, // 下载表格禁用按钮
       ana_progress_refresh: null, // 分析排程刷新进度条
+      ana_error_refresh: null, // 分析排程刷新提示信息
       // 分析排程进度条相关
       percentage_1: 0,
       percentage_2: 0,
@@ -434,7 +460,9 @@ export default {
       alertType: 'info', // success error warning info
       locked_list: lockedList,
       unlocked_list: unLockedList,
-      allLineList: lineOptions
+      allLineList: lineOptions,
+      // 剪切数据
+      cutRangeData: null
     }
   },
   computed: {
@@ -458,9 +486,22 @@ export default {
       const options = {
         container: 'luckysheet',
         lang: 'zh',
+        column: 52, // 列数
         showinfobar: false // 不显示luckysheet图标
       }
       window.luckysheet.create(options)
+    },
+    // 剪切操作
+    cut() {
+      this.cutRangeData = window.luckysheet.getRangeValue() // 获取到选取数据
+      window.luckysheet.deleteRange('up') // 删除选区，下方单元格向上移动
+    },
+    insertCut() {
+      const data = window.luckysheet.getRangeWithFlatten()
+      const index_row = data[0]['r']
+      window.luckysheet.insertRow(index_row, { number: this.cutRangeData.length }) // 增加行(行数为选取的行数)
+      window.luckysheet.setRangeShow([{ row: [index_row, index_row + this.cutRangeData.length - 1], column: [0, 51] }])
+      window.luckysheet.setRangeValue(this.cutRangeData) // 将数据插入选取
     },
     // 以下函数都是推送排程相关
     pushSchedule() {
@@ -591,6 +632,7 @@ export default {
           data: exportJson.sheets,
           title: exportJson.info.name,
           userInfo: exportJson.info.name.creator,
+          column: 52, // 列数
           lang: 'zh',
           hook: { // 冻结首行，添加钩子，初始化后冻结首行
             workbookCreateAfter: function() {
@@ -617,6 +659,42 @@ export default {
     closeAnalysis() {
       this.analysisDialogVisible = false
       this.clearListenProgress()
+      this.clearListenError()
+    },
+    // 获取分析排程中的错误信息
+    getAnaError() {
+      GetAnaError().then(res => {
+        if (res.run_flag === 2) {
+          this.clearListenError() // 分析完成，不再监听进度条
+          return
+        }
+        if (res.error_data.length > 0) {
+          this.clearListenError() // 分析出错也无需再监听进度条了
+        }
+        for (const dict in res.error_data) {
+          if (dict['flag'] === -1) {
+            const str = '分析出错，请检查：' + dict['error_info']
+            this.this.errorLineTwo = str
+          } else if (dict['flag'] === 0) {
+            const str = '不可行原因：' + '工单id：' + dict['error_id'] + ' ' + dict['error_info']
+            this.errorLineThree = str
+          } else {
+            const str = '出错：' + dict['error_info']
+            this.errorLineOne = str
+          }
+        }
+      })
+    },
+    // 监听错误信息
+    listenError() {
+      this.ana_error_refresh = setInterval(() => { // 每隔5秒监听错误信息
+        setTimeout(this.getAnaError(), 0)
+      }, 5000)
+    },
+    // 取消监听进度条
+    clearListenError() {
+      clearInterval(this.ana_error_refresh)
+      this.ana_error_refresh = null
     },
     // 开始分析
     beginAnalysis() {
@@ -626,7 +704,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.analysisExcel()
+          this.beforeAnalysis()
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -634,24 +712,24 @@ export default {
           })
         })
       } else {
-        this.analysisExcel()
+        this.beforeAnalysis()
       }
     },
     // 计算前判断是否在跑排程
     beforeAnalysis() {
-      const confirmText = ['目前正在运行排程，确定要分析排程？', '注意：此操作将会同时影响跑排程和分析排程！']
+      const confirmText = ['目前正在计算排程，确定要分析排程？', '注意：此操作将会同时影响计算排程和分析排程！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
         newDatas.push(h('p', null, confirmText[i]))
       }
-      if (this.checkSuccess === false) {
-        this.$message({
-          type: 'error',
-          message: '数据未检查，无法开始分析！'
-        })
-        return
-      }
+      // if (this.checkSuccess === false) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '数据未检查，无法开始分析！'
+      //   })
+      //   return
+      // }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
           this.$confirm('提示', {
