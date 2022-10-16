@@ -45,6 +45,8 @@ const PermissionOptions = [
 const lineOptions = [
   'SM01', 'SM02', 'SM03', 'SM05', 'SM06', 'SM07', 'SM08', 'SM09', 'SM11', 'SM13',
   'SM15', 'SM19', 'SM21', 'SM22', 'SM23', 'SM25', 'SR01', 'SR02', 'SR03', 'SR06',
-  'SR09', 'ST01'
+  'SR09'
 ]
-export { LineOptions, ProcessOptions, PermissionOptions, lineOptions }
+const lockedList = ['锁定', '新增锁定', '新上锁定', '插入锁定']
+const unLockedList = ['未锁定', '新上排程', '未上排程']
+export { LineOptions, ProcessOptions, PermissionOptions, lineOptions, lockedList, unLockedList }

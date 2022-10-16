@@ -222,7 +222,7 @@ export default {
     return {
       loading: true, // 表格加载动画
       importLoading: {
-        text: '导入中，请稍等...',
+        text: '拼命导入中...',
         background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入动画
       loadingInstance: null,

@@ -68,6 +68,7 @@
             :indeterminate="true"
           />
           <el-alert
+            style="color: #303133;"
             :title="progress_text_1"
             type="info"
             center
@@ -81,6 +82,7 @@
             class="layui-progress-bar"
           />
           <el-alert
+            style="color: #303133;"
             :title="progress_text_2"
             type="info"
             center
@@ -94,6 +96,7 @@
             class="layui-progress-bar"
           />
           <el-alert
+            style="color: #303133;"
             :title="progress_text_3"
             type="info"
             center
@@ -107,6 +110,7 @@
             class="layui-progress-bar"
           />
           <el-alert
+            style="color: #303133;"
             :title="progress_text_4"
             type="info"
             center
@@ -284,7 +288,7 @@
             action="http://localhost:9527/sqyapi/preprocess/control/check_input_excel/"
             accept=".xlsx"
             :on-change="handleChange"
-            :on-progress="handleProgress"
+            :on-progress="handleProgressDialog"
             :on-success="handleSuccess"
             :before-upload="handleBeforeUpload"
             :auto-upload="false"
@@ -368,12 +372,8 @@ export default {
       progressColor: '#02bafd', // 进度条颜色
       computeDialogVisible: false, // 计算导入排程dialog
       stepNow: 0, // 计算导入排程进行到第几步
-      checkLoading: {
-        text: '检查中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.3)'
-      }, // 检查动画
       importLoading: {
-        text: '导入中，请稍等...',
+        text: '拼命导入中...',
         background: 'rgba(0, 0, 0, 0.3)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
@@ -566,7 +566,19 @@ export default {
     },
     // 文件上传的过程中
     handleProgress() {
-      this.loadingInstance = Loading.service(this.checkLoading)
+      const checkLoading = {
+        text: '拼命检查中...',
+        background: 'rgba(0, 0, 0, 0.6)',
+        target: '#main'
+      } // 检查动画
+      this.loadingInstance = Loading.service(checkLoading)
+    },
+    handleProgressDialog() {
+      const checkLoading = {
+        text: '拼命检查中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      } // 检查动画
+      this.loadingInstance = Loading.service(checkLoading)
     },
     // 文件上传成功
     handleSuccess(res) {
@@ -933,17 +945,16 @@ export default {
   height:100%;
   display:block;
   background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,0.3) 0,rgba(255,255,255,0.3) 12.5%,transparent 0,transparent 25%);
-  background-size:30px 30px;
+  background-size:40px 40px;
   animation:move 2.5s linear infinite;
 }
 @keyframes move {
   from {
-    background-position: 30px 0;
+    background-position: 40px 0;
   }
   to {
     background-position:  0;
   }
 }
-
 </style>
 
