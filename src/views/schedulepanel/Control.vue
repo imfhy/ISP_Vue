@@ -327,7 +327,7 @@
               更新钢网信息
             </el-button>
           </el-tooltip>
-          <el-button type="success">
+          <el-button type="success" @click="exportScheduleData">
             导出检查
           </el-button>
         </el-col>
@@ -372,7 +372,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData } from '@/api/schedulepanel/Control'
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -865,6 +865,28 @@ export default {
       link.click()
       URL.revokeObjectURL(link.href) // 释放URL对象
       document.body.removeChild(link)
+    },
+    // 导出检查
+    exportScheduleData() {
+      if (!this.isImport) {
+        this.$message({
+          message: '未导入文件，无法导出',
+          type: 'error'
+        })
+      }
+      ExportScheduleData().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '导出失败，该文件不存在',
+          type: 'error'
+        })
+      })
     },
     // 下载最新排程
     downloadSchedule() {

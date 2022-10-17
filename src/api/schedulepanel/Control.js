@@ -126,4 +126,11 @@ export function GetApsMtool(data) {
     data
   })
 }
-
+// 导出检查接口
+export function ExportScheduleData(data) {
+  return request({
+    method: 'get',
+    url: '/schedule/api/exportScheduleData/',
+    responseType: 'blob'
+  })
+}
