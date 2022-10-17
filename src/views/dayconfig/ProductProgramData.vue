@@ -314,7 +314,7 @@
               name="file"
               class="upload-demo"
               accept=".xlsx"
-              action="http://localhost:9527/sqyapi/config/packholiday/import_data/"
+              action=""
               :on-change="handleChange"
               :auto-upload="false"
               :show-file-list="true"

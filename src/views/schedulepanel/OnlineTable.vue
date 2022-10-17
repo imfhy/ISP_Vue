@@ -858,10 +858,6 @@ export default {
         }
       }).catch(err => {
         console.log(err)
-        this.$message({
-          type: 'err',
-          message: '获取进度条请求出错'
-        })
       })
     },
     // 清空分析排程进度条

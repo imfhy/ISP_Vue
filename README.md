@@ -6,3 +6,5 @@ npm install --registry=https://registry.npm.taobao.org
 npm run dev
 
 npm install --save luckyexcel
+
+# 打包正式环境

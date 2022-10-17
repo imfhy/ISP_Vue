@@ -36,7 +36,7 @@
           <div class="my-table">
             <el-table
               :data="schedule_result"
-              style="width: 490px;"
+              style="width: 510px;"
               :border="false"
               algin="right"
               :header-cell-style="{'font-weight':'normal', 'text-align':'right'}"
@@ -46,7 +46,7 @@
               <el-table-column prop="obj_value" label="目标值" width="110px;" />
               <el-table-column prop="idle_value" label="停顿(天)" width="100px;" />
               <el-table-column prop="overdue_value" label="逾期(天)" width="100px;" />
-              <el-table-column prop="line_balance" label="线平衡" width="80px;" />
+              <el-table-column prop="line_balance" label="线平衡" width="100px;" />
             </el-table>
           </div>
         </el-col>
@@ -151,11 +151,11 @@
               />
               <div class="box-button">
                 <el-row>
-                  <el-col :span="8">
+                  <!-- <el-col :span="8">
                     <el-upload
                       ref="upload"
                       class="upload-demo"
-                      action="http://localhost:9527/sqyapi/preprocess/control/check_input_excel/"
+                      action="http://localhost:9090/sqyapi/preprocess/control/check_input_excel/"
                       accept=".xlsx"
                       :on-change="handleChange"
                       :on-progress="handleProgress"
@@ -169,7 +169,7 @@
                         检查排程表格
                       </el-button>
                     </el-upload>
-                  </el-col>
+                  </el-col> -->
                   <el-col :span="8">
                     <el-badge :value="computeTip" class="item">
                       <el-button type="primary" plain @click="computeDialog">
@@ -184,10 +184,6 @@
                       终止深度搜索
                     </el-button>
                   </el-col>
-                </el-row>
-              </div>
-              <div class="box-button">
-                <el-row>
                   <el-col :span="8">
                     <el-button type="stopBtn" plain @click="stopSchedule">
                       <i class="el-icon-warning-outline" />
@@ -196,6 +192,16 @@
                   </el-col>
                 </el-row>
               </div>
+              <!-- <div class="box-button">
+                <el-row>
+                  <el-col :span="8">
+                    <el-button type="stopBtn" plain @click="stopSchedule">
+                      <i class="el-icon-warning-outline" />
+                      终止计算排程
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </div> -->
             </el-col>
             <el-col :span="12">
               <el-alert
@@ -288,7 +294,7 @@
           <el-upload
             ref="upload"
             class="upload-demo"
-            action="http://localhost:9527/sqyapi/preprocess/control/check_input_excel/"
+            action=""
             accept=".xlsx"
             :on-change="handleChange"
             :on-progress="handleProgressDialog"
@@ -366,7 +372,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool } from '@/api/schedulepanel/Control'
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -375,6 +381,10 @@ export default {
       progressColor: '#02bafd', // 进度条颜色
       computeDialogVisible: false, // 计算导入排程dialog
       stepNow: 0, // 计算导入排程进行到第几步
+      checkLoading: {
+        text: '拼命检查中...',
+        background: 'rgba(0, 0, 0, 0.6)'
+      }, // 检查动画
       importLoading: {
         text: '拼命导入中...',
         background: 'rgba(0, 0, 0, 0.5)'
@@ -566,8 +576,32 @@ export default {
           this.uploadFileName = this.uploadFileList[0].name // 更新文件名
           this.uploadFile = this.uploadFileList[0].raw // 更新文件
         }
-        this.$refs.upload.submit()
+        // this.$refs.upload.submit()
+        this.checkData()
       }
+    },
+    // 检查
+    async checkData() {
+      this.loadingInstance = Loading.service(this.checkLoading)
+      const form = new FormData()
+      form.append('file', this.uploadFile)
+      await CheckData(form).then(res => {
+        if (res.type === 'success') {
+          this.$alert(res.message, '检查结果', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+        } else {
+          this.$alert(res.message, '检查结果', {
+            customClass: 'checkAlertBox',
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        }
+        this.stepNow = 1
+        this.loadingInstance.close()
+      })
     },
     // 文件上传的过程中
     handleProgress() {
@@ -749,18 +783,14 @@ export default {
     },
     // 开始计算排程
     computeSchedule() {
-      this.$message({
-        message: '开始计算排程',
-        type: 'success'
-      })
-      this.stepNow = 4
       this.listenProgress()
       ComputeSchedule({ 'file_name': this.uploadFileName, 'user_name': this.name }).then(res => {
         if (res.code === 20000) {
-          this.$alert(res.message, '提示', {
-            confirmButtonText: '确定',
+          this.$message({
+            message: res.message,
             type: 'success'
           })
+          this.stepNow = 4
         } else {
           this.$message({
             message: '开始计算失败',
@@ -975,7 +1005,7 @@ export default {
 }
 
 .checkAlertBox{
-  width: 60%;
+  width: 46%;
 }
 </style>
 

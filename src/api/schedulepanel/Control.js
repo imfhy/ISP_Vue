@@ -8,6 +8,14 @@ export function TrainModel(data) {
     data
   })
 }
+// 训练预测模型接口
+export function CheckData(data) {
+  return request({
+    url: '/preprocess/control/check_input_excel/',
+    method: 'post',
+    data
+  })
+}
 // 导入排程表格接口
 export function ImportSchedule(data) {
   return request({

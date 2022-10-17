@@ -58,11 +58,13 @@
 }
 .el-button--apiBtn:hover {
   background-color: #4f6da9;
+  border-color:#4f6da9;
   border-radius: 5px;
   color: #fff;
 }
 .el-button--apiBtnn:focus {
   background-color: #4f6da9;
+  border-color:#4f6da9;
   border-radius: 5px;
   color: #fff;
 }
@@ -71,16 +73,18 @@
   background-color: #70b5eb;
   font-family: "STHeiti";
   border-radius: 5px;
-  border-color:#55acee;
+  border-color:#70b5eb;
   color: #fff;
 }
 .el-button--cutBtn:hover {
   background-color: #50a4d5;
+  border-color:#50a4d5;
   border-radius: 5px;
   color: #fff;
 }
 .el-button--cutBtn:focus {
   background-color: #3ba0db;
+  border-color:#3ba0db;
   border-radius: 5px;
   color: #fff;
 }
