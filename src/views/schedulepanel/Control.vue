@@ -137,10 +137,12 @@
                   placeholder="选择预测模型日期"
                   :size="size"
                 />
-                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
-                  <i class="el-icon-pie-chart" />
-                  训练预测模型
-                </el-button>
+                <el-tooltip class="item" effect="dark" :content="trainDateTip" placement="top">
+                  <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
+                    <i class="el-icon-pie-chart" />
+                    训练预测模型
+                  </el-button>
+                </el-tooltip>
               </div>
               <el-alert
                 title="排程相关操作"
@@ -216,7 +218,7 @@
                 </el-button>
               </div>
               <el-alert
-                title="下载相关"
+                title="下载相关操作"
                 type="info"
                 :closable="false"
               />
@@ -375,7 +377,7 @@ export default {
       stepNow: 0, // 计算导入排程进行到第几步
       importLoading: {
         text: '拼命导入中...',
-        background: 'rgba(0, 0, 0, 0.3)'
+        background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       trainDate: new Date(), // 训练预测模型日期
@@ -409,7 +411,8 @@ export default {
       computeTip: '未开始', // 计算排程按钮左上角的小红标
       apsMtoolMsg: '未更新', // 钢网信息更新提示
       stopScheduleDialog: false, // 终止计算排程dialog
-      stopInput: '' // 确认终止
+      stopInput: '', // 确认终止
+      trainDateTip: '' // 训练日期提示
     }
   },
   computed: {
@@ -498,6 +501,7 @@ export default {
           this.schedule_result = res.table_data
           this.schedule_mode = res.mode
           this.schedule_time = res.date
+          this.trainDateTip = '当前模型日期：' + res.train_date
         }
       })
     },
@@ -637,11 +641,21 @@ export default {
     },
     // 训练预测模型
     trainModel() {
-      TrainModel({ 'end_time': this.trainDate }).then(res => {
-        if (res.code === 20000) {
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
           this.$message({
-            message: res.message,
-            type: 'success'
+            type: 'error',
+            message: '正在计算排程，无法训练预测模型！'
+          })
+        } else {
+          TrainModel({ 'end_time': this.trainDate }).then(res => {
+            if (res.code === 20000) {
+              this.$message({
+                message: res.message,
+                type: 'success'
+              })
+              this.trainDateTip = '当前模型日期：' + res.train_date
+            }
           })
         }
       })
@@ -787,7 +801,7 @@ export default {
         }).then(() => {
           const updateLoading = {
             text: '钢网信息更新中，请稍等...',
-            background: 'rgba(0, 0, 0, 0.3)'
+            background: 'rgba(0, 0, 0, 0.5)'
           }
           this.loadingInstance = Loading.service(updateLoading)
           GetApsMtool().then(res => {

@@ -34,7 +34,7 @@
             <el-tag v-if="modelOriginal.packline_holiday_flag === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.packline_holiday_flag === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="放假日期" :span="2">
+          <el-descriptions-item label="全部包装放假日期" :span="2">
             <el-tag
               v-for="(val,key) in pack_holiday_interval"
               :key="key"
@@ -44,13 +44,13 @@
             </el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="默认无法识别需求日期">{{ modelOriginal.default_unknown_require_day }}</el-descriptions-item>
-          <el-descriptions-item label="大小穿插时间">{{ modelOriginal.large_small_punctuated }}</el-descriptions-item>
+          <el-descriptions-item label="默认无法识别需求日期">{{ modelOriginal.default_unknown_require_day }}天</el-descriptions-item>
+          <el-descriptions-item label="大小穿插时间">{{ modelOriginal.large_small_punctuated }}秒</el-descriptions-item>
           <el-descriptions-item label="repair_mode">{{ modelOriginal.repair_mode }}</el-descriptions-item>
           <el-descriptions-item label="未上排程状态">{{ modelOriginal.unschedule_state_str }}</el-descriptions-item>
-          <el-descriptions-item label="n天需求日期参数">{{ modelOriginal.threshold_duedate }}</el-descriptions-item>
-          <el-descriptions-item label="n天物料到达时间参数">{{ modelOriginal.threshold_release }}</el-descriptions-item>
-          <el-descriptions-item label="LED额外切换时间" :span="2">{{ modelOriginal.led_extra_setup_time }}</el-descriptions-item>
+          <el-descriptions-item label="n天需求日期参数">{{ modelOriginal.threshold_duedate }}天</el-descriptions-item>
+          <el-descriptions-item label="n天物料到达时间参数">{{ modelOriginal.threshold_release }}天</el-descriptions-item>
+          <el-descriptions-item label="LED额外切换时间" :span="2">{{ modelOriginal.led_extra_setup_time }}秒</el-descriptions-item>
 
           <el-descriptions-item label="维护时间约束">
             <el-tag v-if="modelOriginal.block_time_rule === true" size="small" type="success">开启</el-tag>
@@ -81,10 +81,10 @@
             <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}</el-descriptions-item>
+          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}点</el-descriptions-item>
+          <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item>
 
           <el-descriptions-item label="是否执行分组">
             <el-tag v-if="modelOriginal.need_dispatch === true" size="small" type="success">开启</el-tag>
@@ -199,17 +199,17 @@
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.default_unknown_require_day" prop="default_unknown_require_day" label="默认无法识别需求日期">
-                <el-input-number v-model="model.default_unknown_require_day" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+                <el-input-number v-model="model.default_unknown_require_day" placeholder="请输入，单位为天" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.threshold_duedate" prop="threshold_duedate" label="n天需求日期参数">
-                <el-input-number v-model="model.threshold_duedate" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+                <el-input-number v-model="model.threshold_duedate" placeholder="请输入，单位为天" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.threshold_release" prop="threshold_release" label="n天物料到达时间参数">
-                <el-input-number v-model="model.threshold_release" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+                <el-input-number v-model="model.threshold_release" placeholder="请输入，单位为天" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -221,7 +221,7 @@
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.large_small_punctuated" prop="large_small_punctuated" label="大小穿插时间">
-                <el-input-number v-model="model.large_small_punctuated" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+                <el-input-number v-model="model.large_small_punctuated" placeholder="请输入，单位为秒" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">

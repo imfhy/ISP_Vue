@@ -398,7 +398,7 @@ export default {
     return {
       pushLoading: {
         text: '推送中，请稍等...',
-        background: 'rgba(0, 0, 0, 0.3)'
+        background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
       uploadFileName: '', // 上传的文件名
@@ -664,14 +664,13 @@ export default {
     // 获取分析排程中的错误信息
     getAnaError() {
       GetAnaError().then(res => {
-        if (res.run_flag === 2) {
-          this.clearListenError() // 分析完成，不再监听进度条
-          return
-        }
         if (res.error_data.length > 0) {
-          this.clearListenError() // 分析出错也无需再监听进度条了
+          // 分析出错就取消监听进度条和提示信息
+          this.clearListenError()
+          this.clearListenProgress()
         }
-        for (const dict in res.error_data) {
+        for (const key in res.error_data) {
+          const dict = res.error_data[key]
           if (dict['flag'] === -1) {
             const str = '分析出错，请检查：' + dict['error_info']
             this.this.errorLineTwo = str
@@ -761,11 +760,12 @@ export default {
       form_data.append('files', blob) // 在线表格文件流
       form_data.append('file_name', this.uploadFileName) // 在线表格文件流
       form_data.append('user_name', this.name) // 在线表格文件流
-      this.listenProgress()
       this.$message({
         type: 'success',
         message: '开始分析'
       })
+      this.listenProgress()
+      this.listenError()
       this.stepNow = 2
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
@@ -783,6 +783,7 @@ export default {
         type: 'success',
         message: '开始生成表格,预计需要1~2分钟'
       })
+      this.stepNow = 3
       this.generateAnaBtn = true
       GenerateAnaExcel().then(res => {
         console.log('generate done')
@@ -844,8 +845,9 @@ export default {
           // 显示分析排程的结果
           this.showAnaData(res, 0)
         } else if (run_flag === 2) {
+          // 生成表格后就不再监听进度条
           this.clearListenProgress()
-          this.stepNow = 3
+          this.clearListenError()
           this.$message({
             type: 'success',
             message: '生成表格完毕，可以下载表格和获取量化'
@@ -1018,7 +1020,7 @@ export default {
       StatisticsSchedule().then(res => {
         this.$message({
           type: 'success',
-          message: '获取成功'
+          message: '量化成功'
         })
         this.tableData_1 = res.table_data1
         this.tableData_2 = res.table_data2

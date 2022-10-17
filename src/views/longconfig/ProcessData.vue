@@ -295,7 +295,7 @@ export default {
       loading: true, // 表格加载动画
       importLoading: {
         text: '拼命导入中...',
-        background: 'rgba(0, 0, 0, 0.3)'
+        background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入动画
       loadingInstance: null,
       table_data: [], // 表格数据

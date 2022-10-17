@@ -25,7 +25,7 @@ export function ClearAnaProgress() {
 // 获取分析排程中的错误信息
 export function GetAnaError() {
   return request({
-    url: '/preprocess/onlinetable/get_ana_error/',
+    url: '/preprocess/onlinetable/get_analysis_error/',
     method: 'get'
   })
 }
