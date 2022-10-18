@@ -102,7 +102,7 @@ export function GetRunFlag() {
 // 推送SMT未排接口
 export function SmtUnscheduled(data) {
   return request({
-    url: '/schedule/api/saveApsScheduleSmtWplan/',
+    url: '/schedule/api/saveApsScheduleSmtWplan',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -111,7 +111,7 @@ export function SmtUnscheduled(data) {
 // 推送SMT预排接口
 export function SmtPrescheduled(data) {
   return request({
-    url: '/schedule/api/saveApsSmtScheduleResultFirst/',
+    url: '/schedule/api/saveApsSmtScheduleResultFirst',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -120,7 +120,7 @@ export function SmtPrescheduled(data) {
 // 推送SMT正排接口
 export function SmtScheduled(data) {
   return request({
-    url: '/schedule/api/saveApsSmtScheduleResultSecond/',
+    url: '/schedule/api/saveApsSmtScheduleResultSecond',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -129,7 +129,7 @@ export function SmtScheduled(data) {
 // 推送AI未排接口
 export function AiUnscheduled(data) {
   return request({
-    url: '/schedule/api/saveApsScheduleAiWplan/',
+    url: '/schedule/api/saveApsScheduleAiWplan',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -138,7 +138,7 @@ export function AiUnscheduled(data) {
 // 推送AI预排接口
 export function AiPrescheduled(data) {
   return request({
-    url: '/schedule/api/saveApsAiScheduleResultFirst/',
+    url: '/schedule/api/saveApsAiScheduleResultFirst',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -147,7 +147,7 @@ export function AiPrescheduled(data) {
 // 推送AI正排接口
 export function AiScheduled(data) {
   return request({
-    url: '/schedule/api/saveApsAiScheduleResultSecond/',
+    url: '/schedule/api/saveApsAiScheduleResultSecond',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data

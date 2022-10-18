@@ -120,7 +120,7 @@ export function StopSchedule(user_name) {
 // 更新钢网信息接口
 export function GetApsMtool(data) {
   return request({
-    url: '/schedule/api/getApsMtool/',
+    url: '/schedule/api/getApsMtool',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -130,7 +130,7 @@ export function GetApsMtool(data) {
 export function ExportScheduleData(data) {
   return request({
     method: 'get',
-    url: '/schedule/api/exportScheduleData/',
+    url: '/schedule/api/exportScheduleData',
     responseType: 'blob'
   })
 }

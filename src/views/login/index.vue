@@ -3,7 +3,7 @@
     <el-card class="login-box">
       <div class="img-box">
         <img class="login-img" src="../../assets/img/login.jpg">
-        <div class="company">数驱优科技</div>
+        <!-- <div class="company">数驱优科技</div> -->
       </div>
       <div class="form-box">
         <div class="login-container">

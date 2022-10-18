@@ -283,7 +283,7 @@
       <el-steps :active="stepNow" finish-status="success" simple>
         <el-step title="上传排程" />
         <el-step title="导入排程" />
-        <el-step title="更新数据" />
+        <el-step title="更新信息" />
         <el-step title="计算排程" />
       </el-steps>
       <el-row style="margin-top:10px;">
@@ -848,7 +848,7 @@ export default {
           message: '确定要更新钢网信息？',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'info'
+          type: 'warning'
         }).then(() => {
           const updateLoading = {
             text: '钢网信息更新中，请稍等...',
@@ -863,6 +863,7 @@ export default {
                 type: 'success'
               })
               this.apsMtoolMsg = '已更新'
+              this.stepNow = 3
             }
           }).catch(err => {
             this.loadingInstance.close() // 清除动画
