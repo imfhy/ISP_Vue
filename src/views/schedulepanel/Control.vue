@@ -570,6 +570,15 @@ export default {
     },
     // 文件上传钩子
     handleChange(file, fileList) {
+      const fileName = file.name
+      console.log(fileName)
+      if (!fileName.includes('预排') && !fileName.includes('正排')) {
+        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '提示', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
       if (file.status === 'ready') {
         if (fileList.length > 0) {
           this.uploadFileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
@@ -601,6 +610,12 @@ export default {
         }
         this.stepNow = 1
         this.loadingInstance.close()
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
     },
     // 文件上传的过程中
@@ -736,14 +751,20 @@ export default {
       const form = new FormData()
       form.append('file', this.uploadFile)
       await ImportSchedule(form).then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
         this.stepNow = 2
         this.isImport = true
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close()
     },
     // 计算前判断是否在跑排程
     beforeCompute() {
@@ -843,6 +864,12 @@ export default {
               })
               this.apsMtoolMsg = '已更新'
             }
+          }).catch(err => {
+            this.loadingInstance.close() // 清除动画
+            this.$alert(err, '错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
           })
         }).catch(() => {
           this.$message({

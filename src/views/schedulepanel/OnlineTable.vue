@@ -525,8 +525,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     post_pre_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
@@ -543,8 +549,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     post_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
@@ -561,8 +573,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     post_ai_unscheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
@@ -579,8 +597,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     post_ai_pre_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
@@ -597,8 +621,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     post_ai_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
@@ -615,8 +645,14 @@ export default {
             type: 'error'
           })
         }
+        this.loadingInstance.close() // 清除动画
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
-      this.loadingInstance.close() // 清除动画
     },
     // 上传文件
     loadExcelFile(file, fileList) {
@@ -770,10 +806,9 @@ export default {
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
       }).catch(err => {
-        console.log(err)
-        this.$message({
-          type: 'error',
-          message: '开始分析请求出错'
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
         })
       })
     },
@@ -788,10 +823,9 @@ export default {
       GenerateAnaExcel().then(res => {
         console.log('generate done')
       }).catch(err => {
-        console.log(err)
-        this.$message({
-          type: 'error',
-          message: '生成表格请求出错'
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
         })
       })
     },

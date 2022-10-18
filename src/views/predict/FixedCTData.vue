@@ -604,9 +604,8 @@ export default {
       form.append('import_mode', this.importMode)
       ImportData(form).then(res => {
         if (res.code === 20000) {
-          this.$notify({
-            title: res.message,
-            message: '本次共导入了 ' + res.data_count + ' 条数据',
+          this.$alert('本次共导入了 ' + res.data_count + ' 条数据', res.message, {
+            confirmButtonText: '确定',
             type: 'success'
           })
           this.loadingInstance.close() // 清除动画
@@ -616,6 +615,12 @@ export default {
           }, 2000)
           this.refreshTableData(true)
         }
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
     },
     // 导入数据窗口关闭
@@ -664,6 +669,12 @@ export default {
             this.handleExportClose() // 导出后自动关闭窗口
           }, 1000)
         }
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
     },
     // 导入数据窗口关闭
