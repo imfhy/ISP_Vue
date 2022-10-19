@@ -315,13 +315,18 @@
         </el-col>
       </el-row>
       <el-alert
-        title="更新数据"
+        title="更新信息"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
       />
       <el-row>
         <el-col :span="24">
+          <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
+            <el-button type="primary" @click="getApsProgram">
+              更新程序信息
+            </el-button>
+          </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
             <el-button type="primary" @click="getApsMtool">
               更新钢网信息
@@ -372,7 +377,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData } from '@/api/schedulepanel/Control'
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -420,6 +425,7 @@ export default {
       progress_refresh: null, // 刷新进度条
       computeTip: '未开始', // 计算排程按钮左上角的小红标
       apsMtoolMsg: '未更新', // 钢网信息更新提示
+      apsProgramMsg: '未更新', // 程序信息更新提示
       stopScheduleDialog: false, // 终止计算排程dialog
       stopInput: '', // 确认终止
       trainDateTip: '' // 训练日期提示
@@ -571,9 +577,8 @@ export default {
     // 文件上传钩子
     handleChange(file, fileList) {
       const fileName = file.name
-      console.log(fileName)
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '提示', {
+        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
@@ -758,6 +763,8 @@ export default {
         })
         this.stepNow = 2
         this.isImport = true
+        this.apsMtoolMsg = '未更新'
+        this.apsProgramMsg = '未更新'
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
         this.$alert(err, '错误', {
@@ -822,13 +829,13 @@ export default {
     },
     // 更新钢网信息前的提示
     getApsMtool() {
-      const tip = '服务器正在计算排程，无法更新数据！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$alert(tip, '错误', {
+          this.$alert(tip, '警告', {
             confirmButtonText: '确定',
             dangerouslyUseHTMLString: true,
-            type: 'error'
+            type: 'warning'
           })
         } else {
           this.continueGetApsMtool()
@@ -840,7 +847,7 @@ export default {
       if (this.isImport === false) {
         this.$message({
           type: 'warning',
-          message: '未导入文件，无法更新数据'
+          message: '未导入文件，无法更新信息'
         })
         return
       } else {
@@ -851,7 +858,7 @@ export default {
           type: 'warning'
         }).then(() => {
           const updateLoading = {
-            text: '钢网信息更新中，请稍等...',
+            text: '钢网信息更新中...',
             background: 'rgba(0, 0, 0, 0.5)'
           }
           this.loadingInstance = Loading.service(updateLoading)
@@ -863,6 +870,66 @@ export default {
                 type: 'success'
               })
               this.apsMtoolMsg = '已更新'
+              this.stepNow = 3
+            }
+          }).catch(err => {
+            this.loadingInstance.close() // 清除动画
+            this.$alert(err, '错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消更新'
+          })
+        })
+      }
+    },
+    // 更新程序信息前的提示
+    getApsProgram() {
+      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$alert(tip, '警告', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
+          })
+        } else {
+          this.continueGetApsProgram()
+        }
+      })
+    },
+    // 更新程序信息
+    continueGetApsProgram() {
+      if (this.isImport === false) {
+        this.$message({
+          type: 'warning',
+          message: '未导入文件，无法更新信息'
+        })
+        return
+      } else {
+        this.$confirm('提示', {
+          message: '确定要更新程序信息？',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const updateLoading = {
+            text: '程序信息更新中...',
+            background: 'rgba(0, 0, 0, 0.5)'
+          }
+          this.loadingInstance = Loading.service(updateLoading)
+          GetApsProgram().then(res => {
+            if (res.code === 20000) {
+              this.loadingInstance.close()
+              this.$alert('程序信息更新成功！', '提示', {
+                confirmButtonText: '确定',
+                type: 'success'
+              })
+              this.apsProgramMsg = '已更新'
               this.stepNow = 3
             }
           }).catch(err => {
@@ -901,6 +968,7 @@ export default {
           message: '未导入文件，无法导出',
           type: 'error'
         })
+        return
       }
       ExportScheduleData().then(res => {
         this.downloadFile(res)
