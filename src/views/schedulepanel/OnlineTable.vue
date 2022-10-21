@@ -709,7 +709,7 @@ export default {
           const dict = res.error_data[key]
           if (dict['flag'] === -1) {
             const str = '分析出错，请检查：' + dict['error_info']
-            this.this.errorLineTwo = str
+            this.errorLineTwo = str
           } else if (dict['flag'] === 0) {
             const str = '不可行原因：' + '工单id：' + dict['error_id'] + ' ' + dict['error_info']
             this.errorLineThree = str
@@ -950,6 +950,10 @@ export default {
       this.idle_value = ''
       this.line_balance = ''
       this.three_days_points = ''
+      // 清空错误提示
+      this.errorLineOne = ''
+      this.errorLineTwo = ''
+      this.errorLineThree = ''
     },
     // 获取分析排程历史选择项
     getHistoryAnaItem() {
