@@ -258,6 +258,12 @@
                       下载无程序表
                     </el-button>
                   </el-col>
+                  <el-col :span="8">
+                    <el-button type="primary" plain @click="downloadStatistics">
+                      <i class="el-icon-download" />
+                      下载量化结果
+                    </el-button>
+                  </el-col>
                 </el-row>
               </div>
             </el-col>
@@ -377,7 +383,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram } from '@/api/schedulepanel/Control'
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -995,7 +1001,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，该文件不存在',
+          message: '下载失败，文件不存在',
           type: 'error'
         })
       })
@@ -1011,7 +1017,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，该文件不存在',
+          message: '下载失败，文件不存在',
           type: 'error'
         })
       })
@@ -1027,7 +1033,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，该文件不存在',
+          message: '下载失败，文件不存在',
           type: 'error'
         })
       })
@@ -1055,7 +1061,7 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，该文件不存在',
+          message: '下载失败，文件不存在',
           type: 'error'
         })
       })
@@ -1071,7 +1077,23 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，该文件不存在',
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载量化结果
+    downloadStatistics() {
+      DownloadStatistics().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
           type: 'error'
         })
       })

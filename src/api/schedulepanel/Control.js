@@ -95,6 +95,14 @@ export function DownloadIdleInfo() {
     responseType: 'blob'
   })
 }
+// 下载量化结果
+export function DownloadStatistics() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_statistics/',
+    responseType: 'blob'
+  })
+}
 // 获取运行状态
 export function GetRunFlag() {
   return request({
