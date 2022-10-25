@@ -187,9 +187,7 @@
         <div slot="header" class="clearfix">
           <span>提示信息</span>
         </div>
-        <br>{{ errorLineOne }}
-        <br>{{ errorLineTwo }}
-        <br>{{ errorLineThree }}
+        <br>{{ anaErrMessage }}
       </el-card>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCloseAnalysis">
@@ -388,7 +386,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress,
   GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
-  AiPrescheduled, AiScheduled, GetRunFlag, GetAnaError
+  AiPrescheduled, AiScheduled, GetRunFlag
 } from '@/api/schedulepanel/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
@@ -407,9 +405,7 @@ export default {
       statisticsTitle: '量化结果', // 量化的dialog名称
       statisticsDialogVisible: false, // 量化结果dialog显示
       stepNow: 0, // 分析排程进行到第几步
-      errorLineOne: '', // 分析排程错误提示
-      errorLineTwo: '', // 分析排程错误提示
-      errorLineThree: '', // 分析排程错误提示
+      anaErrMessage: '', // 分析排程错误提示
       progressColor: '#02bafd', // 进度条颜色
       checkSuccess: false, // 是否检查数据
       schedule_time: '', // 排程时间
@@ -695,41 +691,6 @@ export default {
     closeAnalysis() {
       this.analysisDialogVisible = false
       this.clearListenProgress()
-      this.clearListenError()
-    },
-    // 获取分析排程中的错误信息
-    getAnaError() {
-      GetAnaError().then(res => {
-        if (res.error_data.length > 0) {
-          // 分析出错就取消监听进度条和提示信息
-          this.clearListenError()
-          this.clearListenProgress()
-        }
-        for (const key in res.error_data) {
-          const dict = res.error_data[key]
-          if (dict['flag'] === -1) {
-            const str = '分析出错，请检查：' + dict['error_info']
-            this.errorLineTwo = str
-          } else if (dict['flag'] === 0) {
-            const str = '不可行原因：' + '工单id：' + dict['error_id'] + ' ' + dict['error_info']
-            this.errorLineThree = str
-          } else {
-            const str = '出错：' + dict['error_info']
-            this.errorLineOne = str
-          }
-        }
-      })
-    },
-    // 监听错误信息
-    listenError() {
-      this.ana_error_refresh = setInterval(() => { // 每隔5秒监听错误信息
-        setTimeout(this.getAnaError(), 0)
-      }, 5000)
-    },
-    // 取消监听进度条
-    clearListenError() {
-      clearInterval(this.ana_error_refresh)
-      this.ana_error_refresh = null
     },
     // 开始分析
     beginAnalysis() {
@@ -801,7 +762,6 @@ export default {
         message: '开始分析'
       })
       this.listenProgress()
-      this.listenError()
       this.stepNow = 2
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
@@ -867,7 +827,14 @@ export default {
         this.progress_text_2 = res.p1text
         this.progress_text_3 = res.p2text
         const run_flag = res.run_flag
-        if (run_flag === 1 && res.p2 > 0 && this.progressCount === 0) {
+        if (run_flag === -1) {
+          this.clearListenProgress()
+          this.$message({
+            type: 'error',
+            message: '分析出错'
+          })
+          this.anaErrMessage = '分析出错：' + res.ana_err_message
+        } else if (run_flag === 1 && res.p2 > 0 && this.progressCount === 0) {
           this.$message({
             type: 'success',
             message: '分析完毕，可以生成表格'
@@ -881,7 +848,6 @@ export default {
         } else if (run_flag === 2) {
           // 生成表格后就不再监听进度条
           this.clearListenProgress()
-          this.clearListenError()
           this.$message({
             type: 'success',
             message: '生成表格完毕，可以下载表格和获取量化'
@@ -951,9 +917,7 @@ export default {
       this.line_balance = ''
       this.three_days_points = ''
       // 清空错误提示
-      this.errorLineOne = ''
-      this.errorLineTwo = ''
-      this.errorLineThree = ''
+      this.anaErrMessage = ''
     },
     // 获取分析排程历史选择项
     getHistoryAnaItem() {

@@ -55,7 +55,7 @@
           <el-table-column prop="machine_name" label="机种名" sortable />
           <el-table-column prop="board" label="板号" sortable />
           <el-table-column prop="process" label="制程面" width="120" sortable />
-          <el-table-column prop="date" label="时间" width="120" sortable />
+          <el-table-column prop="date" label="日期" width="120" sortable />
           <el-table-column prop="job_quantity" label="工单量" width="120" sortable />
           <el-table-column prop="total_points" label="总点数" width="160" sortable />
           <el-table-column width="110" fixed="right" label="操作">
@@ -259,7 +259,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.package_product_type" prop="package_product_type" label="包装产品类别">
+              <el-form-item :rules="rules.package_product_type" prop="package_product_type" label="包装产品类型">
                 <el-input v-model="model.package_product_type" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
@@ -341,11 +341,11 @@
         <el-table-column prop="product_type" label="产品类型" width="110" />
         <el-table-column prop="machine_name" label="机种名" width="160" />
         <el-table-column prop="board" label="板号" width="180" />
+        <el-table-column prop="job_ix" label="工单号" width="110" />
         <el-table-column prop="job_quantity" label="工单量" width="110" />
         <el-table-column prop="completed_quantity" label="产出片数" width="110" />
         <el-table-column prop="connecting_plates" label="联片数" width="110" />
         <el-table-column prop="CT" label="CT" width="110" />
-        <el-table-column prop="date" label="日期" width="110" />
         <el-table-column prop="production_time" label="生产时间" width="110" />
         <el-table-column prop="first_plate_time" label="首片时间" width="110" />
         <el-table-column prop="setup_time" label="切换时间" width="110" />
@@ -361,7 +361,7 @@
         <el-table-column prop="total_points" label="总点数" width="110" />
         <el-table-column prop="process" label="制程面" width="110" />
         <el-table-column prop="factory" label="工厂别" width="110" />
-        <el-table-column prop="package_product_type" label="包装产品类别" width="110" />
+        <el-table-column prop="package_product_type" label="包装产品类型" width="110" />
         <el-table-column prop="SMT_product_type" label="SMT产品类型" width="110" />
         <el-table-column prop="setup_type" label="切换类型" width="110" />
         <el-table-column prop="single_hand_insert_points" label="单板手插点数" width="110" />
@@ -451,7 +451,7 @@ export default {
           package_line: 'CL02',
           single_hand_insert_points: 0,
           total_points: 0,
-          process: '',
+          process: 'T',
           product_type: 'MNTPWPC',
           machine_name: 'PLKW261XQW1SMT',
           board: '715GA790P02004003R',

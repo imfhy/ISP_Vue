@@ -549,16 +549,8 @@ export default {
         if (res.run_flag === -1) {
           this.clearListenProgress()
           this.computeTip = '出错'
-          this.schedule_run_time = '计算排程出错，请联系开发人员'
-          this.$alert('计算排程出错，请联系开发人员！', '提示', {
-            confirmButtonText: '确定',
-            type: 'error'
-          })
-        } else if (res.run_flag === -2) {
-          this.clearListenProgress()
-          this.computeTip = '出错'
-          this.schedule_run_time = '计算排程出错，工单量为空'
-          this.$alert('计算排程出错，工单量为空，具体请查看Db logging,如果为公式，如果为公式请手动修改为数值后重新计算！', '提示', {
+          this.schedule_run_time = '计算排程出错'
+          this.$alert('计算排程出错：' + res.err_message, '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
