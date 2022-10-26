@@ -190,7 +190,6 @@
                   type="dates"
                   placeholder="选择一个或多个放假日期"
                   :style="{width: '100%'}"
-                  format="yyyy-MM-dd"
                   value-format="yyyy-MM-dd"
                 />
               </el-form-item>
@@ -700,6 +699,7 @@ export default {
           }
           // 将包装放假的字符串改为数组（为了能够在时间选择器组件上正确显示）
           this.pack_holiday_interval = this.model.pack_holiday_interval_str.split(',')
+          this.model.pack_holiday_interval_str = this.model.pack_holiday_interval_str.split(',')
         }
       })
     },
@@ -763,6 +763,7 @@ export default {
       }
       this.$refs['$form'].validate((valid) => {
         if (valid) {
+          console.log('pack_holiday_interval_str:', this.model.pack_holiday_interval_str)
           ModifyData(data).then(res => {
             if (res.code === 20000) {
               this.$notify({
