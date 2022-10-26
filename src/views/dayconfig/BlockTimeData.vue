@@ -272,7 +272,7 @@
       @dragDialog="handleDrag"
     >
       <p style="font-size:16px;margin-bottom: 16px;">
-        导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
+        （原方式导入不用看这个）导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
       </p>
       <el-table
         :data="tableDataExample"
@@ -288,16 +288,17 @@
         <el-table-column prop="remark" label="备注" />
       </el-table>
       <el-row>
-        <el-col :span="6">
+        <el-col :span="10">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">
+            <el-radio label="original">原方式导入</el-radio>
             <el-radio label="add">追加数据</el-radio>
             <el-radio label="replace">替换数据</el-radio>
           </el-radio-group>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-checkbox v-model="autoBackup" style="margin-top:26px;">自动备份</el-checkbox>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="9">
           <div style="display: flex;margin-top: 16px;margin-bottom: 16px;">
             <el-upload
               ref="upload"
@@ -394,7 +395,7 @@ export default {
       uploadFileName: '', // 上传的文件名
       uploadFileList: [], // 上传的文件列表
       uploadFile: null, // 上传的文件
-      importMode: 'add', // 导入方式选择:追加或替换（方便以后扩展）
+      importMode: 'original', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
       // 表单相关数据
@@ -856,7 +857,7 @@ export default {
     },
     // 确认导入
     confirmImport() {
-      if (this.importMode === 'replace') {
+      if (this.importMode === 'replace' || this.importMode === 'original') {
         this.$confirm('此操作将会清空所有原有内容, 确定要进行替换操作？', '提示', {
           confirmButtonText: '确定替换',
           cancelButtonText: '取消',
