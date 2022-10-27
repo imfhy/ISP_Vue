@@ -228,7 +228,7 @@
       :before-close="handleImportClose"
       @dragDialog="handleDrag"
     >
-      <p style="font-size:16px;margin-bottom: 16px;">
+      <!-- <p style="font-size:16px;margin-bottom: 16px;">
         导入数据格式示例如下（仅支持.xlsx文件，列名需保持名称一致）：
       </p>
       <el-table
@@ -253,7 +253,7 @@
         <el-table-column prop="unknown3" label="未知3" />
         <el-table-column prop="unknown4" label="未知4" />
         <el-table-column prop="unknown5" label="未知5" />
-      </el-table>
+      </el-table> -->
       <el-row>
         <el-col :span="8">
           <el-radio-group v-model="importMode" style="margin-top: 26px;">

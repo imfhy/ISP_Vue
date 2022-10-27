@@ -177,7 +177,8 @@ export const asyncRoutes = [
         name: 'Loggingdb',
         meta: {
           title: '运行日志',
-          roles: ['admin', 'common']
+          roles: ['admin', 'common'],
+          noCache: true
         }
       },
       {
@@ -186,7 +187,8 @@ export const asyncRoutes = [
         name: 'OperaHistory',
         meta: {
           title: '历史操作',
-          roles: ['admin', 'common']
+          roles: ['admin', 'common'],
+          noCache: true
         }
       }
     ]
