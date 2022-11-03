@@ -676,7 +676,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        StopTabu().then(res => {
+        StopTabu(this.name).then(res => {
           if (res.code === 20000) {
             this.$message({
               message: res.message,

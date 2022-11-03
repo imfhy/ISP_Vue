@@ -34,10 +34,11 @@ export function ComputeSchedule(data) {
   })
 }
 // 终止深度搜素
-export function StopTabu() {
+export function StopTabu(user_name) {
   return request({
     url: '/preprocess/control/stop_tabu/',
-    method: 'get'
+    method: 'get',
+    params: { user_name }
   })
 }
 // 获取进度条
