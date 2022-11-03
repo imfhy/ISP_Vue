@@ -700,6 +700,7 @@ export default {
             message: '正在计算排程，无法训练预测模型！'
           })
         } else {
+          this.listenProgress()
           TrainModel({ 'end_time': this.trainDate }).then(res => {
             if (res.code === 20000) {
               this.$message({
