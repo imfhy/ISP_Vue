@@ -115,7 +115,7 @@ export default {
       run_time_list: [],
       value: new Date(),
       calendarData: [],
-      command: '3'
+      command: '7'
     }
   },
   created() {
