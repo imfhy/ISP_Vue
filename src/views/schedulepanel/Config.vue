@@ -76,9 +76,13 @@
             <el-tag v-if="modelOriginal.force_day_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="排xx夜班约束" :span="2">
+          <el-descriptions-item label="排xx夜班约束">
             <el-tag v-if="modelOriginal.force_night_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="非Gaia工单赌物料到20:00">
+            <el-tag v-if="modelOriginal.not_gaia_release_time_eight === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.not_gaia_release_time_eight === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
 
           <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
@@ -296,6 +300,11 @@
                 <el-switch v-model="model.force_night_shift_time_rule" />
               </el-form-item>
             </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.not_gaia_release_time_eight" prop="not_gaia_release_time_eight" label="非Gaia工单赌物料到20:00">
+                <el-switch v-model="model.not_gaia_release_time_eight" />
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
@@ -405,6 +414,7 @@ export default {
         skip_first_group_rule: true,
         force_day_shift_time_rule: true,
         force_night_shift_time_rule: true,
+        not_gaia_release_time_eight: false,
         sm13_buttom_new_machine_predict: '',
         sm21_top_led_threshold: '',
         sm21_top_le_predict: '',
@@ -449,6 +459,7 @@ export default {
         skip_first_group_rule: true,
         force_day_shift_time_rule: true,
         force_night_shift_time_rule: true,
+        not_gaia_release_time_eight: false,
         sm13_buttom_new_machine_predict: '',
         sm21_top_led_threshold: '',
         sm21_top_le_predict: '',
@@ -586,6 +597,11 @@ export default {
         force_night_shift_time_rule: [{
           required: true,
           message: '排xx夜班约束不能为空',
+          trigger: 'change'
+        }],
+        not_gaia_release_time_eight: [{
+          required: true,
+          message: '该选项不能为空',
           trigger: 'change'
         }],
         sm13_buttom_new_machine_predict: [{
