@@ -205,26 +205,7 @@
             </el-col>
             <el-col :span="12">
               <el-alert
-                title="下载历史日志"
-                type="info"
-                :closable="false"
-              />
-              <div class="box-button">
-                <el-select v-model="selectLogValue" placeholder="选择历史日志">
-                  <el-option
-                    v-for="item in options_history_log"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryLog">
-                  <i class="el-icon-download" />
-                  下载历史日志
-                </el-button>
-              </div>
-              <el-alert
-                title="下载相关操作"
+                title="下载最新数据"
                 type="info"
                 :closable="false"
               />
@@ -265,6 +246,39 @@
                     </el-button>
                   </el-col>
                 </el-row>
+              </div>
+              <el-alert
+                title="下载历史数据"
+                type="info"
+                :closable="false"
+              />
+              <div class="box-button">
+                <el-select v-model="selectLogValue" placeholder="选择历史日志">
+                  <el-option
+                    v-for="item in options_history_log"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryLog">
+                  <i class="el-icon-download" />
+                  下载历史日志
+                </el-button>
+              </div>
+              <div class="box-button">
+                <el-select v-model="selectExcelValue" placeholder="选择历史排程">
+                  <el-option
+                    v-for="item in options_history_excel"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
+                  <i class="el-icon-download" />
+                  下载历史排程
+                </el-button>
               </div>
             </el-col>
           </el-row>
@@ -383,7 +397,8 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics } from '@/api/schedulepanel/Control'
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics,
+  GetExcelSelectItem, DownloadHistoryExcel } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -407,6 +422,8 @@ export default {
       uploadFileName: '', // 文件名
       options_history_log: [], // 历史日志列表
       selectLogValue: '', // 当前选中的历史日志
+      options_history_excel: [], // 历史排程列表
+      selectExcelValue: '', // 当前选中的要下载的历史日志
       isImport: false, // 是否上传文件
       // 进度条相关
       percentage_1: 0,
@@ -444,6 +461,7 @@ export default {
   },
   created() {
     this.getLogSelectItem()
+    this.getExcelSelectItem()
     this.listenProgress()
     this.getScheduleRes()
   },
@@ -1043,9 +1061,37 @@ export default {
         }
       })
     },
+    // 获取历史日志选择器选项
+    getExcelSelectItem() {
+      this.options_history_excel = []
+      GetExcelSelectItem().then(res => {
+        for (const key in res.excel_data) {
+          const temp = {}
+          temp['value'] = res.excel_data[key]
+          temp['label'] = res.excel_data[key]
+          this.options_history_excel.push(temp)
+        }
+      })
+    },
     // 下载历史日志
     downloadHistoryLog() {
       DownloadHistoryLog({ 'filename': this.selectLogValue }).then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载历史排程
+    downloadHistoryExcel() {
+      DownloadHistoryExcel({ 'filename': this.selectExcelValue }).then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
