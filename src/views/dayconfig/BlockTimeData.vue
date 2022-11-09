@@ -123,42 +123,50 @@
       @dragDialog="handleDrag"
     >
       <el-row>
-        <el-col :span="8">
-          <p>白班早下班时间区间：</p>
-        </el-col>
-        <el-col :span="8">
-          <p>夜班早下班时间区间：</p>
-        </el-col>
-        <el-col :span="8">
-          <p>白班保养时间区间：</p>
-        </el-col>
-      </el-row>
-      <el-row style="margin-bottom: 10px;">
-        <el-col :span="8">
+        <el-col :span="12">
+          <span>白班早下班时间区间：</span>
           <el-date-picker
             v-model="dayTime"
             type="datetimerange"
             range-separator="至"
             start-placeholder="维护开始时间"
             end-placeholder="维护结束时间"
+            style="margin-bottom: 10px;"
           />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
+          <span>夜班早下班时间区间：</span>
           <el-date-picker
             v-model="nightTime"
             type="datetimerange"
             range-separator="至"
             start-placeholder="维护开始时间"
             end-placeholder="维护结束时间"
+            style="margin-bottom: 10px;"
           />
         </el-col>
-        <el-col :span="8">
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <span>白班保养时间区间：</span>
           <el-date-picker
             v-model="maintainTime"
             type="datetimerange"
             range-separator="至"
             start-placeholder="维护开始时间"
             end-placeholder="维护结束时间"
+            style="margin-bottom: 10px;"
+          />
+        </el-col>
+        <el-col :span="12">
+          <span>自定义时间区间：</span>
+          <el-date-picker
+            v-model="maintainTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="维护开始时间"
+            end-placeholder="维护结束时间"
+            style="margin-bottom: 10px;"
           />
         </el-col>
       </el-row>
@@ -167,20 +175,25 @@
         :header-cell-style="{background:'#eef1f6',color:'#606266'}"
         max-height="460"
       >
-        <el-table-column prop="line_name" label="维护线体" width="80" />
-        <el-table-column prop="dayTime" label="默认当天时间(16:30~20:00)">
+        <el-table-column prop="line_name" label="维护线体" width="100" />
+        <el-table-column prop="dayTime" label="白班早下班">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.dayTime">白班早下班</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="nightTime" label="默认次日时间(05:30~08:00)">
+        <el-table-column prop="nightTime" label="夜班早下班">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.nightTime">夜班早下班</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="maintainTime" label="默认时间(08:00~20:00)">
+        <el-table-column prop="maintainTime" label="白班保养">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.maintainTime" style="margin-top: 5px;">白班保养</el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column prop="customTime" label="自定义时间">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.customTime" style="margin-top: 5px;">自定义时间</el-checkbox>
           </template>
         </el-table-column>
       </el-table>
@@ -483,6 +496,7 @@ export default {
       dayTime: [],
       nightTime: [],
       maintainTime: [],
+      customTime: [],
       tableDataMulti: [],
       // 表单相关数据
       forms: ['$form'],
@@ -607,6 +621,13 @@ export default {
       this.maintainTime.push(date_start_3)
       date_end_3.setHours(20, 0, 0)
       this.maintainTime.push(date_end_3)
+      // 初始化白班保养时间区间
+      const date_start_4 = new Date()
+      const date_end_4 = new Date()
+      date_start_4.setHours(8, 0, 0)
+      this.customTime.push(date_start_4)
+      date_end_4.setHours(20, 0, 0)
+      this.customTime.push(date_end_4)
     },
     // 分页
     handlePageChange(val) {
@@ -709,16 +730,13 @@ export default {
     // 创建多个维护表选项
     generateMultiTable() {
       this.tableDataMulti = []
-      // this.dayTime.getFullYear()
-      // this.dayTime.getMonth()
-      // this.dayTime.getDate()
-      console.log('放假:', this.dayTime)
       for (const key in this.lineOptions_2) {
         const temp = {}
         temp['line_name'] = this.lineOptions_2[key]
         temp['dayTime'] = false
         temp['nightTime'] = false
         temp['maintainTime'] = false
+        temp['customTime'] = false
         this.tableDataMulti.push(temp)
       }
     },
@@ -731,6 +749,7 @@ export default {
         'day_time': this.dayTime,
         'night_time': this.nightTime,
         'maintain_time': this.maintainTime,
+        'custom_time': this.customTime,
         'block_time_data': this.tableDataMulti
       }
       AddMultiData(data).then(res => {
