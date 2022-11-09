@@ -85,4 +85,11 @@ export function DeleteBackupData(data) {
     data
   })
 }
-
+// 添加多个放假
+export function AddMultiData(data) {
+  return request({
+    method: 'post',
+    url: '/config/blocktimedata/add_multi_data/',
+    data
+  })
+}

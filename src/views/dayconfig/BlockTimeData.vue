@@ -7,6 +7,9 @@
             <el-button type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
+            <el-button type="primary" @click="addMultiDataDialog">
+              <i class="el-icon-plus" />添加多个维护
+            </el-button>
             <!-- <el-button type="primary" @click="addMultiDataDialog">
               <i class="el-icon-plus" />添加多个维护线体
             </el-button> -->
@@ -110,6 +113,83 @@
         />
       </div>
     </el-card>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="添加多个维护"
+      :visible.sync="dialogMultiVisible"
+      width="70%"
+      :before-close="handleMultiClose"
+      @dragDialog="handleDrag"
+    >
+      <el-row>
+        <el-col :span="8">
+          <p>白班早下班时间区间：</p>
+        </el-col>
+        <el-col :span="8">
+          <p>夜班早下班时间区间：</p>
+        </el-col>
+        <el-col :span="8">
+          <p>白班保养时间区间：</p>
+        </el-col>
+      </el-row>
+      <el-row style="margin-bottom: 10px;">
+        <el-col :span="8">
+          <el-date-picker
+            v-model="dayTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="维护开始时间"
+            end-placeholder="维护结束时间"
+          />
+        </el-col>
+        <el-col :span="8">
+          <el-date-picker
+            v-model="nightTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="维护开始时间"
+            end-placeholder="维护结束时间"
+          />
+        </el-col>
+        <el-col :span="8">
+          <el-date-picker
+            v-model="maintainTime"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="维护开始时间"
+            end-placeholder="维护结束时间"
+          />
+        </el-col>
+      </el-row>
+      <el-table
+        :data="tableDataMulti"
+        :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+        max-height="460"
+      >
+        <el-table-column prop="line_name" label="维护线体" width="80" />
+        <el-table-column prop="dayTime" label="默认当天时间(16:30~20:00)">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.dayTime">白班早下班</el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column prop="nightTime" label="默认次日时间(05:30~08:00)">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.nightTime">夜班早下班</el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column prop="maintainTime" label="默认时间(08:00~20:00)">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.maintainTime" style="margin-top: 5px;">白班保养</el-checkbox>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleMultiClose">关闭</el-button>
+        <el-button v-if="dialogBtnType === true" type="primary" @click="addMultiData">添加</el-button>
+      </span>
+    </el-dialog>
+
     <el-dialog
       v-el-drag-dialog
       :title="dialogTitle"
@@ -351,9 +431,9 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete,
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
   ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData } from '@/api/dayconfig/BlockTimeData'
-import { LineOptions } from '@/utils/items'
+import { lineOptions, LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
   directives: { elDragDialog },
@@ -386,6 +466,7 @@ export default {
       dialogTitle: '', // 表单dialog标题
       dataDialogVisible: false, // 表单dialog显示
       dialogBtnType: true, // 表单dialog按钮 true为添加按钮 false为保存按钮
+      dialogMultiVisible: false, // 添加多个维护dialog
       helpDialogVisible: false, // 帮助提示dialog
       scopeIndex: '', // 表格行数index
       scopeRow: '', // 表格行数据
@@ -398,6 +479,11 @@ export default {
       importMode: 'original', // 导入方式选择:追加或替换（方便以后扩展）
       exportRadio: 'xlsx', // 导出格式选择（方便以后扩展）
       isClick: false, // 是否点击了保存或者提交
+      // 添加多个维护
+      dayTime: [],
+      nightTime: [],
+      maintainTime: [],
+      tableDataMulti: [],
       // 表单相关数据
       forms: ['$form'],
       model: {
@@ -452,6 +538,7 @@ export default {
         UPDATED_TIME: []
       },
       lineOptions: LineOptions, // 维护线别
+      lineOptions_2: lineOptions,
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -475,6 +562,8 @@ export default {
   },
   created() {
     this.getTableData(this.currentPage, this.pageSize)
+    this.generateMultiTable()
+    this.initializeDate()
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
@@ -492,6 +581,32 @@ export default {
         return 'color: #E6A23C;font-weight: bold;'
       }
       return ''
+    },
+    // 初始化日期
+    initializeDate() {
+      // 初始化白班早下班时间区间
+      const date_start_1 = new Date()
+      const date_end_1 = new Date()
+      date_start_1.setHours(16, 30, 0)
+      this.dayTime.push(date_start_1)
+      date_end_1.setHours(20, 0, 0)
+      this.dayTime.push(date_end_1)
+      // 初始化夜班早下班时间区间
+      const date_start_2 = new Date()
+      const date_end_2 = new Date()
+      date_start_2.setDate(date_start_2.getDate() + 1)
+      date_start_2.setHours(5, 30, 0)
+      this.nightTime.push(date_start_2)
+      date_end_2.setDate(date_end_2.getDate() + 1)
+      date_end_2.setHours(8, 0, 0)
+      this.nightTime.push(date_end_2)
+      // 初始化白班保养时间区间
+      const date_start_3 = new Date()
+      const date_end_3 = new Date()
+      date_start_3.setHours(8, 0, 0)
+      this.maintainTime.push(date_start_3)
+      date_end_3.setHours(20, 0, 0)
+      this.maintainTime.push(date_end_3)
     },
     // 分页
     handlePageChange(val) {
@@ -589,6 +704,48 @@ export default {
           })
         }
       })
+    },
+    // 添加多个线体维护
+    // 创建多个维护表选项
+    generateMultiTable() {
+      this.tableDataMulti = []
+      // this.dayTime.getFullYear()
+      // this.dayTime.getMonth()
+      // this.dayTime.getDate()
+      console.log('放假:', this.dayTime)
+      for (const key in this.lineOptions_2) {
+        const temp = {}
+        temp['line_name'] = this.lineOptions_2[key]
+        temp['dayTime'] = false
+        temp['nightTime'] = false
+        temp['maintainTime'] = false
+        this.tableDataMulti.push(temp)
+      }
+    },
+    addMultiDataDialog() {
+      this.dialogMultiVisible = true
+    },
+    addMultiData() {
+      const data = {
+        'user_name': this.name,
+        'day_time': this.dayTime,
+        'night_time': this.nightTime,
+        'maintain_time': this.maintainTime,
+        'block_time_data': this.tableDataMulti
+      }
+      AddMultiData(data).then(res => {
+        if (res.code === 20000) {
+          this.$notify({
+            title: '添加成功',
+            message: '成功添加 ' + res.count + ' 个维护数据',
+            type: 'success'
+          })
+          this.refreshTableData(true)
+        }
+      })
+    },
+    handleMultiClose() {
+      this.dialogMultiVisible = false
     },
     // 获取表格勾选数据
     handleSelectionChange(val) {
