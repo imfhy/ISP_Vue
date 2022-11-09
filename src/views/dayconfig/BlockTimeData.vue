@@ -10,9 +10,6 @@
             <el-button type="primary" @click="addMultiDataDialog">
               <i class="el-icon-plus" />添加多个维护
             </el-button>
-            <!-- <el-button type="primary" @click="addMultiDataDialog">
-              <i class="el-icon-plus" />添加多个维护线体
-            </el-button> -->
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
@@ -176,22 +173,22 @@
         max-height="460"
       >
         <el-table-column prop="line_name" label="维护线体" width="100" />
-        <el-table-column prop="dayTime" label="白班早下班">
+        <el-table-column prop="dayTime" label="白班早下班" :render-header="renderHeaderDay">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.dayTime">白班早下班</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="nightTime" label="夜班早下班">
+        <el-table-column prop="nightTime" label="夜班早下班" :render-header="renderHeaderNight">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.nightTime">夜班早下班</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="maintainTime" label="白班保养">
+        <el-table-column prop="maintainTime" label="白班保养" :render-header="renderHeaderMaintain">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.maintainTime" style="margin-top: 5px;">白班保养</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="customTime" label="自定义时间">
+        <el-table-column prop="customTime" label="自定义时间" :render-header="renderHeaderCustom">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.customTime" style="margin-top: 5px;">自定义时间</el-checkbox>
           </template>
@@ -576,13 +573,61 @@ export default {
   },
   created() {
     this.getTableData(this.currentPage, this.pageSize)
-    this.generateMultiTable()
     this.initializeDate()
   },
   mounted() {
     // this.getTableData(this.currentPage, this.pageSize)
   },
   methods: {
+    // 全选维护时间
+    renderHeaderDay() {
+      return (
+        <div>
+          <el-button size='mini' onClick={() => this.handleChooseAllDay()}>全选</el-button>
+        </div>
+      )
+    },
+    handleChooseAllDay() {
+      for (const key in this.tableDataMulti) {
+        this.tableDataMulti[key].dayTime = !this.tableDataMulti[key].dayTime
+      }
+    },
+    renderHeaderNight() {
+      return (
+        <div>
+          <el-button size='mini' onClick={() => this.handleChooseAllNight()}>全选</el-button>
+        </div>
+      )
+    },
+    handleChooseAllNight() {
+      for (const key in this.tableDataMulti) {
+        this.tableDataMulti[key].nightTime = !this.tableDataMulti[key].nightTime
+      }
+    },
+    renderHeaderMaintain() {
+      return (
+        <div>
+          <el-button size='mini' onClick={() => this.handleChooseAllMaintain()}>全选</el-button>
+        </div>
+      )
+    },
+    handleChooseAllMaintain() {
+      for (const key in this.tableDataMulti) {
+        this.tableDataMulti[key].maintainTime = !this.tableDataMulti[key].maintainTime
+      }
+    },
+    renderHeaderCustom() {
+      return (
+        <div>
+          <el-button size='mini' onClick={() => this.handleChooseAllCustom()}>全选</el-button>
+        </div>
+      )
+    },
+    handleChooseAllCustom() {
+      for (const key in this.tableDataMulti) {
+        this.tableDataMulti[key].customTime = !this.tableDataMulti[key].customTime
+      }
+    },
     // dialog可拖拽
     handleDrag() {
       this.$refs.select.blur()
@@ -741,6 +786,7 @@ export default {
       }
     },
     addMultiDataDialog() {
+      this.generateMultiTable()
       this.dialogMultiVisible = true
     },
     addMultiData() {
