@@ -174,9 +174,21 @@
                     <el-badge :value="computeTip" class="item">
                       <el-button type="primary" plain @click="computeDialog">
                         <i class="el-icon-monitor" />
-                        计算排程表格
+                        计算主板排程
                       </el-button>
                     </el-badge>
+                  </el-col>
+                  <el-col :span="8">
+                    <!-- <el-badge :value="computeSmallTip" class="item">
+                      <el-button type="primary" plain @click="computeSmallDialog">
+                        <i class="el-icon-monitor" />
+                        计算主板小板
+                      </el-button>
+                    </el-badge> -->
+                    <el-button type="primary" plain @click="computeSmallDialog">
+                      <i class="el-icon-monitor" />
+                      计算主板小板
+                    </el-button>
                   </el-col>
                   <el-col :span="8">
                     <el-button type="stopBtn" plain @click="stopTabu">
@@ -184,15 +196,9 @@
                       终止深度搜索
                     </el-button>
                   </el-col>
-                  <el-col :span="8">
-                    <el-button type="stopBtn" plain @click="stopSchedule">
-                      <i class="el-icon-warning-outline" />
-                      终止计算排程
-                    </el-button>
-                  </el-col>
                 </el-row>
               </div>
-              <!-- <div class="box-button">
+              <div class="box-button">
                 <el-row>
                   <el-col :span="8">
                     <el-button type="stopBtn" plain @click="stopSchedule">
@@ -201,7 +207,7 @@
                     </el-button>
                   </el-col>
                 </el-row>
-              </div> -->
+              </div>
             </el-col>
             <el-col :span="12">
               <el-alert
@@ -214,7 +220,7 @@
                   <el-col :span="8">
                     <el-button type="primary" plain @click="downloadSchedule">
                       <i class="el-icon-download" />
-                      下载最新排程
+                      下载主板排程
                     </el-button>
                   </el-col>
                   <el-col :span="8">
@@ -293,7 +299,108 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="计算排程"
+      title="计算主板小板排程"
+      :visible.sync="computeSmallDialogVisible"
+      width="50%"
+      :close-on-click-modal="false"
+      :before-close="handleCloseSmall"
+      @dragDialog="handleDrag"
+    >
+      <el-steps :active="stepNowSmall" finish-status="success" simple>
+        <el-step title="上传排程" />
+        <el-step title="导入排程" />
+        <el-step title="更新信息" />
+        <el-step title="计算排程" />
+      </el-steps>
+      <el-row style="margin-top:10px;">
+        <el-col :span="4">
+          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+        </el-col>
+        <el-col :span="6">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            accept=".xlsx"
+            :on-change="handleChangeMain"
+            :auto-upload="false"
+            :show-file-list="false"
+            :file-list="uploadFileListMain"
+            style="margin-left: 10px;"
+          >
+            <el-button slot="trigger" type="primary">
+              上传主板排程
+            </el-button>
+          </el-upload>
+        </el-col>
+        <el-col :span="4">
+          <el-input placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
+        </el-col>
+        <el-col :span="6">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            accept=".xlsx"
+            :on-change="handleChangeSmall"
+            :auto-upload="false"
+            :show-file-list="false"
+            :file-list="uploadFileListSmall"
+            style="margin-left: 10px;"
+          >
+            <el-button slot="trigger" type="primary">
+              上传小板排程
+            </el-button>
+          </el-upload>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="success" style="margin-left:10px;" @click="beforeImportSmall">
+            导入文件
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-alert
+        title="更新信息"
+        type="info"
+        :closable="false"
+        style="margin-top: 10px;margin-bottom: 10px;"
+      />
+      <el-row>
+        <el-col :span="24">
+          <el-tooltip class="item" effect="dark" :content="apsProgramMsgSmall" placement="top">
+            <el-button type="primary" @click="getApsProgramSmall">
+              更新程序信息
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="apsMtoolMsgSmall" placement="top">
+            <el-button type="primary" @click="getApsMtoolSmall">
+              更新钢网信息
+            </el-button>
+          </el-tooltip>
+          <el-button type="success" @click="exportScheduleDataSmall">
+            导出检查
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-alert
+        title="计算排程"
+        type="info"
+        :closable="false"
+        style="margin-top: 10px;margin-bottom: 10px;"
+      />
+      <el-button type="primary" @click="beforeComputeSmall">
+        开始计算排程
+      </el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCloseSmall">
+          关闭
+        </el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      v-el-drag-dialog
+      title="计算主板排程"
       :visible.sync="computeDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -317,9 +424,6 @@
             action=""
             accept=".xlsx"
             :on-change="handleChange"
-            :on-progress="handleProgressDialog"
-            :on-success="handleSuccess"
-            :before-upload="handleBeforeUpload"
             :auto-upload="false"
             :show-file-list="false"
             :file-list="uploadFileList"
@@ -407,6 +511,7 @@ export default {
       progressColor: '#02bafd', // 进度条颜色
       computeDialogVisible: false, // 计算导入排程dialog
       stepNow: 0, // 计算导入排程进行到第几步
+      stepNowSmall: 0, // 计算主板小板排程
       checkLoading: {
         text: '拼命检查中...',
         background: 'rgba(0, 0, 0, 0.6)'
@@ -425,6 +530,7 @@ export default {
       options_history_excel: [], // 历史排程列表
       selectExcelValue: '', // 当前选中的要下载的历史日志
       isImport: false, // 是否上传文件
+      isImportSmall: false, // 是否上传小板
       // 进度条相关
       percentage_1: 0,
       percentage_2: 0,
@@ -449,9 +555,20 @@ export default {
       computeTip: '未开始', // 计算排程按钮左上角的小红标
       apsMtoolMsg: '未更新', // 钢网信息更新提示
       apsProgramMsg: '未更新', // 程序信息更新提示
+      apsMtoolMsgSmall: '未更新', // 钢网信息更新提示
+      apsProgramMsgSmall: '未更新', // 程序信息更新提示
       stopScheduleDialog: false, // 终止计算排程dialog
       stopInput: '', // 确认终止
-      trainDateTip: '' // 训练日期提示
+      trainDateTip: '', // 训练日期提示
+      computeSmallDialogVisible: false,
+
+      uploadFileListSmall: [], // 小板上传的文件列表
+      uploadFileSmall: null, // 小板上传的文件
+      uploadFileNameSmall: '', // 小板文件名
+
+      uploadFileListMain: [], // 主板上传的文件列表
+      uploadFileMain: null, // 主板上传的文件
+      uploadFileNameMain: '' // 主板文件名
     }
   },
   computed: {
@@ -586,9 +703,27 @@ export default {
         }
       })
     },
-    // 计算导入排程dialog弹出
+    // 计算主板排程
     computeDialog() {
       this.computeDialogVisible = true
+    },
+    // 计算主板小板
+    computeSmallDialog() {
+      this.computeSmallDialogVisible = true
+    },
+    // 关闭计算主板小板排程
+    handleCloseSmall() {
+      if (this.stepNowSmall !== 4) {
+        this.$confirm('未开始计算，确定关闭计算排程窗口？', '提示', {
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(_ => {
+          this.computeSmallDialogVisible = false
+        }).catch(_ => {})
+      } else {
+        this.computeSmallDialogVisible = false
+      }
     },
     // 文件上传钩子
     handleChange(file, fileList) {
@@ -606,15 +741,66 @@ export default {
           this.uploadFileName = this.uploadFileList[0].name // 更新文件名
           this.uploadFile = this.uploadFileList[0].raw // 更新文件
         }
-        // this.$refs.upload.submit()
-        this.checkData()
+        this.checkData(this.uploadFile)
+      }
+    },
+    // 主板文件上传钩子
+    handleChangeMain(file, fileList) {
+      const fileName = file.name
+      if (!fileName.includes('预排') && !fileName.includes('正排')) {
+        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
+      if (!fileName.includes('主板')) {
+        this.$alert('上传的文件名未指明是主板排程，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
+      if (file.status === 'ready') {
+        if (fileList.length > 0) {
+          this.uploadFileListMain = [fileList[fileList.length - 1]] // 选择最后一次选择文件
+          this.uploadFileNameMain = this.uploadFileListMain[0].name // 更新文件名
+          this.uploadFileMain = this.uploadFileListMain[0].raw // 更新文件
+        }
+        this.checkData(this.uploadFileMain)
+      }
+    },
+    // 小板文件上传钩子
+    handleChangeSmall(file, fileList) {
+      const fileName = file.name
+      if (!fileName.includes('预排') && !fileName.includes('正排')) {
+        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
+      if (!fileName.includes('小板')) {
+        this.$alert('上传的文件名未指明是小板排程，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
+      if (file.status === 'ready') {
+        if (fileList.length > 0) {
+          this.uploadFileListSmall = [fileList[fileList.length - 1]] // 选择最后一次选择文件
+          this.uploadFileNameSmall = this.uploadFileListSmall[0].name // 更新文件名
+          this.uploadFileSmall = this.uploadFileListSmall[0].raw // 更新文件
+        }
+        this.checkData(this.uploadFileSmall)
       }
     },
     // 检查
-    async checkData() {
+    async checkData(uploadFile) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
-      form.append('file', this.uploadFile)
+      form.append('file', uploadFile)
       await CheckData(form).then(res => {
         if (res.type === 'success') {
           this.$alert(res.message, '检查结果', {
@@ -629,7 +815,11 @@ export default {
             type: 'warning'
           })
         }
-        this.stepNow = 1
+        if (this.uploadFileName !== '') {
+          this.stepNow = 1
+        } else if (this.uploadFileListMain !== '' && this.uploadFileListSmall !== '') {
+          this.stepNowSmall = 1
+        }
         this.loadingInstance.close()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
@@ -637,54 +827,6 @@ export default {
           confirmButtonText: '确定',
           type: 'error'
         })
-      })
-    },
-    // 文件上传的过程中
-    handleProgress() {
-      const checkLoading = {
-        text: '拼命检查中...',
-        background: 'rgba(0, 0, 0, 0.6)',
-        target: '#main'
-      } // 检查动画
-      this.loadingInstance = Loading.service(checkLoading)
-    },
-    handleProgressDialog() {
-      const checkLoadingDialog = {
-        text: '拼命检查中...',
-        background: 'rgba(0, 0, 0, 0.5)'
-      } // 检查动画
-      this.loadingInstance = Loading.service(checkLoadingDialog)
-    },
-    // 文件上传成功
-    handleSuccess(res) {
-      this.loadingInstance.close() // 清除动画
-      if (res.type === 'success') {
-        this.$alert(res.message, '检查结果', {
-          confirmButtonText: '确定',
-          type: 'success'
-        })
-      } else {
-        this.$alert(res.message, '检查结果', {
-          customClass: 'checkAlertBox',
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: '确定',
-          type: 'warning'
-        })
-      }
-      this.stepNow = 1
-    },
-    // 文件上传前的检查
-    handleBeforeUpload(file) {
-      const fileName = file.name
-      return new Promise((resolve, reject) => {
-        if (!fileName.includes('预排') && !fileName.includes('正排')) {
-          this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '提示', {
-            confirmButtonText: '确定',
-            type: 'error'
-          })
-          reject()
-        }
-        resolve()
       })
     },
     // 终止深度搜索
@@ -844,6 +986,121 @@ export default {
         }
       })
     },
+    beforeImportSmall() {
+      if (this.uploadFileNameMain === '' || this.uploadFileNameSmall === '') {
+        this.$message({
+          type: 'warning',
+          message: '排程文件未全部上传，无法导入'
+        })
+        return
+      }
+      const confirmText = ['目前正在运行排程，确定要继续导入？', '注意：此操作将会影响当前运行的排程结果！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$confirm('提示', {
+            message: h('div', null, newDatas),
+            confirmButtonText: '确定，仍要导入',
+            cancelButtonText: '取消',
+            confirmButtonClass: 'btnDanger',
+            type: 'warning'
+          }).then(() => {
+            this.submitUploadFileSmall()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消计算'
+            })
+          })
+        } else {
+          this.submitUploadFileSmall()
+        }
+      })
+    },
+    async submitUploadFileSmall() {
+      this.loadingInstance = Loading.service(this.importLoading)
+      const form = new FormData()
+      form.append('file_main', this.uploadFileMain)
+      form.append('file_small', this.uploadFileSmall)
+      await ImportSchedule(form).then(res => {
+        this.loadingInstance.close()
+        this.$message({
+          message: res.message,
+          type: 'success'
+        })
+        this.stepNowSmall = 2
+        this.isImportSmall = true
+        this.apsMtoolMsgSmall = '未更新'
+        this.apsProgramMsgSmall = '未更新'
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+      })
+    },
+    beforeComputeSmall() {
+      if (this.isImportSmall === false) {
+        this.$message({
+          type: 'warning',
+          message: '未导入文件，无法计算排程'
+        })
+        return
+      }
+      const confirmText = ['目前正在运行排程，确定要重新开始计算？', '注意：此操作将会中断当前的排程！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$confirm('提示', {
+            message: h('div', null, newDatas),
+            confirmButtonText: '确定，仍要计算',
+            cancelButtonText: '取消',
+            confirmButtonClass: 'btnDanger',
+            type: 'warning'
+          }).then(() => {
+            this.computeScheduleSmall()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消计算'
+            })
+          })
+        } else {
+          this.computeScheduleSmall()
+        }
+      })
+    },
+    computeScheduleSmall() {
+      this.listenProgress()
+      const data = {
+        'file_name_main': this.uploadFileNameMain,
+        'file_name_small': this.uploadFileNameSmall,
+        'user_name': this.name
+      }
+      ComputeSchedule(data).then(res => {
+        if (res.code === 20000) {
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
+          this.stepNowSmall = 4
+        } else {
+          this.$message({
+            message: '开始计算失败',
+            type: 'error'
+          })
+        }
+      })
+    },
     // 更新钢网信息前的提示
     getApsMtool() {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
@@ -963,6 +1220,14 @@ export default {
           })
         })
       }
+    },
+    // 小板更新网板接口
+    getApsMtoolSmall() {
+
+    },
+    // 小板更新程序接口
+    getApsProgramSmall() {
+
     },
     // 下载文件
     downloadFile(res) {
