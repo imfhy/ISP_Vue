@@ -158,7 +158,7 @@
         <el-col :span="12">
           <span>自定义时间区间：</span>
           <el-date-picker
-            v-model="maintainTime"
+            v-model="customTime"
             type="datetimerange"
             range-separator="至"
             start-placeholder="维护开始时间"
