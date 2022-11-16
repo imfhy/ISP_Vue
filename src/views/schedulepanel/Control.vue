@@ -118,13 +118,13 @@
           />
         </el-card>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="8">
         <el-card class="control">
           <div slot="header" class="clearfix">
             <span>控制中心</span>
           </div>
-          <el-row :gutter="16">
-            <el-col :span="12">
+          <el-row>
+            <el-col :span="24">
               <el-alert
                 title="训练预测模型"
                 type="info"
@@ -151,25 +151,6 @@
               />
               <div class="box-button">
                 <el-row>
-                  <!-- <el-col :span="8">
-                    <el-upload
-                      ref="upload"
-                      class="upload-demo"
-                      action="http://localhost:9090/sqyapi/preprocess/control/check_input_excel/"
-                      accept=".xlsx"
-                      :on-change="handleChange"
-                      :on-progress="handleProgress"
-                      :on-success="handleSuccess"
-                      :auto-upload="false"
-                      :show-file-list="false"
-                      :file-list="uploadFileList"
-                    >
-                      <el-button slot="trigger" type="primary" plain>
-                        <i class="el-icon-circle-check" />
-                        检查排程表格
-                      </el-button>
-                    </el-upload>
-                  </el-col> -->
                   <el-col :span="8">
                     <el-badge :value="computeTip" class="item">
                       <el-button type="primary" plain @click="computeDialog">
@@ -179,12 +160,6 @@
                     </el-badge>
                   </el-col>
                   <el-col :span="8">
-                    <!-- <el-badge :value="computeSmallTip" class="item">
-                      <el-button type="primary" plain @click="computeSmallDialog">
-                        <i class="el-icon-monitor" />
-                        计算主板小板
-                      </el-button>
-                    </el-badge> -->
                     <el-button type="primary" plain @click="computeSmallDialog">
                       <i class="el-icon-monitor" />
                       计算主板小板
@@ -209,85 +184,177 @@
                 </el-row>
               </div>
             </el-col>
-            <el-col :span="12">
-              <el-alert
-                title="下载最新数据"
-                type="info"
-                :closable="false"
-              />
-              <div class="box-button">
-                <el-row>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadSchedule">
-                      <i class="el-icon-download" />
-                      下载主板排程
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadLatestLog">
-                      <i class="el-icon-download" />
-                      下载最新日志
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadIdleInfo">
-                      <i class="el-icon-download" />
-                      下载idle明细
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </div>
-              <div class="box-button">
-                <el-row>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadNoProgram">
-                      <i class="el-icon-download" />
-                      下载无程序表
-                    </el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="downloadStatistics">
-                      <i class="el-icon-download" />
-                      下载量化结果
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </div>
-              <el-alert
-                title="下载历史数据"
-                type="info"
-                :closable="false"
-              />
-              <div class="box-button">
-                <el-select v-model="selectLogValue" placeholder="选择历史日志">
-                  <el-option
-                    v-for="item in options_history_log"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryLog">
-                  <i class="el-icon-download" />
-                  下载历史日志
-                </el-button>
-              </div>
-              <div class="box-button">
-                <el-select v-model="selectExcelValue" placeholder="选择历史排程">
-                  <el-option
-                    v-for="item in options_history_excel"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-                <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
-                  <i class="el-icon-download" />
-                  下载历史排程
-                </el-button>
-              </div>
-            </el-col>
           </el-row>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card style="margin-right: 16px;height: 400px;">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tab-pane label="主板下载" name="main">
+              <el-row>
+                <el-col :span="24">
+                  <el-alert
+                    title="主板下载历史数据"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-select v-model="selectExcelValue" placeholder="选择主板历史排程">
+                      <el-option
+                        v-for="item in options_history_excel"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
+                      <i class="el-icon-download" />
+                      下载历史排程
+                    </el-button>
+                  </div>
+                  <el-alert
+                    title="主板下载最新数据"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadSchedule">
+                          <i class="el-icon-download" />
+                          下载主板排程
+                        </el-button>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadIdleInfo">
+                          <i class="el-icon-download" />
+                          下载idle明细
+                        </el-button>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadNoProgram">
+                          <i class="el-icon-download" />
+                          下载无程序表
+                        </el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="box-button">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadStatistics">
+                          <i class="el-icon-download" />
+                          下载量化结果
+                        </el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="小板下载" name="small">
+              <el-row>
+                <el-col :span="24">
+                  <el-alert
+                    title="小板下载历史数据"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-select v-model="selectExcelValue" placeholder="选择小板历史排程">
+                      <el-option
+                        v-for="item in options_history_excel"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryExcel">
+                      <i class="el-icon-download" />
+                      下载历史排程
+                    </el-button>
+                  </div>
+                  <el-alert
+                    title="小板下载最新数据"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadScheduleSmall">
+                          <i class="el-icon-download" />
+                          下载小板排程
+                        </el-button>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadIdleInfoSmall">
+                          <i class="el-icon-download" />
+                          下载idle明细
+                        </el-button>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadNoProgramSmall">
+                          <i class="el-icon-download" />
+                          下载无程序表
+                        </el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="box-button">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadStatisticsSmall">
+                          <i class="el-icon-download" />
+                          下载量化结果
+                        </el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="日志下载" name="log">
+              <el-row>
+                <el-col :span="24">
+                  <el-alert
+                    title="下载历史日志"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-select v-model="selectLogValue" placeholder="选择历史日志">
+                      <el-option
+                        v-for="item in options_history_log"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                    <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="downloadHistoryLog">
+                      <i class="el-icon-download" />
+                      下载历史日志
+                    </el-button>
+                  </div>
+                  <el-alert
+                    title="下载最新日志"
+                    type="info"
+                    :closable="false"
+                  />
+                  <div class="box-button">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-button type="primary" plain @click="downloadLatestLog">
+                          <i class="el-icon-download" />
+                          下载最新日志
+                        </el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
+          </el-tabs>
         </el-card>
       </el-col>
     </el-row>
@@ -313,10 +380,10 @@
         <el-step title="计算排程" />
       </el-steps>
       <el-row style="margin-top:10px;">
-        <el-col :span="4">
+        <el-col :span="6">
           <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
         </el-col>
-        <el-col :span="6">
+        <el-col :span="4">
           <el-upload
             ref="upload"
             class="upload-demo"
@@ -333,10 +400,10 @@
             </el-button>
           </el-upload>
         </el-col>
-        <el-col :span="4">
-          <el-input placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
-        </el-col>
         <el-col :span="6">
+          <el-input style="margin-left: 10px;" placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
+        </el-col>
+        <el-col :span="4">
           <el-upload
             ref="upload"
             class="upload-demo"
@@ -346,7 +413,7 @@
             :auto-upload="false"
             :show-file-list="false"
             :file-list="uploadFileListSmall"
-            style="margin-left: 10px;"
+            style="margin-left: 20px;"
           >
             <el-button slot="trigger" type="primary">
               上传小板排程
@@ -354,7 +421,7 @@
           </el-upload>
         </el-col>
         <el-col :span="4">
-          <el-button type="success" style="margin-left:10px;" @click="beforeImportSmall">
+          <el-button type="success" style="margin-left:20px;" @click="beforeImportSmall">
             导入文件
           </el-button>
         </el-col>
@@ -368,18 +435,18 @@
       <el-row>
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsgSmall" placement="top">
-            <el-button type="primary" @click="getApsProgramSmall">
+            <el-button type="primary" @click="getApsProgram">
               更新程序信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsgSmall" placement="top">
-            <el-button type="primary" @click="getApsMtoolSmall">
+            <el-button type="primary" @click="getApsMtool">
               更新钢网信息
             </el-button>
           </el-tooltip>
-          <el-button type="success" @click="exportScheduleDataSmall">
+          <!-- <el-button type="success" @click="exportScheduleDataSmall">
             导出检查
-          </el-button>
+          </el-button> -->
         </el-col>
       </el-row>
       <el-alert
@@ -502,7 +569,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics,
-  GetExcelSelectItem, DownloadHistoryExcel } from '@/api/schedulepanel/Control'
+  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleSmall } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -568,7 +635,8 @@ export default {
 
       uploadFileListMain: [], // 主板上传的文件列表
       uploadFileMain: null, // 主板上传的文件
-      uploadFileNameMain: '' // 主板文件名
+      uploadFileNameMain: '', // 主板文件名
+      activeName: 'main'
     }
   },
   computed: {
@@ -578,7 +646,7 @@ export default {
   },
   created() {
     this.getLogSelectItem()
-    this.getExcelSelectItem()
+    // this.getExcelSelectItem()
     this.listenProgress()
     this.getScheduleRes()
   },
@@ -729,7 +797,7 @@ export default {
     handleChange(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
+        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
@@ -748,7 +816,7 @@ export default {
     handleChangeMain(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
+        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
@@ -774,7 +842,7 @@ export default {
     handleChangeSmall(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排或正排，请修改后重新上传！', '错误', {
+        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
@@ -990,7 +1058,7 @@ export default {
       if (this.uploadFileNameMain === '' || this.uploadFileNameSmall === '') {
         this.$message({
           type: 'warning',
-          message: '排程文件未全部上传，无法导入'
+          message: '主板和小板的排程文件未全部上传，无法导入'
         })
         return
       }
@@ -1024,9 +1092,9 @@ export default {
     async submitUploadFileSmall() {
       this.loadingInstance = Loading.service(this.importLoading)
       const form = new FormData()
-      form.append('file_main', this.uploadFileMain)
-      form.append('file_small', this.uploadFileSmall)
-      await ImportSchedule(form).then(res => {
+      form.append('file_main', this.uploadFileMain) // 主板
+      form.append('file_small', this.uploadFileSmall) // 小板
+      await ImportScheduleSmall(form).then(res => {
         this.loadingInstance.close()
         this.$message({
           message: res.message,
@@ -1221,14 +1289,6 @@ export default {
         })
       }
     },
-    // 小板更新网板接口
-    getApsMtoolSmall() {
-
-    },
-    // 小板更新程序接口
-    getApsProgramSmall() {
-
-    },
     // 下载文件
     downloadFile(res) {
       const link = document.createElement('a')
@@ -1266,7 +1326,7 @@ export default {
         })
       })
     },
-    // 下载最新排程
+    // 下载主板最新排程
     downloadSchedule() {
       DownloadSchedule().then(res => {
         this.downloadFile(res)
@@ -1389,6 +1449,70 @@ export default {
     // 下载量化结果
     downloadStatistics() {
       DownloadStatistics().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载小板最新排程
+    downloadScheduleSmall() {
+      DownloadSchedule().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载小板idle明细
+    downloadIdleInfoSmall() {
+      DownloadIdleInfo().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载小板量化结果
+    downloadStatisticsSmall() {
+      DownloadStatistics().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '下载失败，文件不存在',
+          type: 'error'
+        })
+      })
+    },
+    // 下载小板无程序表
+    downloadNoProgramSmall() {
+      DownloadNoProgram().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',

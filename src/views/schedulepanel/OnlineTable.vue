@@ -652,6 +652,21 @@ export default {
     },
     // 上传文件
     loadExcelFile(file, fileList) {
+      const fileName = file.name
+      if (!fileName.includes('预排') && !fileName.includes('正排')) {
+        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
+      if (!fileName.includes('主板') && !fileName.includes('小板')) {
+        this.$alert('上传的文件名未指明主板/小板，请修改后重新上传！', '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+        return
+      }
       if (fileList.length > 0) {
         this.uploadFiles = fileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
         this.uploadFileName = this.uploadFiles[0].name // 更新文件名

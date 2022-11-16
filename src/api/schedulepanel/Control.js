@@ -24,6 +24,14 @@ export function ImportSchedule(data) {
     data
   })
 }
+// 导入小板排程表格接口
+export function ImportScheduleSmall(data) {
+  return request({
+    url: '/preprocess/control/import_schedule_small/',
+    method: 'post',
+    data
+  })
+}
 // 计算排程表格接口
 export function ComputeSchedule(data) {
   return request({
