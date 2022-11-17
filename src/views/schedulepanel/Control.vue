@@ -287,28 +287,18 @@
                           下载小板排程
                         </el-button>
                       </el-col>
-                      <el-col :span="8">
+                      <!-- <el-col :span="8">
                         <el-button type="primary" plain @click="downloadIdleInfoSmall">
                           <i class="el-icon-download" />
                           下载idle明细
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadNoProgramSmall">
-                          <i class="el-icon-download" />
-                          下载无程序表
-                        </el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <div class="box-button">
-                    <el-row>
-                      <el-col :span="8">
                         <el-button type="primary" plain @click="downloadStatisticsSmall">
                           <i class="el-icon-download" />
                           下载量化结果
                         </el-button>
-                      </el-col>
+                      </el-col> -->
                     </el-row>
                   </div>
                 </el-col>
@@ -569,7 +559,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics,
-  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleSmall } from '@/api/schedulepanel/Control'
+  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleSmall, ComputeScheduleSmall, DownloadScheduleSmall } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -797,8 +787,19 @@ export default {
     handleChange(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
+        const tip = '上传的文件名未指明预排/正排，请修改后重新上传！！' + `<br/>` + '（注：文件名中需要包含正排或预排）'
+        this.$alert(tip, '错误', {
           confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
+          type: 'error'
+        })
+        return
+      }
+      if (!fileName.includes('主板')) {
+        const tip = '上传的文件名未指明是主板排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含主板，例如：0901主板预排）'
+        this.$alert(tip, '错误', {
+          confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
           type: 'error'
         })
         return
@@ -816,15 +817,19 @@ export default {
     handleChangeMain(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
+        const tip = '上传的文件名未指明预排/正排，请修改后重新上传！！' + `<br/>` + '（注：文件名中需要包含正排或预排）'
+        this.$alert(tip, '错误', {
           confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
           type: 'error'
         })
         return
       }
       if (!fileName.includes('主板')) {
-        this.$alert('上传的文件名未指明是主板排程，请修改后重新上传！', '错误', {
+        const tip = '上传的文件名未指明是主板排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含主板，例如：0901主板预排）'
+        this.$alert(tip, '错误', {
           confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
           type: 'error'
         })
         return
@@ -842,15 +847,19 @@ export default {
     handleChangeSmall(file, fileList) {
       const fileName = file.name
       if (!fileName.includes('预排') && !fileName.includes('正排')) {
-        this.$alert('上传的文件名未指明预排/正排，请修改后重新上传！', '错误', {
+        const tip = '上传的文件名未指明预排/正排，请修改后重新上传！！' + `<br/>` + '（注：文件名中需要包含正排或预排）'
+        this.$alert(tip, '错误', {
           confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
           type: 'error'
         })
         return
       }
       if (!fileName.includes('小板')) {
-        this.$alert('上传的文件名未指明是小板排程，请修改后重新上传！', '错误', {
+        const tip = '上传的文件名未指明是小板排程，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含小板，例如：0901小板预排）'
+        this.$alert(tip, '错误', {
           confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
           type: 'error'
         })
         return
@@ -891,7 +900,7 @@ export default {
         this.loadingInstance.close()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
-        this.$alert(err, '错误', {
+        this.$alert('检查出现异常：' + err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
@@ -1154,7 +1163,7 @@ export default {
         'file_name_small': this.uploadFileNameSmall,
         'user_name': this.name
       }
-      ComputeSchedule(data).then(res => {
+      ComputeScheduleSmall(data).then(res => {
         if (res.code === 20000) {
           this.$message({
             message: res.message,
@@ -1464,7 +1473,7 @@ export default {
     },
     // 下载小板最新排程
     downloadScheduleSmall() {
-      DownloadSchedule().then(res => {
+      DownloadScheduleSmall().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',

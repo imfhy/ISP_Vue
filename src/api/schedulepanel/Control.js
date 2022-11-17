@@ -41,6 +41,14 @@ export function ComputeSchedule(data) {
     data
   })
 }
+export function ComputeScheduleSmall(data) {
+  return request({
+    url: '/preprocess/control/compute_schedule_small/',
+    method: 'post',
+    timeout: 60 * 60 * 1000,
+    data
+  })
+}
 // 终止深度搜素
 export function StopTabu(user_name) {
   return request({
@@ -173,6 +181,14 @@ export function ExportScheduleData(data) {
   return request({
     method: 'get',
     url: '/schedule/api/exportScheduleData',
+    responseType: 'blob'
+  })
+}
+// 下载最新排程
+export function DownloadScheduleSmall() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_schedule_small/',
     responseType: 'blob'
   })
 }
