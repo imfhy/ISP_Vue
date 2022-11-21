@@ -7,6 +7,13 @@ export function GetTableData(data) {
     data
   })
 }
+// 获取初始化数据
+export function GetDefaultData() {
+  return request({
+    url: '/config/blocktimedata/get_default_data/',
+    method: 'get'
+  })
+}
 // 添加数据
 export function AddData(data) {
   return request({

@@ -479,8 +479,9 @@ import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
-  ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData } from '@/api/dayconfig/BlockTimeData'
-import { lineOptions, LineOptions } from '@/utils/items'
+  ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData,
+  GetDefaultData } from '@/api/dayconfig/BlockTimeData'
+// import { lineOptions, LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
   directives: { elDragDialog },
@@ -587,8 +588,8 @@ export default {
         UPDATED_BY: [],
         UPDATED_TIME: []
       },
-      lineOptions: LineOptions, // 维护线别
-      lineOptions_2: lineOptions,
+      lineOptions: [], // 维护线别
+      lineOptions_2: [],
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
@@ -612,6 +613,7 @@ export default {
   },
   created() {
     this.getTableData(this.currentPage, this.pageSize)
+    this.getDefaultData()
     this.initializeDate()
   },
   mounted() {
@@ -625,6 +627,20 @@ export default {
           <el-button size='mini' onClick={() => this.handleChooseAllDay()}>全选</el-button>
         </div>
       )
+    },
+    // 获取初始化数据
+    getDefaultData() {
+      GetDefaultData().then(res => {
+        if (res.code === 20000) {
+          this.lineOptions = res.data
+          this.lineOptions_2 = res.data2
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'error',
+          message: '初始化数据出错'
+        })
+      })
     },
     handleChooseAllDay() {
       for (const key in this.tableDataMulti) {
