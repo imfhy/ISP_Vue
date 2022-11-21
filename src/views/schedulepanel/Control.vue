@@ -513,6 +513,11 @@
               更新钢网信息
             </el-button>
           </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
+            <el-button type="primary" @click="getApsMoBaseData">
+              更新工单信息
+            </el-button>
+          </el-tooltip>
           <el-button type="success" @click="exportScheduleData">
             导出检查
           </el-button>
@@ -559,7 +564,8 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeSchedule, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics,
-  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleSmall, ComputeScheduleSmall, DownloadScheduleSmall } from '@/api/schedulepanel/Control'
+  GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleSmall, ComputeScheduleSmall, DownloadScheduleSmall,
+  GetApsMoBaseData } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -614,6 +620,7 @@ export default {
       apsProgramMsg: '未更新', // 程序信息更新提示
       apsMtoolMsgSmall: '未更新', // 钢网信息更新提示
       apsProgramMsgSmall: '未更新', // 程序信息更新提示
+      apsMoBaseData: '未更新',
       stopScheduleDialog: false, // 终止计算排程dialog
       stopInput: '', // 确认终止
       trainDateTip: '', // 训练日期提示
@@ -1225,7 +1232,7 @@ export default {
             }
           }).catch(err => {
             this.loadingInstance.close() // 清除动画
-            this.$alert(err, '错误', {
+            this.$alert(err, '更新信息出错', {
               confirmButtonText: '确定',
               type: 'error'
             })
@@ -1285,7 +1292,67 @@ export default {
             }
           }).catch(err => {
             this.loadingInstance.close() // 清除动画
-            this.$alert(err, '错误', {
+            this.$alert(err, '更新信息错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消更新'
+          })
+        })
+      }
+    },
+    // 更新工单信息前的提示
+    getApsMoBaseData() {
+      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$alert(tip, '警告', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
+          })
+        } else {
+          this.continueGetApsMoBaseData()
+        }
+      })
+    },
+    // 更新工单信息
+    continueGetApsMoBaseData() {
+      if (this.isImport === false) {
+        this.$message({
+          type: 'warning',
+          message: '未导入文件，无法更新信息'
+        })
+        return
+      } else {
+        this.$confirm('提示', {
+          message: '确定要更新工单信息？',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const updateLoading = {
+            text: '工单信息更新中...',
+            background: 'rgba(0, 0, 0, 0.5)'
+          }
+          this.loadingInstance = Loading.service(updateLoading)
+          GetApsMoBaseData().then(res => {
+            if (res.code === 20000) {
+              this.loadingInstance.close()
+              this.$alert('工单信息更新成功！', '提示', {
+                confirmButtonText: '确定',
+                type: 'success'
+              })
+              this.apsProgramMsg = '已更新'
+              this.stepNow = 3
+            }
+          }).catch(err => {
+            this.loadingInstance.close() // 清除动画
+            this.$alert(err, '更新信息错误', {
               confirmButtonText: '确定',
               type: 'error'
             })

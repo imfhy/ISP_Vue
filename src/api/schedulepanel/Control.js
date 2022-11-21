@@ -176,6 +176,15 @@ export function GetApsProgram(data) {
     data
   })
 }
+// 更新工单信息接口
+export function GetApsMoBaseData(data) {
+  return request({
+    url: '/schedule/api/getApsMoBaseData',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
 // 导出检查接口
 export function ExportScheduleData(data) {
   return request({
