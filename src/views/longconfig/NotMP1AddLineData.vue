@@ -331,7 +331,7 @@ export default {
   methods: {
     // dialog可拖拽
     handleDrag() {
-      this.$refs.select.blur()
+      // this.$refs.select.blur()
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {

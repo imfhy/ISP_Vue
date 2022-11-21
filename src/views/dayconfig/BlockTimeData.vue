@@ -115,13 +115,23 @@
       v-el-drag-dialog
       title="添加多个维护"
       :visible.sync="dialogMultiVisible"
-      width="70%"
+      width="76%"
       :before-close="handleMultiClose"
       @dragDialog="handleDrag"
     >
-      <el-row>
-        <el-col :span="12">
+      <el-row style="margin-bottom: 3px;">
+        <el-col :span="8">
           <span>白班早下班时间区间：</span>
+        </el-col>
+        <el-col :span="8">
+          <span>夜班早下班时间区间：</span>
+        </el-col>
+        <el-col :span="8">
+          <span>白班保养时间区间：</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
           <el-date-picker
             v-model="dayTime"
             type="datetimerange"
@@ -131,8 +141,7 @@
             style="margin-bottom: 10px;"
           />
         </el-col>
-        <el-col :span="12">
-          <span>夜班早下班时间区间：</span>
+        <el-col :span="8">
           <el-date-picker
             v-model="nightTime"
             type="datetimerange"
@@ -142,10 +151,7 @@
             style="margin-bottom: 10px;"
           />
         </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <span>白班保养时间区间：</span>
+        <el-col :span="8">
           <el-date-picker
             v-model="maintainTime"
             type="datetimerange"
@@ -155,8 +161,17 @@
             style="margin-bottom: 10px;"
           />
         </el-col>
-        <el-col :span="12">
-          <span>自定义时间区间：</span>
+      </el-row>
+      <el-row style="margin-bottom: 3px;">
+        <el-col :span="8">
+          <span>自定义时间(方式一)：</span>
+        </el-col>
+        <el-col :span="16">
+          <span>自定义时间(方式二)：</span>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
           <el-date-picker
             v-model="customTime"
             type="datetimerange"
@@ -164,6 +179,23 @@
             start-placeholder="维护开始时间"
             end-placeholder="维护结束时间"
             style="margin-bottom: 10px;"
+          />
+        </el-col>
+        <el-col :span="16">
+          <el-date-picker
+            v-model="customDateTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            unlink-panels
+          />
+          <el-time-picker
+            v-model="customHourTime"
+            is-range
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
           />
         </el-col>
       </el-row>
@@ -188,9 +220,14 @@
             <el-checkbox v-model="scope.row.maintainTime" style="margin-top: 5px;">白班保养</el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column prop="customTime" label="自定义时间" :render-header="renderHeaderCustom">
+        <el-table-column prop="customTime" label="自定义时间(方式一)" :render-header="renderHeaderCustom">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.customTime" style="margin-top: 5px;">自定义时间</el-checkbox>
+            <el-checkbox v-model="scope.row.customTime" style="margin-top: 5px;">自定义时间(方式一)</el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column prop="customTime2" label="自定义时间(方式二)" :render-header="renderHeaderCustom2">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.customTime2" style="margin-top: 5px;">自定义时间(方式二)</el-checkbox>
           </template>
         </el-table-column>
       </el-table>
@@ -495,6 +532,8 @@ export default {
       maintainTime: [],
       customTime: [],
       tableDataMulti: [],
+      customDateTime: [],
+      customHourTime: [],
       // 表单相关数据
       forms: ['$form'],
       model: {
@@ -628,9 +667,21 @@ export default {
         this.tableDataMulti[key].customTime = !this.tableDataMulti[key].customTime
       }
     },
+    renderHeaderCustom2() {
+      return (
+        <div>
+          <el-button size='mini' onClick={() => this.handleChooseAllCustom2()}>全选</el-button>
+        </div>
+      )
+    },
+    handleChooseAllCustom2() {
+      for (const key in this.tableDataMulti) {
+        this.tableDataMulti[key].customTime2 = !this.tableDataMulti[key].customTime2
+      }
+    },
     // dialog可拖拽
     handleDrag() {
-      this.$refs.select.blur()
+      // // this.$refs.select.blur()
     },
     // 示例表格行颜色
     setCellColor({ row, column, rowIndex, columnIndex }) {
@@ -666,13 +717,22 @@ export default {
       this.maintainTime.push(date_start_3)
       date_end_3.setHours(20, 0, 0)
       this.maintainTime.push(date_end_3)
-      // 初始化白班保养时间区间
+      // 初始化自定义时间(方式一)
       const date_start_4 = new Date()
       const date_end_4 = new Date()
       date_start_4.setHours(8, 0, 0)
       this.customTime.push(date_start_4)
       date_end_4.setHours(20, 0, 0)
       this.customTime.push(date_end_4)
+      // 初始化自定义时间(方式二)
+      const date_start_5 = new Date()
+      const date_end_5 = new Date()
+      date_start_5.setHours(8, 0, 0)
+      this.customDateTime.push(date_start_5)
+      this.customHourTime.push(date_start_5)
+      date_end_5.setHours(20, 0, 0)
+      this.customDateTime.push(date_end_5)
+      this.customHourTime.push(date_end_5)
     },
     // 分页
     handlePageChange(val) {
@@ -782,6 +842,7 @@ export default {
         temp['nightTime'] = false
         temp['maintainTime'] = false
         temp['customTime'] = false
+        temp['customTime2'] = false
         this.tableDataMulti.push(temp)
       }
     },
@@ -796,8 +857,11 @@ export default {
         'night_time': this.nightTime,
         'maintain_time': this.maintainTime,
         'custom_time': this.customTime,
+        'custom_date_time': this.customDateTime,
+        'custom_hour_time': this.customHourTime,
         'block_time_data': this.tableDataMulti
       }
+      console.log('时间数据:', data)
       AddMultiData(data).then(res => {
         if (res.code === 20000) {
           this.$notify({

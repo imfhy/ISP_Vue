@@ -699,7 +699,7 @@ export default {
   methods: {
     // v-el-drag-dialog onDrag callback function
     handleDrag() {
-      this.$refs.select.blur()
+      // this.$refs.select.blur()
     },
     modifyDataDialog() {
       this.isClick = false

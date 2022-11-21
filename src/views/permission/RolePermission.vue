@@ -364,7 +364,7 @@ export default {
   methods: {
     // dialog可拖拽
     handleDrag() {
-      this.$refs.select.blur()
+      // this.$refs.select.blur()
     },
     // 获取所有用户信息
     getAllUserInfo() {

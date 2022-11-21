@@ -475,7 +475,7 @@ export default {
   methods: {
     // dialog可拖拽
     handleDrag() {
-      this.$refs.select.blur()
+      // this.$refs.select.blur()
     },
     // 初始化luckysheet
     initLuckysheet() {

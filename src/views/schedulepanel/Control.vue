@@ -646,7 +646,7 @@ export default {
   methods: {
     // dialog可拖拽
     handleDrag() {
-      this.$refs.select.blur()
+      // this.$refs.select.blur()
     },
     // 监听进度条
     listenProgress() {
