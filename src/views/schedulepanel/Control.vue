@@ -1353,7 +1353,7 @@ export default {
                 confirmButtonText: '确定',
                 type: 'success'
               })
-              this.apsProgramMsg = '已更新'
+              this.apsMoBaseData = '已更新'
               this.stepNow = 3
             }
           }).catch(err => {
@@ -1413,7 +1413,7 @@ export default {
                 confirmButtonText: '确定',
                 type: 'success'
               })
-              this.apsProgramMsg = '已更新'
+              this.apsMoProgData = '已更新'
               this.stepNow = 3
             }
           }).catch(err => {
