@@ -77,7 +77,7 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'Pproductprogramdata',
+      path: 'productprogramdata',
       component: () => import('@/views/dayconfig/ProductProgramData'),
       name: 'ProductProgramData',
       meta: {

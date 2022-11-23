@@ -185,6 +185,15 @@ export function GetApsMoBaseData(data) {
     data
   })
 }
+// 更新工单进度接口
+export function GetApsMoProgData(data) {
+  return request({
+    url: '/schedule/api/getApsMoProgData',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
 // 导出检查接口
 export function ExportScheduleData(data) {
   return request({
