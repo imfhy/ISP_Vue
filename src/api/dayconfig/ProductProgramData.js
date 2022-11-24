@@ -54,3 +54,12 @@ export function ExportData() {
     method: 'get'
   })
 }
+// 更新量产程序表接口
+export function GetAllProgramData(data) {
+  return request({
+    url: '/schedule/api/getAllProgramData',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}

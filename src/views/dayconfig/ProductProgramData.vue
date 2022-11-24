@@ -4,6 +4,9 @@
       <el-row>
         <el-col :span="16">
           <div>
+            <el-button type="primary" @click="getAllProgramData">
+              <i class="el-icon-refresh" />更新MES程序
+            </el-button>
             <el-button type="primary" @click="addDataDialog">
               <i class="el-icon-plus" />添加
             </el-button>
@@ -360,7 +363,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProductProgramData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData, GetAllProgramData } from '@/api/dayconfig/ProductProgramData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'ProductProgramData',
@@ -869,6 +872,48 @@ export default {
     // 导入数据窗口关闭
     handleExportClose() {
       this.exportDialogVisible = false
+    },
+    // 从MES更新量产程序表
+    getAllProgramData() {
+      const confirmText = ['确定要更新量产程序表？', '注：此操作将会清空原来的所有数据！']
+      const newDatas = []
+      const h = this.$createElement
+      for (const i in confirmText) {
+        newDatas.push(h('p', null, confirmText[i]))
+      }
+      this.$confirm('提示', {
+        message: h('div', null, newDatas),
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '量产程序表更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetAllProgramData().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('量产程序表更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.refreshTableData(true)
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息出错', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
     },
     // 帮助提示按钮
     helpTips() {
