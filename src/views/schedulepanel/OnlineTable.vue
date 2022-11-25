@@ -42,7 +42,10 @@
                 <i class="el-icon-position" />接口更新
               </el-button> -->
               <el-button type="apiBtn" @click="pushSchedule">
-                <i class="el-icon-position" />推送排程
+                分析后推送
+              </el-button>
+              <el-button type="apiBtn" @click="importPushSchedule">
+                导入后推送
               </el-button>
             </div>
             <!-- <div class="history">
@@ -312,7 +315,7 @@
 
     <el-dialog
       v-el-drag-dialog
-      title="推送排程（分析排程后推送）"
+      title="推送排程"
       :visible.sync="pushDialogVisible"
       width="520px"
       :before-close="handlePushClose"
@@ -386,7 +389,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress,
   GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
-  AiPrescheduled, AiScheduled, GetRunFlag
+  AiPrescheduled, AiScheduled, GetRunFlag, ImportPushSchedule
 } from '@/api/schedulepanel/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
@@ -399,6 +402,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.5)'
       }, // 导入排程动画
       loadingInstance: null, // 动画实例
+      uploadFile: null, // 上传的文件
       uploadFileName: '', // 上传的文件名
       uploadFiles: [], // 上传的文件列表（限制1个）
       analysisDialogVisible: false, // 分析排程dialog显示
@@ -458,7 +462,10 @@ export default {
       unlocked_list: unLockedList,
       allLineList: lineOptions,
       // 剪切数据
-      cutRangeData: null
+      cutRangeData: null,
+      // 导入后直接推送排程
+      isAnalysis: false // 是否分析排程
+
     }
   },
   computed: {
@@ -499,9 +506,72 @@ export default {
       window.luckysheet.setRangeShow([{ row: [index_row, index_row + this.cutRangeData.length - 1], column: [0, 51] }])
       window.luckysheet.setRangeValue(this.cutRangeData) // 将数据插入选取
     },
+    // 导入后直接推送排程（不通过分析）
+    importPushSchedule() {
+      const tip = '数据未检查或检查未通过，无法导入推送！' + `<br/>` + '注：检查无误后才可以导入推送排程！' + `<br/>` + '（如果检查出现错误，请在原Excel文件中修改后重新上传）'
+      if (this.checkSuccess === false) {
+        this.$alert(tip, '警告', {
+          confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
+          customClass: 'checkAlertBox',
+          type: 'warning'
+        })
+        return
+      } else {
+        this.$confirm('确定要导入排程并进行推送？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.continueImportPushSchedule()
+          // this.pushDialogVisible = true
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消导入'
+          })
+        })
+      }
+    },
+    // 导入推送接口
+    async continueImportPushSchedule() {
+      const importLoading = {
+        text: '导入并分析中，请稍等...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(importLoading)
+      const form = new FormData()
+      form.append('file', this.uploadFile)
+      form.append('file_name', this.uploadFileName)
+      form.append('user_name', this.name)
+      await ImportPushSchedule(form).then(res => {
+        this.loadingInstance.close()
+        this.$message({
+          message: res.message,
+          type: 'success'
+        })
+        this.pushDialogVisible = true
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
+      })
+    },
+    handleImportPushClose() {
+      this.importPushDialogVisible = false
+    },
     // 以下函数都是推送排程相关
     pushSchedule() {
-      this.pushDialogVisible = true
+      if (this.isAnalysis === true) {
+        this.pushDialogVisible = true
+      } else {
+        this.$alert('未完成分析排程，无法进行推送！', '警告', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      }
     },
     handlePushClose() {
       this.pushDialogVisible = false
@@ -674,6 +744,7 @@ export default {
       if (fileList.length > 0) {
         this.uploadFiles = fileList = [fileList[fileList.length - 1]] // 选择最后一次选择文件
         this.uploadFileName = this.uploadFiles[0].name // 更新文件名
+        this.uploadFile = this.uploadFiles[0].raw // 更新文件
       }
       const excelFile = fileList[0].raw // 获取文件流
       LuckyExcel.transformExcelToLucky(excelFile, function(exportJson, luckysheetfile) {
@@ -784,6 +855,7 @@ export default {
       this.stepNow = 2
       AnalysisExcel(form_data).then(res => {
         console.log('analysis done')
+        this.isAnalysis = true // 分析完成
       }).catch(err => {
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
@@ -1440,7 +1512,6 @@ export default {
     },
     // 今日排程：检查锁定状态命名是否有误，返回错误行号[Error 1-000]
     check_todaysheet_lock_state_format(lock_state_list) {
-      console.log(lock_state_list)
       const error_row_list = [] // 存放错误的行号
       for (let i = 0; i < lock_state_list.length; i++) {
         for (const key in lock_state_list[i]) {
@@ -1816,5 +1887,8 @@ export default {
   to {
     background-position:  0;
   }
+}
+.checkAlertBox{
+  width: 30%;
 }
 </style>

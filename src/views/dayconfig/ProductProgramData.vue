@@ -882,6 +882,7 @@ export default {
         newDatas.push(h('p', null, confirmText[i]))
       }
       this.$confirm('提示', {
+        title: '提示',
         message: h('div', null, newDatas),
         confirmButtonText: '确定',
         cancelButtonText: '取消',

@@ -153,3 +153,11 @@ export function AiScheduled(data) {
     data
   })
 }
+// 导入排程表格接口
+export function ImportPushSchedule(data) {
+  return request({
+    url: '/preprocess/onlinetable/import_push_schedule/',
+    method: 'post',
+    data
+  })
+}
