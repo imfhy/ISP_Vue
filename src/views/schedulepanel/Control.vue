@@ -980,7 +980,8 @@ export default {
       }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$confirm('提示', {
+          this.$confirm('警告', {
+            title: '警告',
             message: h('div', null, newDatas),
             confirmButtonText: '确定，仍要导入',
             cancelButtonText: '取消',
@@ -1039,7 +1040,8 @@ export default {
       }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$confirm('提示', {
+          this.$confirm('警告', {
+            title: '警告',
             message: h('div', null, newDatas),
             confirmButtonText: '确定，仍要计算',
             cancelButtonText: '取消',
@@ -1092,7 +1094,8 @@ export default {
       }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$confirm('提示', {
+          this.$confirm('警告', {
+            title: '警告',
             message: h('div', null, newDatas),
             confirmButtonText: '确定，仍要导入',
             cancelButtonText: '取消',
@@ -1150,7 +1153,8 @@ export default {
       }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$confirm('提示', {
+          this.$confirm('警告', {
+            title: '警告',
             message: h('div', null, newDatas),
             confirmButtonText: '确定，仍要计算',
             cancelButtonText: '取消',

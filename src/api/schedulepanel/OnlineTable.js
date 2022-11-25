@@ -158,6 +158,7 @@ export function ImportPushSchedule(data) {
   return request({
     url: '/preprocess/onlinetable/import_push_schedule/',
     method: 'post',
+    timeout: 10 * 60 * 1000,
     data
   })
 }

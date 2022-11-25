@@ -464,7 +464,8 @@ export default {
       // 剪切数据
       cutRangeData: null,
       // 导入后直接推送排程
-      isAnalysis: false // 是否分析排程
+      isAnalysis: false, // 是否分析排程
+      checkCount: 0 // 检查次数（如果是导入直接推送，只允许检查一次）
 
     }
   },
@@ -508,7 +509,7 @@ export default {
     },
     // 导入后直接推送排程（不通过分析）
     importPushSchedule() {
-      const tip = '数据未检查或检查未通过，无法导入推送！' + `<br/>` + '注：检查无误后才可以导入推送排程！' + `<br/>` + '（如果检查出现错误，请在原Excel文件中修改后重新上传）'
+      const tip = '数据未检查或检查未通过，无法导入推送！' + `<br/>` + '注意：检查无误后才可以导入推送排程！' + `<br/>` + '（如果检查出现错误，请在原Excel文件中修改后重新上传）'
       if (this.checkSuccess === false) {
         this.$alert(tip, '警告', {
           confirmButtonText: '确定',
@@ -517,26 +518,35 @@ export default {
           type: 'warning'
         })
         return
-      } else {
-        this.$confirm('确定要导入排程并进行推送？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.continueImportPushSchedule()
-          // this.pushDialogVisible = true
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消导入'
-          })
-        })
       }
+      if (this.checkCount > 1) {
+        const tip2 = '未在原Excel文件中修改错误，无法导入推送！' + `<br/>` + '提示：请在原Excel文件修改错误并重新上传后再次检查！'
+        this.$alert(tip2, '警告', {
+          confirmButtonText: '确定',
+          dangerouslyUseHTMLString: true,
+          customClass: 'checkAlertBox',
+          type: 'warning'
+        })
+        return
+      }
+      this.$confirm('确定要导入排程并进行推送？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.continueImportPushSchedule()
+        // this.pushDialogVisible = true
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消导入'
+        })
+      })
     },
     // 导入推送接口
     async continueImportPushSchedule() {
       const importLoading = {
-        text: '导入并分析中，请稍等...',
+        text: '导入并分析排程中，请稍等...',
         background: 'rgba(0, 0, 0, 0.5)'
       }
       this.loadingInstance = Loading.service(importLoading)
@@ -546,11 +556,11 @@ export default {
       form.append('user_name', this.name)
       await ImportPushSchedule(form).then(res => {
         this.loadingInstance.close()
-        this.$message({
-          message: res.message,
+        this.pushDialogVisible = true
+        this.$alert(res.message, '导入成功', {
+          confirmButtonText: '确定',
           type: 'success'
         })
-        this.pushDialogVisible = true
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
         this.$alert(err, '错误', {
@@ -764,6 +774,8 @@ export default {
         })
       })
       this.checkSuccess = false // 重置检查
+      this.checkCount = 0 // 重置检查次数
+      this.isAnalysis = false // 重置检查分析排程
     },
     // 分析排程dialog
     analysisDialog() {
@@ -818,7 +830,8 @@ export default {
       // }
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
-          this.$confirm('提示', {
+          this.$confirm('警告', {
+            title: '警告',
             message: h('div', null, newDatas),
             confirmButtonText: '确定分析',
             cancelButtonText: '取消',
@@ -1316,6 +1329,7 @@ export default {
     },
     // 检查
     checkData() {
+      this.checkCount += 1 // 检查次数+1
       window.luckysheet.exitEditMode() // 退出编辑模式
       // 表格为空
       if (!window.luckysheet.getCellValue(0, 0)) {

@@ -875,7 +875,7 @@ export default {
     },
     // 从MES更新量产程序表
     getAllProgramData() {
-      const confirmText = ['确定要更新量产程序表？', '注：此操作将会清空原来的所有数据！']
+      const confirmText = ['确定要更新量产程序表？', '注意：此操作将会清空原来的所有数据！']
       const newDatas = []
       const h = this.$createElement
       for (const i in confirmText) {
