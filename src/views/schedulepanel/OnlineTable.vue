@@ -475,7 +475,7 @@ export default {
     ])
   },
   created() {
-    this.getHistoryExcelItem()
+    // this.getHistoryExcelItem()
   },
   mounted() {
     this.initLuckysheet()
