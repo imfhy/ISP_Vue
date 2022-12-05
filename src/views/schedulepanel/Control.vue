@@ -1410,7 +1410,7 @@ export default {
       })
     },
     beforeComputeBoth() {
-      if (this.isImportMainSmall === false) {
+      if (this.isImportBoth === false) {
         this.$message({
           type: 'warning',
           message: '未导入文件，无法计算排程'
