@@ -16,6 +16,14 @@ export function CheckData(data) {
     data
   })
 }
+// 训练预测模型接口
+export function CheckDataUpload(data) {
+  return request({
+    url: '/preprocess/control/check_input_excel_upload/',
+    method: 'post',
+    data
+  })
+}
 // 导入排程表格接口
 export function ImportSchedule(data) {
   return request({
@@ -24,18 +32,18 @@ export function ImportSchedule(data) {
     data
   })
 }
-// 导入小板排程表格接口
-export function ImportScheduleSmall(data) {
+// 导入主板+小板排程表格接口
+export function ImportScheduleBoth(data) {
   return request({
-    url: '/preprocess/control/import_schedule_small/',
+    url: '/preprocess/control/import_schedule_both/',
     method: 'post',
     data
   })
 }
 // 计算排程表格接口
-export function ComputeSchedule(data) {
+export function ComputeScheduleMain(data) {
   return request({
-    url: '/preprocess/control/compute_schedule/',
+    url: '/preprocess/control/compute_schedule_main/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
@@ -44,6 +52,14 @@ export function ComputeSchedule(data) {
 export function ComputeScheduleSmall(data) {
   return request({
     url: '/preprocess/control/compute_schedule_small/',
+    method: 'post',
+    timeout: 60 * 60 * 1000,
+    data
+  })
+}
+export function ComputeScheduleBoth(data) {
+  return request({
+    url: '/preprocess/control/compute_schedule_both/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
@@ -176,7 +192,7 @@ export function GetApsProgram(data) {
     data
   })
 }
-// 更新工单信息接口
+// 更新齐套信息接口
 export function GetApsMoBaseData(data) {
   return request({
     url: '/schedule/api/getApsMoBaseData',
@@ -210,3 +226,27 @@ export function DownloadScheduleSmall() {
     responseType: 'blob'
   })
 }
+// 下载主板上传排程
+export function DownloadUploadFileMain() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_uploadfile_main/',
+    responseType: 'blob'
+  })
+}
+// 下载小板上传排程
+export function DownloadUploadFileSmall() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_uploadfile_small/',
+    responseType: 'blob'
+  })
+}
+// 获取进度条
+export function GetUploadFileTime() {
+  return request({
+    url: '/preprocess/control/get_uploadfile_time/',
+    method: 'get'
+  })
+}
+
