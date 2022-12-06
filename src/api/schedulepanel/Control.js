@@ -21,6 +21,7 @@ export function CheckDataUpload(data) {
   return request({
     url: '/preprocess/control/check_input_excel_upload/',
     method: 'post',
+    timeout: 60 * 60 * 1000,
     data
   })
 }

@@ -454,7 +454,7 @@
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData">
-              更新工单信息
+              更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
@@ -548,7 +548,7 @@
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData">
-              更新工单信息
+              更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
@@ -637,7 +637,7 @@
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
             <el-button type="primary" @click="getApsMoBaseData">
-              更新工单信息
+              更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
@@ -1303,7 +1303,7 @@ export default {
             message: res.message,
             type: 'success'
           })
-          this.stepNowMain = 4
+          this.stepNowSmall = 4
         } else {
           this.$message({
             message: '开始计算失败',
@@ -1492,6 +1492,7 @@ export default {
         return
       } else {
         this.$confirm('提示', {
+          title: '提示',
           message: '确定要更新钢网信息？',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -1552,6 +1553,7 @@ export default {
         return
       } else {
         this.$confirm('提示', {
+          title: '提示',
           message: '确定要更新程序信息？',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -1587,7 +1589,7 @@ export default {
         })
       }
     },
-    // 更新工单信息前的提示
+    // 更新齐套信息前的提示
     getApsMoBaseData() {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
@@ -1602,7 +1604,7 @@ export default {
         }
       })
     },
-    // 更新工单信息
+    // 更新齐套信息
     continueGetApsMoBaseData() {
       if (this.isImportMain === false && this.isImportSmall === false && this.isImportBoth === false) {
         this.$message({
@@ -1612,20 +1614,21 @@ export default {
         return
       } else {
         this.$confirm('提示', {
-          message: '确定要更新工单信息？',
+          title: '提示',
+          message: '确定要更新齐套信息？',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           const updateLoading = {
-            text: '工单信息更新中...',
+            text: '齐套信息更新中...',
             background: 'rgba(0, 0, 0, 0.5)'
           }
           this.loadingInstance = Loading.service(updateLoading)
           GetApsMoBaseData().then(res => {
             if (res.code === 20000) {
               this.loadingInstance.close()
-              this.$alert('工单信息更新成功！', '提示', {
+              this.$alert('齐套信息更新成功！', '提示', {
                 confirmButtonText: '确定',
                 type: 'success'
               })
@@ -1672,6 +1675,7 @@ export default {
         return
       } else {
         this.$confirm('提示', {
+          title: '提示',
           message: '确定要更新工单进度？',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
