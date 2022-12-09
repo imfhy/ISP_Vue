@@ -36,17 +36,18 @@
           <div class="my-table">
             <el-table
               :data="schedule_result"
-              style="width: 510px;"
+              style="width: 610px;"
               :border="false"
               algin="right"
               :header-cell-style="{'font-weight':'normal', 'text-align':'right'}"
               :cell-style="{'font-size':'20px', 'font-weight':'20px', 'text-align': 'right'}"
             >
+              <el-table-column prop="schedule_type" label="排程类型" width="100px;" />
               <el-table-column prop="enable" label="是否可行解" width="100px;" />
-              <el-table-column prop="obj_value" label="目标值" width="110px;" />
+              <el-table-column prop="line_balance" label="包装线平衡" width="100px;" />
               <el-table-column prop="idle_value" label="停顿(天)" width="100px;" />
               <el-table-column prop="overdue_value" label="逾期(天)" width="100px;" />
-              <el-table-column prop="line_balance" label="线平衡" width="100px;" />
+              <el-table-column prop="obj_value" label="目标值" width="110px;" />
             </el-table>
           </div>
         </el-col>
@@ -135,7 +136,6 @@
                   v-model="trainDate"
                   type="date"
                   placeholder="选择预测模型日期"
-                  :size="size"
                 />
                 <el-tooltip class="item" effect="dark" :content="trainDateTip" placement="top">
                   <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
@@ -193,7 +193,7 @@
       </el-col>
       <el-col :span="8">
         <el-card style="margin-right: 16px;height: 400px;">
-          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="主板下载" name="main">
               <el-row>
                 <el-col :span="24">
@@ -462,8 +462,11 @@
               更新工单进度
             </el-button>
           </el-tooltip>
+          <el-button disabled type="success" @click="exportScheduleDataMain">
+            导出主板
+          </el-button>
           <el-button disabled type="success" @click="exportScheduleDataSmall">
-            导出检查
+            导出小板
           </el-button>
         </el-col>
       </el-row>
@@ -557,7 +560,7 @@
             </el-button>
           </el-tooltip>
           <el-button type="success" @click="exportScheduleDataMain">
-            导出检查
+            导出主板
           </el-button>
         </el-col>
       </el-row>
@@ -645,8 +648,8 @@
               更新工单进度
             </el-button>
           </el-tooltip>
-          <el-button type="success" @click="exportScheduleDataSmall">
-            导出检查
+          <el-button type="success" disabled @click="exportScheduleDataSmall">
+            导出小板
           </el-button>
         </el-col>
       </el-row>
@@ -748,6 +751,7 @@ export default {
       schedule_time: '', // 排程时间
       schedule_mode: '', // 正排或预排
       schedule_result: [{
+        schedule_type: '',
         obj_value: '',
         idle_value: '',
         overdue_value: '',
@@ -755,7 +759,6 @@ export default {
         line_balance: ''
       }],
       progress_refresh: null, // 刷新进度条
-      computeTip: '未开始', // 计算排程按钮左上角的小红标
       apsMtoolMsg: '未更新', // 钢网信息更新提示
       apsProgramMsg: '未更新', // 程序信息更新提示
       apsMtoolMsgSmall: '未更新', // 钢网信息更新提示
@@ -778,7 +781,7 @@ export default {
   },
   created() {
     this.getLogSelectItem()
-    // this.getExcelSelectItem()
+    this.getExcelSelectItem()
     this.listenProgress()
     this.getScheduleRes()
   },
@@ -869,22 +872,18 @@ export default {
         const hour = parseInt((time / (60 * 60)) % 24)
         if (res.run_flag === -1) {
           this.clearListenProgress()
-          this.computeTip = '出错'
           this.schedule_run_time = '计算排程出错'
           this.$alert('计算排程出错：' + res.err_message, '错误', {
             confirmButtonText: '确定',
             type: 'error'
           })
         } else if (res.run_flag === 1) {
-          this.computeTip = '运行中'
-          this.schedule_run_time = hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
+          this.schedule_run_time = '计算中：' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
         } else if (res.run_flag === 2) {
           this.clearListenProgress()
-          this.computeTip = '已完成'
           this.schedule_run_time = '计算完毕，总耗时: ' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
           this.getScheduleRes() // 获取排程结果
         } else {
-          this.computeTip = '未开始'
           this.schedule_run_time = '未开始'
         }
       })
@@ -1202,6 +1201,13 @@ export default {
         }
       })
     },
+    // 开始计算更新排程显示信息
+    refreshComputeShow(res) {
+      this.schedule_result = res.table_data
+      this.schedule_mode = res.mode
+      this.schedule_time = res.date
+      this.trainDateTip = '当前模型日期：' + res.train_date
+    },
     // 开始计算主板排程
     computeScheduleMain() {
       this.listenProgress()
@@ -1212,6 +1218,7 @@ export default {
             type: 'success'
           })
           this.stepNowMain = 4
+          this.refreshComputeShow(res)
         } else {
           this.$message({
             message: '开始计算失败',
@@ -1304,6 +1311,7 @@ export default {
             type: 'success'
           })
           this.stepNowSmall = 4
+          this.refreshComputeShow(res)
         } else {
           this.$message({
             message: '开始计算失败',
@@ -1459,6 +1467,7 @@ export default {
             type: 'success'
           })
           this.stepNowBoth = 4
+          this.refreshComputeShow(res)
         } else {
           this.$message({
             message: '开始计算失败',
@@ -1747,6 +1756,10 @@ export default {
           type: 'error'
         })
       })
+    },
+    // 导出小板
+    exportScheduleDataSmall() {
+
     },
     // 下载主板最新排程
     downloadSchedule() {
