@@ -211,6 +211,15 @@ export function GetApsMoProgData(data) {
     data
   })
 }
+// 更新包装点时间
+export function GetApsDeliveryDay(data) {
+  return request({
+    url: '/schedule/api/getApsDeliveryDay',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
 // 导出主板接口
 export function ExportMainScheduleData(data) {
   return request({

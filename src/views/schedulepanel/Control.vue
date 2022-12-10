@@ -716,7 +716,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatistics,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, CheckDataUpload, DownloadUploadFileMain, DownloadUploadFileSmall,
-  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData } from '@/api/schedulepanel/Control'
+  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -1903,7 +1903,7 @@ export default {
           background: 'rgba(0, 0, 0, 0.5)'
         }
         this.loadingInstance = Loading.service(updateLoading)
-        GetApsMoProgData().then(res => {
+        GetApsDeliveryDay().then(res => {
           if (res.code === 20000) {
             this.loadingInstance.close()
             this.$alert('包装点时间更新成功！', '提示', {
