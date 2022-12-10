@@ -1244,7 +1244,18 @@ export default {
     // 开始计算主板排程
     computeScheduleMain() {
       this.listenProgress()
-      ComputeScheduleMain({ 'file_name': this.uploadFileNameMain, 'user_name': this.name }).then(res => {
+      var is_click_apsMoProgData
+      if (this.apsMoProgData === '已更新') {
+        is_click_apsMoProgData = true
+      } else {
+        is_click_apsMoProgData = false
+      }
+      const data = {
+        'file_name_small': this.uploadFileNameSmall,
+        'user_name': this.name,
+        'is_click_apsMoProgData': is_click_apsMoProgData
+      }
+      ComputeScheduleMain(data).then(res => {
         if (res.code === 20000) {
           this.$message({
             message: res.message,
@@ -1337,7 +1348,18 @@ export default {
     // 开始计算小板排程
     computeScheduleSmall() {
       this.listenProgress()
-      ComputeScheduleSmall({ 'file_name_small': this.uploadFileNameSmall, 'user_name': this.name }).then(res => {
+      var is_click_apsMoProgData
+      if (this.apsMoProgData === '已更新') {
+        is_click_apsMoProgData = true
+      } else {
+        is_click_apsMoProgData = false
+      }
+      const data = {
+        'file_name_small': this.uploadFileNameSmall,
+        'user_name': this.name,
+        'is_click_apsMoProgData': is_click_apsMoProgData
+      }
+      ComputeScheduleSmall(data).then(res => {
         if (res.code === 20000) {
           this.$message({
             message: res.message,
@@ -1482,9 +1504,16 @@ export default {
     },
     computeScheduleBoth() {
       this.listenProgress()
+      var is_click_apsMoProgData
+      if (this.apsMoProgData === '已更新') {
+        is_click_apsMoProgData = true
+      } else {
+        is_click_apsMoProgData = false
+      }
       const data = {
         'file_name_main': this.uploadFileNameMain,
         'file_name_small': this.uploadFileNameSmall,
+        'is_click_apsMoProgData': is_click_apsMoProgData,
         'user_name': this.name
       }
       ComputeScheduleBoth(data).then(res => {
