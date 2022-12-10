@@ -211,11 +211,19 @@ export function GetApsMoProgData(data) {
     data
   })
 }
-// 导出检查接口
-export function ExportScheduleData(data) {
+// 导出主板接口
+export function ExportMainScheduleData(data) {
   return request({
     method: 'get',
-    url: '/schedule/api/exportScheduleData',
+    url: '/schedule/api/exportMainScheduleData',
+    responseType: 'blob'
+  })
+}
+// 导出小板接口
+export function ExportSmallScheduleData(data) {
+  return request({
+    method: 'get',
+    url: '/schedule/api/exportSmallScheduleData',
     responseType: 'blob'
   })
 }

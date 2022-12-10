@@ -374,10 +374,10 @@
         <el-step title="计算排程" />
       </el-steps>
       <el-row style="margin-top:10px;">
-        <el-col :span="5">
+        <el-col :span="6">
           <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-upload
             ref="upload"
             class="upload-demo"
@@ -394,14 +394,14 @@
             </el-button>
           </el-upload>
         </el-col>
-        <el-col :span="2">
+        <!-- <el-col :span="2">
           <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
             <el-button style="margin-left: 20px;" @click="getUploadFileMain">
               <i class="el-icon-download" />
             </el-button>
           </el-tooltip>
-        </el-col>
-        <el-col :span="5">
+        </el-col> -->
+        <el-col :span="6">
           <el-input style="margin-left: 10px;" placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
         </el-col>
         <el-col :span="4">
@@ -421,18 +421,29 @@
             </el-button>
           </el-upload>
         </el-col>
-        <el-col :span="1">
-          <el-tooltip class="item" effect="dark" :content="smallUploadName" placement="top">
-            <el-button style="margin-left: -10px;" @click="getUploadFileSmall">
-              <i class="el-icon-download" />
-            </el-button>
-          </el-tooltip>
-        </el-col>
         <el-col :span="4">
           <el-button type="success" style="margin-left:20px;" @click="beforeImportBoth">
-            导入文件
+            导入排程
           </el-button>
         </el-col>
+      </el-row>
+      <el-row style="margin-top: 10px;">
+        <el-button @click="exportScheduleDataMain">
+          导出主板
+        </el-button>
+        <el-button @click="exportScheduleDataSmall">
+          导出小板
+        </el-button>
+        <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
+          <el-button style="margin-left: 10px;" @click="getUploadFileMain">
+            获取主板上传文件
+          </el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" :content="smallUploadName" placement="top">
+          <el-button style="margin-left: 10px;" @click="getUploadFileSmall">
+            获取小板上传文件
+          </el-button>
+        </el-tooltip>
       </el-row>
       <el-alert
         title="更新信息"
@@ -442,32 +453,31 @@
       />
       <el-row>
         <el-col :span="24">
-          <el-tooltip class="item" effect="dark" :content="apsProgramMsgSmall" placement="top">
-            <el-button type="primary" @click="getApsProgram">
+          <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
+            <el-button type="primary" @click="getApsProgram('both')">
               更新程序信息
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="apsMtoolMsgSmall" placement="top">
-            <el-button type="primary" @click="getApsMtool">
+          <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
+            <el-button type="primary" @click="getApsMtool('both')">
               更新钢网信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
-            <el-button type="primary" @click="getApsMoBaseData">
+            <el-button type="primary" @click="getApsMoBaseData('both')">
               更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
-            <el-button type="primary" @click="getApsMoProgData">
+            <el-button type="primary" @click="getApsMoProgData('both')">
               更新工单进度
             </el-button>
           </el-tooltip>
-          <el-button disabled type="success" @click="exportScheduleDataMain">
-            导出主板
-          </el-button>
-          <el-button disabled type="success" @click="exportScheduleDataSmall">
-            导出小板
-          </el-button>
+          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+            <el-button type="primary" @click="getApsDeliveryDay('both')">
+              更新包装时间
+            </el-button>
+          </el-tooltip>
         </el-col>
       </el-row>
       <el-alert
@@ -526,7 +536,10 @@
               上传主板排程
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportMain">
-              导入文件
+              导入排程
+            </el-button>
+            <el-button @click="exportScheduleDataMain">
+              导出主板
             </el-button>
           </el-upload>
         </el-col>
@@ -540,28 +553,30 @@
       <el-row>
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
-            <el-button type="primary" @click="getApsProgram">
+            <el-button type="primary" @click="getApsProgram('main')">
               更新程序信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
-            <el-button type="primary" @click="getApsMtool">
+            <el-button type="primary" @click="getApsMtool('main')">
               更新钢网信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
-            <el-button type="primary" @click="getApsMoBaseData">
+            <el-button type="primary" @click="getApsMoBaseData('main')">
               更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
-            <el-button type="primary" @click="getApsMoProgData">
+            <el-button type="primary" @click="getApsMoProgData('main')">
               更新工单进度
             </el-button>
           </el-tooltip>
-          <el-button type="success" @click="exportScheduleDataMain">
-            导出主板
-          </el-button>
+          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+            <el-button type="primary" @click="getApsDeliveryDay('main')">
+              更新包装时间
+            </el-button>
+          </el-tooltip>
         </el-col>
       </el-row>
       <el-alert
@@ -615,7 +630,10 @@
               上传小板排程
             </el-button>
             <el-button type="success" style="margin-left:10px;" @click="beforeImportSmall">
-              导入文件
+              导入排程
+            </el-button>
+            <el-button @click="exportScheduleDataSmall">
+              导出小板
             </el-button>
           </el-upload>
         </el-col>
@@ -629,28 +647,30 @@
       <el-row>
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="apsProgramMsg" placement="top">
-            <el-button type="primary" @click="getApsProgram">
+            <el-button type="primary" @click="getApsProgram('small')">
               更新程序信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMtoolMsg" placement="top">
-            <el-button type="primary" @click="getApsMtool">
+            <el-button type="primary" @click="getApsMtool('small')">
               更新钢网信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoBaseData" placement="top">
-            <el-button type="primary" @click="getApsMoBaseData">
+            <el-button type="primary" @click="getApsMoBaseData('small')">
               更新齐套信息
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="apsMoProgData" placement="top">
-            <el-button type="primary" @click="getApsMoProgData">
+            <el-button type="primary" @click="getApsMoProgData('small')">
               更新工单进度
             </el-button>
           </el-tooltip>
-          <el-button type="success" disabled @click="exportScheduleDataSmall">
-            导出小板
-          </el-button>
+          <el-tooltip class="item" effect="dark" :content="apsDeliveryDay" placement="top">
+            <el-button type="primary" @click="getApsDeliveryDay('small')">
+              更新包装时间
+            </el-button>
+          </el-tooltip>
         </el-col>
       </el-row>
       <el-alert
@@ -693,10 +713,10 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadSchedule, DownloadLatestLog,
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportScheduleData, GetApsProgram, DownloadStatistics,
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatistics,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, CheckDataUpload, DownloadUploadFileMain, DownloadUploadFileSmall,
-  GetUploadFileTime, ComputeScheduleBoth } from '@/api/schedulepanel/Control'
+  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -761,10 +781,9 @@ export default {
       progress_refresh: null, // 刷新进度条
       apsMtoolMsg: '未更新', // 钢网信息更新提示
       apsProgramMsg: '未更新', // 程序信息更新提示
-      apsMtoolMsgSmall: '未更新', // 钢网信息更新提示
-      apsProgramMsgSmall: '未更新', // 程序信息更新提示
-      apsMoProgData: '未更新',
-      apsMoBaseData: '未更新',
+      apsMoProgData: '未更新', // 更新工单进度提示
+      apsMoBaseData: '未更新', // 更新齐套信息提示
+      apsDeliveryDay: '未更新', // 更新包装时间提示
       stopScheduleDialog: false, // 终止计算排程dialog
       stopInput: '', // 确认终止
       trainDateTip: '', // 训练日期提示
@@ -1127,6 +1146,20 @@ export default {
         }
       })
     },
+    // 导入后更新接口更新提示
+    clearUpdateMag() {
+      this.apsMtoolMsg = '未更新'
+      this.apsProgramMsg = '未更新'
+      this.apsMoBaseData = '未更新'
+      this.apsMoProgData = '未更新'
+      this.apsDeliveryDay = '未更新'
+    },
+    // 更新步骤条
+    updateApiStepMsg() {
+      this.stepNowBoth = 3
+      this.stepNowMain = 3
+      this.stepNowSmall = 3
+    },
     // 导入主板前判断是否在跑排程
     beforeImportMain() {
       if (this.uploadFileNameMain === '') {
@@ -1320,7 +1353,7 @@ export default {
         }
       })
     },
-    // 导入文件
+    // 导入排程
     async submitUploadFile(mode) {
       this.loadingInstance = Loading.service(this.importLoading)
       const form = new FormData()
@@ -1344,10 +1377,7 @@ export default {
           this.stepNowSmall = 2
           this.isImportSmall = true
         }
-        this.apsMtoolMsg = '未更新'
-        this.apsProgramMsg = '未更新'
-        this.apsMoBaseData = '未更新'
-        this.apsMoProgData = '未更新'
+        this.clearUpdateMag()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
         this.$alert(err, '错误', {
@@ -1405,10 +1435,7 @@ export default {
         })
         this.stepNowBoth = 2
         this.isImportBoth = true
-        this.apsMtoolMsgSmall = '未更新'
-        this.apsProgramMsgSmall = '未更新'
-        this.apsMoBaseData = '未更新'
-        this.apsMoProgData = '未更新'
+        this.clearUpdateMag()
       }).catch(err => {
         this.loadingInstance.close() // 清除动画
         this.$alert(err, '错误', {
@@ -1477,7 +1504,7 @@ export default {
       })
     },
     // 更新钢网信息前的提示
-    getApsMtool() {
+    getApsMtool(mode) {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
@@ -1487,58 +1514,83 @@ export default {
             type: 'warning'
           })
         } else {
-          this.continueGetApsMtool()
+          this.continueGetApsMtool(mode)
         }
       })
     },
     // 更新钢网信息
-    continueGetApsMtool() {
-      if (this.isImportMain === false) {
-        this.$message({
-          type: 'warning',
-          message: '未导入文件，无法更新信息'
-        })
-        return
-      } else {
-        this.$confirm('提示', {
-          title: '提示',
-          message: '确定要更新钢网信息？',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const updateLoading = {
-            text: '钢网信息更新中...',
-            background: 'rgba(0, 0, 0, 0.5)'
-          }
-          this.loadingInstance = Loading.service(updateLoading)
-          GetApsMtool().then(res => {
-            if (res.code === 20000) {
-              this.loadingInstance.close()
-              this.$alert('钢网信息更新成功！', '提示', {
-                confirmButtonText: '确定',
-                type: 'success'
-              })
-              this.apsMtoolMsg = '已更新'
-              this.stepNowMain = 3
-            }
-          }).catch(err => {
-            this.loadingInstance.close() // 清除动画
-            this.$alert(err, '更新信息出错', {
-              confirmButtonText: '确定',
-              type: 'error'
-            })
-          })
-        }).catch(() => {
+    continueGetApsMtool(mode) {
+      if (mode === 'main') {
+        if (this.isImportMain === false) {
           this.$message({
-            type: 'info',
-            message: '取消更新'
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'small') {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'both') {
+        if (this.isImportBoth === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else {
+        return
+      }
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要更新钢网信息？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '钢网信息更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetApsMtool().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('钢网信息更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.apsMtoolMsg = '已更新'
+            if (mode === 'main') {
+              this.stepNowMain = 3
+            } else if (mode === 'small') {
+              this.stepNowSmall = 3
+            } else if (mode === 'both') {
+              this.stepNowBoth = 3
+            }
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息出错', {
+            confirmButtonText: '确定',
+            type: 'error'
           })
         })
-      }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
     },
     // 更新程序信息前的提示
-    getApsProgram() {
+    getApsProgram(mode) {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
@@ -1548,58 +1600,83 @@ export default {
             type: 'warning'
           })
         } else {
-          this.continueGetApsProgram()
+          this.continueGetApsProgram(mode)
         }
       })
     },
     // 更新程序信息
-    continueGetApsProgram() {
-      if (this.isImportMain === false && this.isImportSmall === false && this.isImportBoth === false) {
-        this.$message({
-          type: 'warning',
-          message: '未导入文件，无法更新信息'
-        })
-        return
-      } else {
-        this.$confirm('提示', {
-          title: '提示',
-          message: '确定要更新程序信息？',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const updateLoading = {
-            text: '程序信息更新中...',
-            background: 'rgba(0, 0, 0, 0.5)'
-          }
-          this.loadingInstance = Loading.service(updateLoading)
-          GetApsProgram().then(res => {
-            if (res.code === 20000) {
-              this.loadingInstance.close()
-              this.$alert('程序信息更新成功！', '提示', {
-                confirmButtonText: '确定',
-                type: 'success'
-              })
-              this.apsProgramMsg = '已更新'
-              this.stepNowMain = 3
-            }
-          }).catch(err => {
-            this.loadingInstance.close() // 清除动画
-            this.$alert(err, '更新信息错误', {
-              confirmButtonText: '确定',
-              type: 'error'
-            })
-          })
-        }).catch(() => {
+    continueGetApsProgram(mode) {
+      if (mode === 'main') {
+        if (this.isImportMain === false) {
           this.$message({
-            type: 'info',
-            message: '取消更新'
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'small') {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'both') {
+        if (this.isImportBoth === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else {
+        return
+      }
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要更新程序信息？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '程序信息更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetApsProgram().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('程序信息更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.apsProgramMsg = '已更新'
+            if (mode === 'main') {
+              this.stepNowMain = 3
+            } else if (mode === 'small') {
+              this.stepNowSmall = 3
+            } else if (mode === 'both') {
+              this.stepNowBoth = 3
+            }
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息错误', {
+            confirmButtonText: '确定',
+            type: 'error'
           })
         })
-      }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
     },
     // 更新齐套信息前的提示
-    getApsMoBaseData() {
+    getApsMoBaseData(mode) {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
@@ -1609,58 +1686,83 @@ export default {
             type: 'warning'
           })
         } else {
-          this.continueGetApsMoBaseData()
+          this.continueGetApsMoBaseData(mode)
         }
       })
     },
     // 更新齐套信息
-    continueGetApsMoBaseData() {
-      if (this.isImportMain === false && this.isImportSmall === false && this.isImportBoth === false) {
-        this.$message({
-          type: 'warning',
-          message: '未导入文件，无法更新信息'
-        })
-        return
-      } else {
-        this.$confirm('提示', {
-          title: '提示',
-          message: '确定要更新齐套信息？',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const updateLoading = {
-            text: '齐套信息更新中...',
-            background: 'rgba(0, 0, 0, 0.5)'
-          }
-          this.loadingInstance = Loading.service(updateLoading)
-          GetApsMoBaseData().then(res => {
-            if (res.code === 20000) {
-              this.loadingInstance.close()
-              this.$alert('齐套信息更新成功！', '提示', {
-                confirmButtonText: '确定',
-                type: 'success'
-              })
-              this.apsMoBaseData = '已更新'
-              this.stepNowMain = 3
-            }
-          }).catch(err => {
-            this.loadingInstance.close() // 清除动画
-            this.$alert(err, '更新信息错误', {
-              confirmButtonText: '确定',
-              type: 'error'
-            })
-          })
-        }).catch(() => {
+    continueGetApsMoBaseData(mode) {
+      if (mode === 'main') {
+        if (this.isImportMain === false) {
           this.$message({
-            type: 'info',
-            message: '取消更新'
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'small') {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'both') {
+        if (this.isImportBoth === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else {
+        return
+      }
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要更新齐套信息？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '齐套信息更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetApsMoBaseData().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('齐套信息更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.apsMoBaseData = '已更新'
+            if (mode === 'main') {
+              this.stepNowMain = 3
+            } else if (mode === 'small') {
+              this.stepNowSmall = 3
+            } else if (mode === 'both') {
+              this.stepNowBoth = 3
+            }
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息错误', {
+            confirmButtonText: '确定',
+            type: 'error'
           })
         })
-      }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
     },
     // 更新工单进度前的提示
-    getApsMoProgData() {
+    getApsMoProgData(mode) {
       const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
       GetRunFlag().then(res => {
         if (res.run_flag === 1) {
@@ -1670,55 +1772,166 @@ export default {
             type: 'warning'
           })
         } else {
-          this.continueGetApsMoProgData()
+          this.continueGetApsMoProgData(mode)
         }
       })
     },
     // 更新工单进度
-    continueGetApsMoProgData() {
-      if (this.isImportMain === false && this.isImportSmall === false && this.isImportBoth === false) {
-        this.$message({
-          type: 'warning',
-          message: '未导入文件，无法更新信息'
-        })
-        return
-      } else {
-        this.$confirm('提示', {
-          title: '提示',
-          message: '确定要更新工单进度？',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const updateLoading = {
-            text: '工单进度更新中...',
-            background: 'rgba(0, 0, 0, 0.5)'
-          }
-          this.loadingInstance = Loading.service(updateLoading)
-          GetApsMoProgData().then(res => {
-            if (res.code === 20000) {
-              this.loadingInstance.close()
-              this.$alert('工单进度更新成功！', '提示', {
-                confirmButtonText: '确定',
-                type: 'success'
-              })
-              this.apsMoProgData = '已更新'
-              this.stepNowMain = 3
-            }
-          }).catch(err => {
-            this.loadingInstance.close() // 清除动画
-            this.$alert(err, '更新信息错误', {
-              confirmButtonText: '确定',
-              type: 'error'
-            })
-          })
-        }).catch(() => {
+    continueGetApsMoProgData(mode) {
+      if (mode === 'main') {
+        if (this.isImportMain === false) {
           this.$message({
-            type: 'info',
-            message: '取消更新'
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'small') {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'both') {
+        if (this.isImportBoth === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else {
+        return
+      }
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要更新工单进度？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '工单进度更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetApsMoProgData().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('工单进度更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.apsMoProgData = '已更新'
+            if (mode === 'main') {
+              this.stepNowMain = 3
+            } else if (mode === 'small') {
+              this.stepNowSmall = 3
+            } else if (mode === 'both') {
+              this.stepNowBoth = 3
+            }
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息错误', {
+            confirmButtonText: '确定',
+            type: 'error'
           })
         })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
+    },
+    // 更新包装时间前的提示
+    getApsDeliveryDay(mode) {
+      const tip = '服务器正在计算排程，无法更新信息！' + `<br/>` + '注：请在导入之后，开始计算之前更新'
+      GetRunFlag().then(res => {
+        if (res.run_flag === 1) {
+          this.$alert(tip, '警告', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true,
+            type: 'warning'
+          })
+        } else {
+          this.continueGetApsDeliveryDay(mode)
+        }
+      })
+    },
+    // 更新包装时间
+    continueGetApsDeliveryDay(mode) {
+      if (mode === 'main') {
+        if (this.isImportMain === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'small') {
+        if (this.isImportSmall === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else if (mode === 'both') {
+        if (this.isImportBoth === false) {
+          this.$message({
+            type: 'warning',
+            message: '未导入文件，无法更新信息'
+          })
+          return
+        }
+      } else {
+        return
       }
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要更新包装点时间？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const updateLoading = {
+          text: '包装点时间更新中...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        }
+        this.loadingInstance = Loading.service(updateLoading)
+        GetApsMoProgData().then(res => {
+          if (res.code === 20000) {
+            this.loadingInstance.close()
+            this.$alert('包装点时间更新成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.apsDeliveryDay = '已更新'
+            if (mode === 'main') {
+              this.stepNowMain = 3
+            } else if (mode === 'small') {
+              this.stepNowSmall = 3
+            } else if (mode === 'both') {
+              this.stepNowBoth = 3
+            }
+          }
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '更新信息错误', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消更新'
+        })
+      })
     },
     // 下载文件
     downloadFile(res) {
@@ -1734,16 +1947,16 @@ export default {
       URL.revokeObjectURL(link.href) // 释放URL对象
       document.body.removeChild(link)
     },
-    // 导出检查
+    // 导出主板
     exportScheduleDataMain() {
-      if (!this.isImportMain) {
+      if (!this.isImportMain && !this.isImportBoth) {
         this.$message({
-          message: '未导入文件，无法导出',
-          type: 'error'
+          message: '未导入文件，无需导出',
+          type: 'warning'
         })
         return
       }
-      ExportScheduleData().then(res => {
+      ExportMainScheduleData().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
@@ -1752,14 +1965,33 @@ export default {
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '导出失败，该文件不存在',
+          message: '导出失败，文件不存在',
           type: 'error'
         })
       })
     },
     // 导出小板
     exportScheduleDataSmall() {
-
+      if (!this.isImportSmall && !this.isImportBoth) {
+        this.$message({
+          message: '未导入文件，无需导出',
+          type: 'warning'
+        })
+        return
+      }
+      ExportSmallScheduleData().then(res => {
+        this.downloadFile(res)
+        this.$message({
+          message: '开始下载',
+          type: 'success'
+        })
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '导出失败，文件不存在',
+          type: 'error'
+        })
+      })
     },
     // 下载主板最新排程
     downloadSchedule() {
