@@ -1251,7 +1251,7 @@ export default {
         is_click_apsMoProgData = false
       }
       const data = {
-        'file_name': this.uploadFileNameSmall,
+        'file_name': this.uploadFileNameMain,
         'user_name': this.name,
         'is_click_apsMoProgData': is_click_apsMoProgData
       }

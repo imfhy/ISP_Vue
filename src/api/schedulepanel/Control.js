@@ -30,6 +30,7 @@ export function ImportSchedule(data) {
   return request({
     url: '/preprocess/control/import_schedule/',
     method: 'post',
+    timeout: 10 * 60 * 1000,
     data
   })
 }
@@ -38,6 +39,7 @@ export function ImportScheduleBoth(data) {
   return request({
     url: '/preprocess/control/import_schedule_both/',
     method: 'post',
+    timeout: 10 * 60 * 1000,
     data
   })
 }
@@ -46,7 +48,7 @@ export function ComputeScheduleMain(data) {
   return request({
     url: '/preprocess/control/compute_schedule_main/',
     method: 'post',
-    timeout: 60 * 60 * 1000,
+    timeout: 100 * 60 * 1000,
     data
   })
 }
@@ -54,7 +56,7 @@ export function ComputeScheduleSmall(data) {
   return request({
     url: '/preprocess/control/compute_schedule_small/',
     method: 'post',
-    timeout: 60 * 60 * 1000,
+    timeout: 100 * 60 * 1000,
     data
   })
 }
