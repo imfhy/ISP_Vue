@@ -465,7 +465,10 @@ export default {
       cutRangeData: null,
       // 导入后直接推送排程
       isAnalysis: false, // 是否分析排程
-      checkCount: 0 // 检查次数（如果是导入直接推送，只允许检查一次）
+      checkCount: 0, // 检查次数（如果是导入直接推送，只允许检查一次）
+      lock_state_idx: 1, // 锁定状态列数
+      require_date_idx: 5, // 需求日列数
+      line_idx: 2 // 排线线别列数
 
     }
   },
@@ -1342,7 +1345,7 @@ export default {
         return
       }
       // 今日排程Sheet：第2行一定要为空行，且第3行一定有数据（为了方便后续的检查）
-      if (window.luckysheet.getCellValue(1, 0, { order: 0 }) || !window.luckysheet.getCellValue(2, 0, { order: 0 })) {
+      if (window.luckysheet.getCellValue(1, this.lock_state_idx, { order: 0 }) || !window.luckysheet.getCellValue(2, this.lock_state_idx, { order: 0 })) {
         this.checkAlert('错误', '空行错误，要求第2行有且仅有一个空行!', 'error')
         return
       }
@@ -1353,7 +1356,7 @@ export default {
         // 获取需求日列表
         const requiredate_dic = {}
         for (let i = 2; i < acu_max_row; i++) {
-          const tmp_val = window.luckysheet.getCellValue(i, 3, { type: 'v', order: idx })
+          const tmp_val = window.luckysheet.getCellValue(i, this.require_date_idx, { type: 'v', order: idx })
           if (tmp_val) {
             requiredate_dic[i + 1] = tmp_val
           } else {
@@ -1367,7 +1370,7 @@ export default {
           const lock_state_list = [] // 存放锁定状态
           let tmp_lock_dic = {}
           for (let i = 2; i < acu_max_row; i++) {
-            const tmp_val = window.luckysheet.getCellValue(i, 0, { order: idx })
+            const tmp_val = window.luckysheet.getCellValue(i, this.lock_state_idx, { order: idx })
             if (tmp_val) {
               tmp_lock_dic[i + 1] = tmp_val // 字典 key：所在行号 value：锁定状态
             } else {
@@ -1385,10 +1388,10 @@ export default {
           let tmp_line_order = 0 // 排线线别顺序
           let tmp_line_dic = {} // 排线线别 key:行数 value：排线线别
           let tmp_line_order_dic = {} // 排线线别顺序
-          let ahead_line = window.luckysheet.getCellValue(2, 1, { order: idx }).substring(0, 4) // 前一种排线线别
+          let ahead_line = window.luckysheet.getCellValue(2, this.line_idx, { order: idx }).substring(0, 4) // 前一种排线线别
           line_count.push(ahead_line)
           for (let i = 2; i < acu_max_row; i++) {
-            let tmp_val = window.luckysheet.getCellValue(i, 1, { order: idx })
+            let tmp_val = window.luckysheet.getCellValue(i, this.line_idx, { order: idx })
             if (tmp_val) {
               if (tmp_val.length > 4) {
                 let tmp_list = []
@@ -1461,7 +1464,7 @@ export default {
           // 获取锁定状态
           const lock_state_dic = {}
           for (let i = 1; i < acu_max_row; i++) {
-            const tmp_val = window.luckysheet.getCellValue(i, 0, { order: idx })
+            const tmp_val = window.luckysheet.getCellValue(i, this.lock_state_idx, { order: idx })
             if (tmp_val) {
               lock_state_dic[i + 1] = tmp_val
             } else {
@@ -1471,7 +1474,7 @@ export default {
           // 获取排线线别
           const line_dic = {}
           for (let i = 1; i < acu_max_row; i++) {
-            const tmp_val = window.luckysheet.getCellValue(i, 1, { order: idx })
+            const tmp_val = window.luckysheet.getCellValue(i, this.line_idx, { order: idx })
             if (tmp_val) {
               line_dic[i + 1] = tmp_val
             } else {
@@ -1518,7 +1521,7 @@ export default {
     get_acu_max_row(idx) {
       const max_row = this.get_max_row(idx)
       for (let i = max_row - 1; i > 0; i--) {
-        const tmp_val = window.luckysheet.getCellValue(i, 0, { order: idx })
+        const tmp_val = window.luckysheet.getCellValue(i, this.lock_state_idx, { order: idx })
         if (tmp_val) {
           return i + 1
         }
@@ -1532,7 +1535,7 @@ export default {
           const tmp_dic = {}
           if (!this.locked_list.includes(lock_state_list[i][key]) && !this.unlocked_list.includes(lock_state_list[i][key])) {
             tmp_dic['row'] = key
-            tmp_dic['col'] = 0
+            tmp_dic['col'] = this.lock_state_idx
             error_row_list.push(tmp_dic)
           }
         }
@@ -1547,7 +1550,7 @@ export default {
           const tmp_dic = {}
           if (!this.allLineList.includes(line_list[i][key])) {
             tmp_dic['row'] = key
-            tmp_dic['col'] = 1
+            tmp_dic['col'] = this.line_idx
             error_row_list.push(tmp_dic)
           }
         }
@@ -1562,9 +1565,9 @@ export default {
           const tmp_dic = {}
           if (lock_state_list[i][key] === '未上排程') {
             tmp_dic['row'] = key
-            tmp_dic['col'] = 0
+            tmp_dic['col'] = this.lock_state_idx
             error_row_list.push(tmp_dic)
-            window.luckysheet.setCellValue(Number(key) - 1, 0, '未锁定', { order: 0 })
+            window.luckysheet.setCellValue(Number(key) - 1, this.lock_state_idx, '未锁定', { order: 0 })
           }
         }
       }
@@ -1581,7 +1584,7 @@ export default {
             lock_end_flag = 1
           } else if (lock_end_flag === 1 && this.locked_list.includes(lock_state_list[i][key])) { // 未锁定中存在锁定
             tmp_dic['row'] = key
-            tmp_dic['col'] = 0
+            tmp_dic['col'] = this.lock_state_idx
             error_row_list.push(tmp_dic)
           }
         }
@@ -1598,7 +1601,7 @@ export default {
         }
         if (line_order_list[i] === -1 && this.locked_list.includes(lock_state_list[i])) {
           tmp_dic['row'] = i + 1
-          tmp_dic['col'] = 1
+          tmp_dic['col'] = this.line_idx
           error_row_list.push(tmp_dic)
         }
       }
@@ -1625,7 +1628,7 @@ export default {
             const error_dic = {}
             if (line_list[i][key] !== max_line) {
               error_dic['row'] = key
-              error_dic['col'] = 1
+              error_dic['col'] = this.line_idx
               error_row_list.push(error_dic)
             }
           }
@@ -1644,7 +1647,7 @@ export default {
           // 是否按照1,2,3,...,n的顺序
           if (first_flag === 0 && line_order_list[i][key] !== 1) { // 保证线别第一个为1
             tmp_dic['row'] = key
-            tmp_dic['col'] = 1
+            tmp_dic['col'] = this.line_idx
             error_row_list.push(tmp_dic)
             return error_row_list
           } else if (first_flag < 1) {
@@ -1654,7 +1657,7 @@ export default {
           if (line_order_list[i][key] !== -1) {
             if (line_order_list[i][Number(key) - 1] + 1 !== line_order_list[i][key]) {
               tmp_dic['row'] = key
-              tmp_dic['col'] = 1
+              tmp_dic['col'] = this.line_idx
               error_row_list.push(tmp_dic)
             }
           } else if (line_order_list[i][key] === -1) {
@@ -1663,7 +1666,7 @@ export default {
           // 没有序号的线别后面又出现有序号的线别
           if (order_end_flag === 1 && line_order_list[i][key] > -1) {
             tmp_dic['row'] = key
-            tmp_dic['col'] = 1
+            tmp_dic['col'] = this.line_idx
             error_row_list.push(tmp_dic)
           }
         }
@@ -1677,7 +1680,7 @@ export default {
       const tmp_dic = {}
       const error_row_list = []
       for (let i = 2; i < acu_max_row; i++) {
-        const tmp_val = window.luckysheet.getCellValue(i, 0, { order: 0 })
+        const tmp_val = window.luckysheet.getCellValue(i, this.lock_state_idx, { order: 0 })
         if (tmp_val) {
           blank_idx = 0
           tmp_dic[i + 1] = 1
@@ -1693,11 +1696,11 @@ export default {
           const error_dic = {}
           if (tmp_dic[key] < -1) {
             error_dic['row'] = key
-            error_dic['col'] = 0
+            error_dic['col'] = this.lock_state_idx
             error_row_list.push(error_dic)
           } else if (tmp_dic[key] === -1 && line_dic[Number(key) - 1] === line_dic[Number(key) + 1]) {
             error_dic['row'] = key
-            error_dic['col'] = 0
+            error_dic['col'] = this.lock_state_idx
             error_row_list.push(error_dic)
           }
         }
@@ -1720,10 +1723,10 @@ export default {
           continue
         } else if (lock_state_list[key] !== '未上排程') {
           tmp_dic['row'] = key
-          tmp_dic['col'] = 0
+          tmp_dic['col'] = this.lock_state_idx
           error_row_list.push(tmp_dic)
-          window.luckysheet.setCellValue(Number(key) - 1, 0, '未上排程', { order: 1 })
-          window.luckysheet.setCellValue(Number(key) - 1, 1, '未排', { order: 1 })
+          window.luckysheet.setCellValue(Number(key) - 1, this.lock_state_idx, '未上排程', { order: 1 })
+          window.luckysheet.setCellValue(Number(key) - 1, this.line_idx, '未排', { order: 1 })
         }
       }
       return error_row_list
@@ -1738,10 +1741,10 @@ export default {
           continue
         } else if (line_dic[key] !== '未排') {
           tmp_dic['row'] = key
-          tmp_dic['col'] = 1
+          tmp_dic['col'] = this.line_idx
           error_row_list.push(tmp_dic)
-          window.luckysheet.setCellValue(Number(key) - 1, 0, '未上排程', { order: 1 })
-          window.luckysheet.setCellValue(Number(key) - 1, 1, '未排', { order: 1 })
+          window.luckysheet.setCellValue(Number(key) - 1, this.lock_state_idx, '未上排程', { order: 1 })
+          window.luckysheet.setCellValue(Number(key) - 1, this.line_idx, '未排', { order: 1 })
         }
       }
       return error_row_list
@@ -1757,7 +1760,7 @@ export default {
           begin_flag = 1
         } else if (begin_flag === 1 && line_dic[key] === '') { // 空行
           tmp_dic['row'] = key
-          tmp_dic['col'] = 0
+          tmp_dic['col'] = this.lock_state_idx
           error_row_list.push(tmp_dic)
         }
       }
@@ -1776,9 +1779,9 @@ export default {
           if (!isNaN(tmp)) { // 如果不能转为数字，则返回NaN
             const right_date = this.require_date_days_to_format(requiredate_dic[key], '-')
             tmp_dic['row'] = key
-            tmp_dic['col'] = 3
+            tmp_dic['col'] = this.require_date_idx
             error_row_list.push(tmp_dic)
-            window.luckysheet.setCellValue(Number(key) - 1, 3, right_date, { order: idx }) // 自动修正
+            window.luckysheet.setCellValue(Number(key) - 1, this.require_date_idx, right_date, { order: idx }) // 自动修正
           }
         }
       }
@@ -1814,16 +1817,16 @@ export default {
     clear_color(max_row, idx) {
       // 锁定状态
       for (let row = 1; row < max_row; row++) {
-        if (window.luckysheet.getCellValue(row, 0, { type: 'bg', order: idx }) === '#fc7171') {
-          window.luckysheet.setCellFormat(row, 0, 'bg', 'null', { order: idx })
+        if (window.luckysheet.getCellValue(row, this.lock_state_idx, { type: 'bg', order: idx }) === '#fc7171') {
+          window.luckysheet.setCellFormat(row, this.lock_state_idx, 'bg', 'null', { order: idx })
         }
       }
       // 排线线别
       for (let row = 1; row < max_row; row++) {
         // 如果有必要写背景颜色的判断，应该统一为该文件的全局来控制静态
         // 或者简化为不管颜色什么，都清空
-        if (window.luckysheet.getCellValue(row, 1, { type: 'bg', order: idx }) === '#fc7171') {
-          window.luckysheet.setCellFormat(row, 1, 'bg', 'null', { order: idx })
+        if (window.luckysheet.getCellValue(row, this.line_idx, { type: 'bg', order: idx }) === '#fc7171') {
+          window.luckysheet.setCellFormat(row, this.line_idx, 'bg', 'null', { order: idx })
         }
       }
     },
