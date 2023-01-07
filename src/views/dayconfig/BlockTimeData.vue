@@ -593,7 +593,7 @@ export default {
       // 分页相关
       total_num: 0, // 总共有多少条数据(后端返回)
       currentPage: 1, // 当前在第几页
-      pageSize: 30, // 每页多少条数据
+      pageSize: 200, // 每页多少条数据
       dataTableSelections: [], // 表格选中的数据
       // 备份相关
       backupOptions: [], // 恢复备份选项
