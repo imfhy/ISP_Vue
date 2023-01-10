@@ -269,4 +269,13 @@ export function GetUploadFileTime() {
     method: 'get'
   })
 }
+// 推送量化结果
+export function SaveApsOutPutCount(data) {
+  return request({
+    url: '/schedule/api/saveApsOutPutCount',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
 

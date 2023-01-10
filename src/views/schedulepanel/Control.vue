@@ -185,8 +185,27 @@
                       终止计算排程
                     </el-button>
                   </el-col>
+                  <el-button type="pushBtn" plain @click="post_statistics">
+                    <i class="el-icon-upload2" />
+                    推送量化结果
+                  </el-button>
                 </el-row>
               </div>
+              <!-- <el-alert
+                title="接口相关操作"
+                type="info"
+                :closable="false"
+              />
+              <div class="box-button">
+                <el-row>
+                  <el-col :span="8">
+                    <el-button type="stopBtn" plain @click="post_statistics">
+                      <i class="el-icon-warning-outline" />
+                      推送量化结果
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </div> -->
             </el-col>
           </el-row>
         </el-card>
@@ -716,7 +735,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatistics,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, CheckDataUpload, DownloadUploadFileMain, DownloadUploadFileSmall,
-  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay } from '@/api/schedulepanel/Control'
+  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -790,7 +809,9 @@ export default {
 
       activeName: 'main',
       mainUploadName: '获取主板上传文件',
-      smallUploadName: '获取小板上传文件'
+      smallUploadName: '获取小板上传文件',
+
+      saveApsOutPutCountTip: '未推送'
     }
   },
   computed: {
@@ -2219,6 +2240,47 @@ export default {
         this.$message({
           message: '下载失败，文件不存在',
           type: 'error'
+        })
+      })
+    },
+    post_statistics() {
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要推送量化结果？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const pushLoading = {
+          text: '推送中，请稍等...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        } // 导入排程动画
+        this.loadingInstance = Loading.service(pushLoading)
+        SaveApsOutPutCount().then(res => {
+          if (res.code === 20000) {
+            this.$alert(res.message, '推送量化结果成功', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.saveApsOutPutCountTip = '已推送'
+          } else {
+            this.$alert('推送失败', '错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
+          }
+          this.loadingInstance.close() // 清除动画
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '错误', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消推送'
         })
       })
     }
