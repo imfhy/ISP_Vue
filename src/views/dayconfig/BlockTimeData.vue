@@ -267,12 +267,12 @@
         </el-row>
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.flag" prop="flag" label="手动修改锁定时间">
+            <el-form-item :rules="model.lock_time ? rules.flag:[{required: false, trigger: 'blur'}]" prop="flag" label="手动修改锁定时间">
               <el-switch v-model="model.flag" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.lock_time" prop="lock_time" label="锁定时间节点">
+            <el-form-item :rules="model.flag===true ? rules.lock_time:[{required: false, trigger: 'blur'}]" prop="lock_time" label="锁定时间节点">
               <el-date-picker v-model="model.lock_time" type="datetime" placeholder="请选择" value-format="yyyy-MM-dd HH:00:00" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
@@ -580,8 +580,16 @@ export default {
           message: '结束时间不能为空',
           trigger: 'blur'
         }],
-        flag: [],
-        lock_time: [],
+        flag: [{
+          required: true,
+          message: '请开启手动修改锁定时间',
+          trigger: 'blur'
+        }],
+        lock_time: [{
+          required: true,
+          message: '请填写锁定时间节点',
+          trigger: 'blur'
+        }],
         remark: [],
         CREATED_BY: [],
         CREATED_TIME: [],
