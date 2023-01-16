@@ -663,18 +663,10 @@ export default {
           required: true,
           message: '输入的列不能为空',
           trigger: 'blur'
-        }, {
-          type: 'array',
-          message: '输入的列格式不正确',
-          trigger: 'blur'
         }],
         output_col: [{
           required: true,
           message: '导出的列不能为空',
-          trigger: 'blur'
-        }, {
-          type: 'array',
-          message: '导出的列格式不正确',
           trigger: 'blur'
         }],
         output_line_order: [{
