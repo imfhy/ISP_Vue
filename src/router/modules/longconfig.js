@@ -130,12 +130,21 @@ const longconfigRouter = {
         roles: ['admin', 'common']
       }
     },
+    // {
+    //   path: 'keyboardspecialmodel',
+    //   component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
+    //   name: 'KeyBoardSpecialModel',
+    //   meta: {
+    //     title: '小板特殊机种表',
+    //     roles: ['admin', 'common']
+    //   }
+    // },
     {
-      path: 'keyboardspecialmodel',
-      component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
-      name: 'KeyBoardSpecialModel',
+      path: 'dispensingbeforeaimachine',
+      component: () => import('@/views/longconfig/DispensingBeforeAIMachine'),
+      name: 'DispensingBeforeAIMachine',
       meta: {
-        title: '小板特殊机种表',
+        title: '先点胶后AI特殊机种',
         roles: ['admin', 'common']
       }
     }
