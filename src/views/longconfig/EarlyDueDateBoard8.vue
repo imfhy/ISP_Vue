@@ -51,7 +51,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="board8" label="板号" sortable />
+          <el-table-column prop="component_name" label="机种名" sortable />
           <el-table-column prop="advance_days" label="提前天数" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
@@ -95,8 +95,8 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.board8" prop="board8" label="板号">
-              <el-input v-model="model.board8" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.component_name" prop="component_name" label="机种名">
+              <el-input v-model="model.component_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
@@ -143,7 +143,7 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="board8" label="板号" />
+        <el-table-column prop="component_name" label="机种名" />
         <el-table-column prop="advance_days" label="提前天数" />
       </el-table>
       <el-row>
@@ -222,10 +222,10 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          board8: '715GD007',
+          component_name: '715GD007',
           advance_days: 2
         }, {
-          board8: '(必填)',
+          component_name: '(必填)',
           advance_days: '(必填)'
         }
       ], // 示例的表格数据
@@ -248,19 +248,19 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        board8: '',
+        component_name: '',
         advance_days: 0
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        board8: '',
+        component_name: '',
         advance_days: 0
       },
       rules: {
-        board8: [{
+        component_name: [{
           required: true,
-          message: '板号不能为空',
+          message: '机种名不能为空',
           trigger: 'blur'
         }],
         advance_days: [{
@@ -509,7 +509,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['board8'] = row.board8
+        data['component_name'] = row.component_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
