@@ -34,7 +34,7 @@ export function ImportSchedule(data) {
     data
   })
 }
-// 导入主板+小板排程表格接口
+// 导入AI+点胶排程表格接口
 export function ImportScheduleBoth(data) {
   return request({
     url: '/preprocess/control/import_schedule_both/',
@@ -222,7 +222,7 @@ export function GetApsDeliveryDay(data) {
     data
   })
 }
-// 导出主板接口
+// 导出AI接口
 export function ExportMainScheduleData(data) {
   return request({
     method: 'get',
@@ -230,7 +230,7 @@ export function ExportMainScheduleData(data) {
     responseType: 'blob'
   })
 }
-// 导出小板接口
+// 导出点胶接口
 export function ExportSmallScheduleData(data) {
   return request({
     method: 'get',
@@ -246,7 +246,7 @@ export function DownloadScheduleSmall() {
     responseType: 'blob'
   })
 }
-// 下载主板上传排程
+// 下载AI上传排程
 export function DownloadUploadFileMain() {
   return request({
     method: 'get',
@@ -254,7 +254,7 @@ export function DownloadUploadFileMain() {
     responseType: 'blob'
   })
 }
-// 下载小板上传排程
+// 下载点胶上传排程
 export function DownloadUploadFileSmall() {
   return request({
     method: 'get',

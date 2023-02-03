@@ -322,7 +322,7 @@
       @dragDialog="handleDrag"
     >
       <el-alert
-        title="推送主板"
+        title="推送AI"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -745,8 +745,8 @@ export default {
         })
         return
       }
-      if (!fileName.includes('主板') && !fileName.includes('小板')) {
-        const tip = '上传的文件名未指明主板/小板，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含主板/小板，例如：0901主板预排结果）'
+      if (!fileName.includes('AI') && !fileName.includes('点胶')) {
+        const tip = '上传的文件名未指明AI/点胶，请修改后重新上传！' + `<br/>` + '（注：文件名中需要包含AI/点胶，例如：0901AI预排结果）'
         this.$alert(tip, '错误', {
           confirmButtonText: '确定',
           dangerouslyUseHTMLString: true,

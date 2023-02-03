@@ -135,7 +135,7 @@ const longconfigRouter = {
     //   component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
     //   name: 'KeyBoardSpecialModel',
     //   meta: {
-    //     title: '小板特殊机种表',
+    //     title: '点胶特殊机种表',
     //     roles: ['admin', 'common']
     //   }
     // },
