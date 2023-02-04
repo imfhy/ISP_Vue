@@ -250,16 +250,14 @@ export function DownloadScheduleSmall() {
 export function DownloadUploadFileMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_uploadfile_main/',
-    responseType: 'blob'
+    url: '/preprocess/control/download_uploadfile_main/'
   })
 }
 // 下载小板上传排程
 export function DownloadUploadFileSmall() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_uploadfile_small/',
-    responseType: 'blob'
+    url: '/preprocess/control/download_uploadfile_small/'
   })
 }
 // 获取进度条

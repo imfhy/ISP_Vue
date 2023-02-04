@@ -776,6 +776,7 @@ export default {
       selectExcelValue: '', // 当前选中的要下载的历史日志
       isImportMain: false, // 是否上传文件
       isImportMainSmall: false, // 是否上传小板
+      isImportBoth: false, // 是否上传主板小板
       // 进度条相关
       percentage_1: 0,
       percentage_2: 0,
@@ -1037,7 +1038,7 @@ export default {
           this.stepNowMain = 1
         } else if (this.uploadFileListSmall !== '') {
           this.stepNowSmall = 1
-        } else if (this.uploadFileListMain !== '' && this.uploadFileListSmall !== '') {
+        } else if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
           this.stepNowBoth = 1
         }
         this.loadingInstance.close()
@@ -1068,9 +1069,9 @@ export default {
             type: 'warning'
           })
         }
-        if (this.uploadFileName !== '') {
+        if (this.uploadFileNameMain !== '') {
           this.stepNowMain = 1
-        } else if (this.uploadFileListMain !== '' && this.uploadFileListSmall !== '') {
+        } else if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
           this.stepNowBoth = 1
         }
         this.loadingInstance.close()
@@ -1085,15 +1086,14 @@ export default {
     // 获取主板上传的文件
     getUploadFileMain() {
       DownloadUploadFileMain().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
+        this.uploadFileNameMain = res.file_name
+        if (this.uploadFileListMain !== '' && this.uploadFileListSmall !== '') {
+          this.stepNowBoth = 1
+        }
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，文件不存在',
+          message: '获取失败',
           type: 'error'
         })
       })
@@ -1101,15 +1101,14 @@ export default {
     // 获取小板上传的文件
     getUploadFileSmall() {
       DownloadUploadFileSmall().then(res => {
-        this.downloadFile(res)
-        this.$message({
-          message: '开始下载',
-          type: 'success'
-        })
+        this.uploadFileNameSmall = res.file_name
+        if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
+          this.stepNowBoth = 1
+        }
       }).catch(err => {
         console.log(err)
         this.$message({
-          message: '下载失败，文件不存在',
+          message: '获取失败',
           type: 'error'
         })
       })
@@ -1399,11 +1398,11 @@ export default {
     // 导入排程
     async submitUploadFile(mode) {
       this.loadingInstance = Loading.service(this.importLoading)
-      const form = new FormData()
+      const form = {}
       if (mode === 1) {
-        form.append('file', this.uploadFileMain)
+        form['file_name'] = this.uploadFileNameMain
       } else if (mode === 2) {
-        form.append('file', this.uploadFileSmall)
+        form['file_name'] = this.uploadFileNameMain
       } else {
         return
       }
@@ -1467,9 +1466,13 @@ export default {
     },
     async submitUploadFileBoth() {
       this.loadingInstance = Loading.service(this.importLoading)
-      const form = new FormData()
-      form.append('file_main', this.uploadFileMain) // 主板
-      form.append('file_small', this.uploadFileSmall) // 小板
+      // const form = new FormData()
+      // form.append('file_main', this.uploadFileMain) // 主板
+      // form.append('file_small', this.uploadFileSmall) // 小板
+      const form = {
+        'file_main': this.uploadFileNameMain,
+        'file_small': this.uploadFileNameSmall
+      }
       await ImportScheduleBoth(form).then(res => {
         this.loadingInstance.close()
         this.$message({
