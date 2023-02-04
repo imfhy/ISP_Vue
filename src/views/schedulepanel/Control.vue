@@ -1087,6 +1087,7 @@ export default {
     getUploadFileMain() {
       DownloadUploadFileMain().then(res => {
         this.uploadFileNameMain = res.file_name
+        this.stepNowMain = 1
         if (this.uploadFileListMain !== '' && this.uploadFileListSmall !== '') {
           this.stepNowBoth = 1
         }
@@ -1102,6 +1103,7 @@ export default {
     getUploadFileSmall() {
       DownloadUploadFileSmall().then(res => {
         this.uploadFileNameSmall = res.file_name
+        this.stepNowSmall = 1
         if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
           this.stepNowBoth = 1
         }
