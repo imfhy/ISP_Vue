@@ -32,6 +32,14 @@
         </el-col>
         <el-col :span="8">
           <div style="float: right;">
+            <el-tooltip class="item" effect="dark" content="同步正式库维护时间表" placement="top">
+              <el-button
+                size="small"
+                icon="el-icon-download"
+                circle
+                @click="beforeSyncFormalData"
+              />
+            </el-tooltip>
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
                 size="small"
@@ -476,11 +484,12 @@
 <script>
 import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
+import { Loading } from 'element-ui'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
   ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData,
-  GetDefaultData } from '@/api/dayconfig/BlockTimeData'
+  GetDefaultData, SyncFormalData } from '@/api/dayconfig/BlockTimeData'
 // import { lineOptions, LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
@@ -1259,6 +1268,46 @@ export default {
             this.handleExportClose() // 导出后自动关闭窗口
           }, 1000)
         }
+      })
+    },
+    // 测试库同步正式库的维护时间表（提示）
+    beforeSyncFormalData() {
+      this.$confirm('确定要同步正式库的维护时间表？', '提示', {
+        confirmButtonText: '确定同步',
+        cancelButtonText: '取消',
+        confirmButtonClass: 'btnDanger',
+        type: 'warning'
+      }).then(() => {
+        this.syncFormalData()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消同步'
+        })
+      })
+    },
+    // 测试库同步正式库的维护时间表
+    syncFormalData() {
+      const syncLoading = {
+        text: '拼命同步中...',
+        background: 'rgba(0, 0, 0, 0.6)'
+      }
+      this.loadingInstance = Loading.service(syncLoading)
+      SyncFormalData().then(res => {
+        if (res.code === 20000) {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(res.message, '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+          this.refreshTableData(true)
+        }
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert(err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
+        })
       })
     },
     // 导入数据窗口关闭
