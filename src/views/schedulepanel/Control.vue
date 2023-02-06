@@ -1404,7 +1404,7 @@ export default {
       if (mode === 1) {
         form['file_name'] = this.uploadFileNameMain
       } else if (mode === 2) {
-        form['file_name'] = this.uploadFileNameMain
+        form['file_name'] = this.uploadFileNameSmall
       } else {
         return
       }
