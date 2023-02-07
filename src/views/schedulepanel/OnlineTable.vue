@@ -466,9 +466,9 @@ export default {
       // 导入后直接推送排程
       isAnalysis: false, // 是否分析排程
       checkCount: 0, // 检查次数（如果是导入直接推送，只允许检查一次）
-      lock_state_idx: 1, // 锁定状态列数
-      require_date_idx: 5, // 需求日列数
-      line_idx: 2 // 排线线别列数
+      lock_state_idx: 0, // 锁定状态列数
+      require_date_idx: 6, // 需求日列数
+      line_idx: 1 // 排线线别列数
 
     }
   },
@@ -1393,7 +1393,7 @@ export default {
           for (let i = 2; i < acu_max_row; i++) {
             let tmp_val = window.luckysheet.getCellValue(i, this.line_idx, { order: idx })
             if (tmp_val) {
-              if (tmp_val.length > 4) {
+              if (tmp_val.length > 3) {
                 let tmp_list = []
                 tmp_val = tmp_val.replace('，', ',') // 防止输入中文的逗号
                 tmp_list = tmp_val.split(',')
@@ -1432,14 +1432,14 @@ export default {
           }
           const error_1000 = this.check_todaysheet_lock_state_format(lock_state_list)
           if (error_1000.length > 0) {
-            this.check_error_print('今日排程", "行锁定状态命名错误', 'error', error_1000, idx)
+            this.check_error_print('今日排程', '行锁定状态命名错误', 'error', error_1000, idx)
             return
           }
-          const error_2000 = this.check_todaysheet_line_format(line_list)
-          if (error_2000.length > 0) {
-            this.check_error_print('今日排程', '行排线线别命名错误', 'error', error_2000, idx)
-            return
-          }
+          // const error_2000 = this.check_todaysheet_line_format(line_list)
+          // if (error_2000.length > 0) {
+          //   this.check_error_print('今日排程', '行排线线别命名错误', 'error', error_2000, idx)
+          //   return
+          // }
           const error_2001 = this.check_todaysheet_same_line(line_list)
           if (error_2001.length > 0) {
             this.check_error_print('今日排程', '行排线线别错误', 'error', error_2001, idx)
