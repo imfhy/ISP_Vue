@@ -321,7 +321,7 @@
       :before-close="handlePushClose"
       @dragDialog="handleDrag"
     >
-      <!-- <el-alert
+      <el-alert
         title="推送SMT"
         type="info"
         :closable="false"
@@ -331,21 +331,21 @@
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="smtUnscheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_unscheduled">
-              推送SMT未排
+              推送点胶未排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="smtPrescheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_pre_scheduled">
-              推送SMT预排
+              推送点胶预排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="smtScheduledTip" placement="top">
             <el-button type="apiBtn" @click="post_scheduled">
-              推送SMT正排
+              推送点胶正排
             </el-button>
           </el-tooltip>
         </el-col>
-      </el-row> -->
+      </el-row>
       <el-alert
         title="推送AI"
         type="info"
