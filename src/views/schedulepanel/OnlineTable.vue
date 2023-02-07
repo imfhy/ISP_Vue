@@ -322,7 +322,7 @@
       @dragDialog="handleDrag"
     >
       <el-alert
-        title="推送SMT"
+        title="推送点胶"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
