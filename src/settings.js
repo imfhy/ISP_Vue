@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'SMT排程系统',
+  title: 'AI排程系统',
 
   /**
    * @type {boolean} true | false

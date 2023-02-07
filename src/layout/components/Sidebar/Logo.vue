@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'SMT排程系统',
+      title: 'AI排程系统',
       logo: '../../../assets/img/logo.png'
     }
   }
