@@ -918,6 +918,7 @@ export default {
             confirmButtonText: '确定',
             type: 'error'
           })
+          this.schedule_run_time = '计算排程出错，耗时：' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
         } else if (res.run_flag === 1) {
           this.schedule_run_time = '计算中：' + hour.toString() + ' 时 ' + minute.toString() + ' 分 ' + second.toString() + ' 秒'
         } else if (res.run_flag === 2) {
