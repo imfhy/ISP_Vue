@@ -321,7 +321,7 @@
       :before-close="handlePushClose"
       @dragDialog="handleDrag"
     >
-      <el-alert
+      <!-- <el-alert
         title="推送SMT"
         type="info"
         :closable="false"
@@ -345,7 +345,7 @@
             </el-button>
           </el-tooltip>
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-alert
         title="推送AI"
         type="info"
