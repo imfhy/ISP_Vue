@@ -322,7 +322,7 @@
       @dragDialog="handleDrag"
     >
       <el-alert
-        title="推送AI"
+        title="推送SMT"
         type="info"
         :closable="false"
         style="margin-top: 10px;margin-bottom: 10px;"
@@ -355,17 +355,17 @@
       <el-row style="text-align: center;">
         <el-col :span="24">
           <el-tooltip class="item" effect="dark" :content="aiUnscheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_unscheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_unscheduled">
               推送AI未排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitPrescheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_pre_scheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_pre_scheduled">
               推送AI预排
             </el-button>
           </el-tooltip>
           <el-tooltip class="item" effect="dark" :content="aitScheduledTip" placement="top">
-            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" disabled @click="post_ai_scheduled">
+            <el-button type="apiBtn" style="padding-left: 28px;padding-right: 28px" @click="post_ai_scheduled">
               推送AI正排
             </el-button>
           </el-tooltip>
