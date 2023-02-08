@@ -139,19 +139,35 @@ export function DownloadNoProgram() {
     responseType: 'blob'
   })
 }
-// 下载idle明细
-export function DownloadIdleInfo() {
+// 下载主板idle明细
+export function DownloadIdleInfoMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_idle_info/',
+    url: '/preprocess/control/download_idle_info_main/',
     responseType: 'blob'
   })
 }
-// 下载量化结果
-export function DownloadStatistics() {
+// 下载主板量化结果
+export function DownloadStatisticsMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_statistics/',
+    url: '/preprocess/control/download_statistics_main/',
+    responseType: 'blob'
+  })
+}
+// 下载小板idle明细
+export function DownloadIdleInfoSmall() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_idle_info_small/',
+    responseType: 'blob'
+  })
+}
+// 下载小板量化结果
+export function DownloadStatisticsSmall() {
+  return request({
+    method: 'get',
+    url: '/preprocess/control/download_statistics_small/',
     responseType: 'blob'
   })
 }

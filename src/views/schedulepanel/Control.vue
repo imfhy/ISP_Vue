@@ -240,9 +240,9 @@
                         </el-button>
                       </el-col>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadNoProgram">
+                        <el-button type="primary" plain @click="downloadStatistics">
                           <i class="el-icon-download" />
-                          下载无程序表
+                          下载量化结果
                         </el-button>
                       </el-col>
                     </el-row>
@@ -250,9 +250,9 @@
                   <div class="box-button">
                     <el-row>
                       <el-col :span="8">
-                        <el-button type="primary" plain @click="downloadStatistics">
+                        <el-button type="primary" plain @click="downloadNoProgram">
                           <i class="el-icon-download" />
-                          下载量化结果
+                          下载无程序表
                         </el-button>
                       </el-col>
                     </el-row>
@@ -295,7 +295,7 @@
                           下载小板排程
                         </el-button>
                       </el-col>
-                      <!-- <el-col :span="8">
+                      <el-col :span="8">
                         <el-button type="primary" plain @click="downloadIdleInfoSmall">
                           <i class="el-icon-download" />
                           下载idle明细
@@ -306,7 +306,7 @@
                           <i class="el-icon-download" />
                           下载量化结果
                         </el-button>
-                      </el-col> -->
+                      </el-col>
                     </el-row>
                   </div>
                 </el-col>
@@ -716,11 +716,12 @@ import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadSchedule, DownloadLatestLog,
-  DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfo, GetRunFlag, StopTabu,
-  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatistics,
+  DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfoMain, GetRunFlag, StopTabu,
+  GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, CheckDataUpload, DownloadUploadFileMain, DownloadUploadFileSmall,
-  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount } from '@/api/schedulepanel/Control'
+  GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
+  DownloadStatisticsSmall, DownloadIdleInfoSmall } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -2140,7 +2141,7 @@ export default {
     },
     // 下载idle明细
     downloadIdleInfo() {
-      DownloadIdleInfo().then(res => {
+      DownloadIdleInfoMain().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
@@ -2156,7 +2157,7 @@ export default {
     },
     // 下载量化结果
     downloadStatistics() {
-      DownloadStatistics().then(res => {
+      DownloadStatisticsMain().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
@@ -2188,7 +2189,7 @@ export default {
     },
     // 下载小板idle明细
     downloadIdleInfoSmall() {
-      DownloadIdleInfo().then(res => {
+      DownloadIdleInfoSmall().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
@@ -2204,7 +2205,7 @@ export default {
     },
     // 下载小板量化结果
     downloadStatisticsSmall() {
-      DownloadStatistics().then(res => {
+      DownloadStatisticsSmall().then(res => {
         this.downloadFile(res)
         this.$message({
           message: '开始下载',
