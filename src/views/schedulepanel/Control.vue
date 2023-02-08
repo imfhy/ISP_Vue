@@ -191,21 +191,6 @@
                   </el-button>
                 </el-row>
               </div>
-              <!-- <el-alert
-                title="接口相关操作"
-                type="info"
-                :closable="false"
-              />
-              <div class="box-button">
-                <el-row>
-                  <el-col :span="8">
-                    <el-button type="stopBtn" plain @click="post_statistics">
-                      <i class="el-icon-warning-outline" />
-                      推送量化结果
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </div> -->
             </el-col>
           </el-row>
         </el-card>

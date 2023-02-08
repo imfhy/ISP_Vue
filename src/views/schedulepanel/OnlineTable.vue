@@ -310,6 +310,11 @@
         <el-button type="primary" @click="exportStatisticsExcel">
           导出Excel
         </el-button>
+        <el-tooltip class="item" effect="dark" :content="saveApiCustweekSelfcreateTip" placement="top">
+          <el-button type="primary" @click="post_statistics">
+            推送量化结果
+          </el-button>
+        </el-tooltip>
       </span>
     </el-dialog>
 
@@ -389,7 +394,7 @@ import elDragDialog from '@/directive/el-drag-dialog'
 import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, GetAnaProgress,
   GetHistoryAnaItem, GetHistoryAnaData, GetHistoryExcelItem, GetHistoryExcelData,
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
-  AiPrescheduled, AiScheduled, GetRunFlag, ImportPushSchedule
+  AiPrescheduled, AiScheduled, GetRunFlag, ImportPushSchedule, SaveApiCustweekSelfcreate
 } from '@/api/schedulepanel/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
@@ -468,7 +473,9 @@ export default {
       checkCount: 0, // 检查次数（如果是导入直接推送，只允许检查一次）
       lock_state_idx: 1, // 锁定状态列数
       require_date_idx: 5, // 需求日列数
-      line_idx: 2 // 排线线别列数
+      line_idx: 2, // 排线线别列数
+
+      saveApiCustweekSelfcreateTip: '未推送' // 是否推送量化结果
 
     }
   },
@@ -730,6 +737,48 @@ export default {
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
+        })
+      })
+    },
+    // 推送量化结果
+    post_statistics() {
+      this.$confirm('提示', {
+        title: '提示',
+        message: '确定要推送量化结果？',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const pushLoading = {
+          text: '推送中，请稍等...',
+          background: 'rgba(0, 0, 0, 0.5)'
+        } // 导入排程动画
+        this.loadingInstance = Loading.service(pushLoading)
+        SaveApiCustweekSelfcreate().then(res => {
+          if (res.code === 20000) {
+            this.$alert(res.message, '推送量化结果成功', {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.saveApiCustweekSelfcreateTip = '已推送'
+          } else {
+            this.$alert('推送失败', '错误', {
+              confirmButtonText: '确定',
+              type: 'error'
+            })
+          }
+          this.loadingInstance.close() // 清除动画
+        }).catch(err => {
+          this.loadingInstance.close() // 清除动画
+          this.$alert(err, '错误', {
+            confirmButtonText: '确定',
+            type: 'error'
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消推送'
         })
       })
     },

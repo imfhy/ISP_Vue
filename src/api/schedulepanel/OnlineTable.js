@@ -162,3 +162,12 @@ export function ImportPushSchedule(data) {
     data
   })
 }
+// 推送量化结果
+export function SaveApiCustweekSelfcreate(data) {
+  return request({
+    url: '/schedule/api/saveApiCustweekSelfcreate',
+    method: 'post',
+    timeout: 10 * 60 * 1000,
+    data
+  })
+}
