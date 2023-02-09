@@ -114,12 +114,21 @@
             <el-tag v-if="modelOriginal.deep_search === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.deep_search === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="小板线单面点数阈值(大于此值去SM12)" :span="2">
+          <el-descriptions-item label="小板线单面点数阈值(大于此值去SM12)">
             {{ modelOriginal.small_board_single_points_threshold }}
           </el-descriptions-item>
-          <el-descriptions-item label="小板线大小工单阈值" :span="2">
+          <el-descriptions-item label="小板线大小工单阈值">
             {{ modelOriginal.small_board_total_points_threshold }}
           </el-descriptions-item>
+          <el-descriptions-item label="后工序为AI提前时间">
+            {{ modelOriginal.ai_post_process }}天
+          </el-descriptions-item>
+          <el-descriptions-item label="LED工单是否纳入目标函数">
+            <el-tag v-if="modelOriginal.is_run_recognize_ignore_overdue_jobs === true" size="small" type="success">开启</el-tag>
+            <el-tag v-else-if="modelOriginal.is_run_recognize_ignore_overdue_jobs === false" size="small" type="danger">关闭</el-tag>
+          </el-descriptions-item>
+
+          <el-descriptions-item label="大工单线线体(线体用逗号隔开)" :span="4">{{ modelOriginal.big_lines_str }}</el-descriptions-item>
 
           <el-descriptions-item label="输入的列" :span="4">{{ modelOriginal.input_col }}</el-descriptions-item>
           <el-descriptions-item label="导出的列" :span="4">{{ modelOriginal.output_col }}</el-descriptions-item>
@@ -269,14 +278,19 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.small_board_single_points_threshold" prop="small_board_single_points_threshold" label="小板线单面点数阈值(大于此值去SM12)">
                 <el-input-number v-model="model.small_board_single_points_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.small_board_total_points_threshold" prop="small_board_total_points_threshold" label="小板线大小工单阈值">
                 <el-input-number v-model="model.small_board_total_points_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.ai_post_process" prop="ai_post_process" label="后工序为AI提前时间">
+                <el-input-number v-model="model.ai_post_process" placeholder="请输入" :step="0.1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -360,6 +374,18 @@
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.deep_search" prop="deep_search" label="开放搜索解">
                 <el-switch v-model="model.deep_search" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.is_run_recognize_ignore_overdue_jobs" prop="is_run_recognize_ignore_overdue_jobs" label="LED工单是否纳入目标函数">
+                <el-switch v-model="model.is_run_recognize_ignore_overdue_jobs" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="24" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.big_lines_str" prop="big_lines_str" label="大工单线线体(线体用逗号隔开)">
+                <el-input v-model="model.big_lines_str" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -446,6 +472,9 @@ export default {
         deep_search: true,
         small_board_single_points_threshold: '',
         small_board_total_points_threshold: '',
+        ai_post_process: '',
+        is_run_recognize_ignore_overdue_jobs: true,
+        big_lines_str: '',
         input_col: '',
         output_col: '',
         output_line_order: '',
@@ -493,6 +522,9 @@ export default {
         deep_search: true,
         small_board_single_points_threshold: '',
         small_board_total_points_threshold: '',
+        ai_post_process: '',
+        is_run_recognize_ignore_overdue_jobs: true,
+        big_lines_str: '',
         input_col: '',
         output_col: '',
         output_line_order: '',
@@ -687,6 +719,21 @@ export default {
           trigger: 'change'
         }],
         small_board_total_points_threshold: [{
+          required: true,
+          message: '该项不能为空',
+          trigger: 'change'
+        }],
+        ai_post_process: [{
+          required: true,
+          message: '该项不能为空',
+          trigger: 'change'
+        }],
+        is_run_recognize_ignore_overdue_jobs: [{
+          required: true,
+          message: '该项不能为空',
+          trigger: 'change'
+        }],
+        big_lines_str: [{
           required: true,
           message: '该项不能为空',
           trigger: 'change'
