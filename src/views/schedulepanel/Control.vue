@@ -798,7 +798,9 @@ export default {
       mainUploadName: '获取主板上传文件',
       smallUploadName: '获取小板上传文件',
 
-      saveApsOutPutCountTip: '未推送'
+      saveApsOutPutCountTip: '未推送',
+
+      clickComputeCount: 0 // 点击计算排程的次数
     }
   },
   computed: {
@@ -931,14 +933,17 @@ export default {
     },
     // 关闭计算主板
     handleCloseMain() {
+      this.clickComputeCount = 0
       this.computeMainDialogVisible = false
     },
     // 关闭计算小板
     handleCloseSmall() {
+      this.clickComputeCount = 0
       this.computeSmallDialogVisible = false
     },
     // 关闭计算主板+小板
     handleCloseBoth() {
+      this.clickComputeCount = 0
       this.computeBothDialogVisible = false
     },
     // 主板文件上传钩子
@@ -1208,6 +1213,13 @@ export default {
     },
     // 计算主板前判断是否在跑排程
     beforeComputeMain() {
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
+        })
+        return
+      }
       if (this.isImportMain === false) {
         this.$message({
           type: 'warning',
@@ -1252,6 +1264,7 @@ export default {
     },
     // 开始计算主板排程
     computeScheduleMain() {
+      this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
       if (this.apsMoProgData === '已更新') {
@@ -1319,6 +1332,13 @@ export default {
     },
     // 计算小板前判断是否在跑排程
     beforeComputeSmall() {
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
+        })
+        return
+      }
       if (this.isImportSmall === false) {
         this.$message({
           type: 'warning',
@@ -1356,6 +1376,7 @@ export default {
     },
     // 开始计算小板排程
     computeScheduleSmall() {
+      this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
       if (this.apsMoProgData === '已更新') {
@@ -1480,6 +1501,13 @@ export default {
       })
     },
     beforeComputeBoth() {
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
+        })
+        return
+      }
       if (this.isImportBoth === false) {
         this.$message({
           type: 'warning',
@@ -1516,6 +1544,7 @@ export default {
       })
     },
     computeScheduleBoth() {
+      this.clickComputeCount = 1
       this.listenProgress()
       var is_click_apsMoProgData
       if (this.apsMoProgData === '已更新') {
