@@ -719,9 +719,9 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   DownloadNoProgram, GetLogSelectItem, DownloadHistoryLog, DownloadIdleInfoMain, GetRunFlag, StopTabu,
   GeScheduleRes, StopSchedule, GetApsMtool, CheckData, ExportMainScheduleData, GetApsProgram, DownloadStatisticsMain,
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
-  GetApsMoBaseData, GetApsMoProgData, CheckDataUpload, DownloadUploadFileMain, DownloadUploadFileSmall,
+  GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall,
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
-  DownloadStatisticsSmall, DownloadIdleInfoSmall } from '@/api/schedulepanel/Control'
+  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/schedulepanel/Control'
 export default {
   name: 'Control',
   directives: { elDragDialog },
@@ -973,7 +973,7 @@ export default {
           this.uploadFileNameMain = this.uploadFileListMain[0].name // 更新文件名
           this.uploadFileMain = this.uploadFileListMain[0].raw // 更新文件
         }
-        this.checkDataUpload(this.uploadFileMain, this.uploadFileNameMain)
+        this.checkDataNew(this.uploadFileMain, this.uploadFileNameMain)
       }
     },
     // 小板文件上传钩子
@@ -1003,16 +1003,16 @@ export default {
           this.uploadFileNameSmall = this.uploadFileListSmall[0].name // 更新文件名
           this.uploadFileSmall = this.uploadFileListSmall[0].raw // 更新文件
         }
-        this.checkDataUpload(this.uploadFileSmall, this.uploadFileNameSmall)
+        this.checkDataNew(this.uploadFileSmall, this.uploadFileNameSmall)
       }
     },
     // 检查
-    async checkDataUpload(uploadFile, uploadFileName) {
+    async checkData(uploadFile, uploadFileName) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
       form.append('file', uploadFile)
       form.append('file_name', uploadFileName)
-      await CheckDataUpload(form).then(res => {
+      await CheckData(form).then(res => {
         if (res.type === 'success') {
           this.$alert(res.message, '检查结果', {
             confirmButtonText: '确定',
@@ -1042,13 +1042,14 @@ export default {
         })
       })
     },
-    // 检查
-    async checkData(uploadFile) {
+    // 新版检查
+    async checkDataNew(uploadFile, uploadFileName) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
       form.append('file', uploadFile)
-      await CheckData(form).then(res => {
-        if (res.type === 'success') {
+      form.append('file_name', uploadFileName)
+      await CheckDataNew(form).then(res => {
+        if (res.message_type === 'success') {
           this.$alert(res.message, '检查结果', {
             confirmButtonText: '确定',
             type: 'success'
@@ -1058,11 +1059,13 @@ export default {
             customClass: 'checkAlertBox',
             dangerouslyUseHTMLString: true,
             confirmButtonText: '确定',
-            type: 'warning'
+            type: res.message_type
           })
         }
         if (this.uploadFileNameMain !== '') {
           this.stepNowMain = 1
+        } else if (this.uploadFileListSmall !== '') {
+          this.stepNowSmall = 1
         } else if (this.uploadFileNameMain !== '' && this.uploadFileNameSmall !== '') {
           this.stepNowBoth = 1
         }

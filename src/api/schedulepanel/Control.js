@@ -8,18 +8,19 @@ export function TrainModel(data) {
     data
   })
 }
-// 训练预测模型接口
+// 数据检查
 export function CheckData(data) {
   return request({
-    url: '/preprocess/control/check_input_excel/',
+    url: '/preprocess/control/check_input_excel_upload/',
     method: 'post',
+    timeout: 60 * 60 * 1000,
     data
   })
 }
-// 训练预测模型接口
-export function CheckDataUpload(data) {
+// 新版数据检查
+export function CheckDataNew(data) {
   return request({
-    url: '/preprocess/control/check_input_excel_upload/',
+    url: '/preprocess/control/check_input_excel_new/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
