@@ -1216,17 +1216,17 @@ export default {
     },
     // 计算主板前判断是否在跑排程
     beforeComputeMain() {
-      if (this.clickComputeCount >= 1) {
-        this.$message({
-          type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
-        })
-        return
-      }
       if (this.isImportMain === false) {
         this.$message({
           type: 'warning',
           message: '未导入文件，无法计算排程'
+        })
+        return
+      }
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
         })
         return
       }
@@ -1335,17 +1335,17 @@ export default {
     },
     // 计算小板前判断是否在跑排程
     beforeComputeSmall() {
-      if (this.clickComputeCount >= 1) {
-        this.$message({
-          type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
-        })
-        return
-      }
       if (this.isImportSmall === false) {
         this.$message({
           type: 'warning',
           message: '未导入文件，无法计算排程'
+        })
+        return
+      }
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
         })
         return
       }
@@ -1410,6 +1410,7 @@ export default {
     },
     // 导入排程
     async submitUploadFile(mode) {
+      this.clickComputeCount = 0
       this.loadingInstance = Loading.service(this.importLoading)
       const form = {}
       if (mode === 1) {
@@ -1478,10 +1479,8 @@ export default {
       })
     },
     async submitUploadFileBoth() {
+      this.clickComputeCount = 0
       this.loadingInstance = Loading.service(this.importLoading)
-      // const form = new FormData()
-      // form.append('file_main', this.uploadFileMain) // 主板
-      // form.append('file_small', this.uploadFileSmall) // 小板
       const form = {
         'file_main': this.uploadFileNameMain,
         'file_small': this.uploadFileNameSmall
@@ -1504,17 +1503,17 @@ export default {
       })
     },
     beforeComputeBoth() {
-      if (this.clickComputeCount >= 1) {
-        this.$message({
-          type: 'warning',
-          message: '已开始计算排程，请勿重复点击'
-        })
-        return
-      }
       if (this.isImportBoth === false) {
         this.$message({
           type: 'warning',
           message: '未导入文件，无法计算排程'
+        })
+        return
+      }
+      if (this.clickComputeCount >= 1) {
+        this.$message({
+          type: 'warning',
+          message: '已开始计算排程，请勿重复点击'
         })
         return
       }
