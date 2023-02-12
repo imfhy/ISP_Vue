@@ -531,38 +531,44 @@ export default {
       window.luckysheet.setRangeValue(this.cutRangeData) // 将数据插入选取
     },
     // 导入后直接推送排程（不通过分析）
-    importPushSchedule() {
-      const tip = '数据未检查或检查未通过，无法导入推送！' + `<br/>` + '注意：检查无误后才可以导入推送排程！' + `<br/>` + '（如果检查出现错误，请在原Excel文件中修改后重新上传）'
-      if (this.checkSuccess === false) {
-        this.$alert(tip, '警告', {
-          confirmButtonText: '确定',
-          dangerouslyUseHTMLString: true,
-          customClass: 'checkAlertBox',
-          type: 'warning'
-        })
-        return
-      }
-      if (this.checkCount > 1) {
-        const tip2 = '未在原Excel文件中修改错误，无法导入推送！' + `<br/>` + '提示：请在原Excel文件修改错误并重新上传后再次检查！'
-        this.$alert(tip2, '警告', {
-          confirmButtonText: '确定',
-          dangerouslyUseHTMLString: true,
-          customClass: 'checkAlertBox',
-          type: 'warning'
-        })
-        return
-      }
-      this.$confirm('确定要导入排程并进行推送？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.continueImportPushSchedule()
-        // this.pushDialogVisible = true
-      }).catch(() => {
+    async importPushSchedule() {
+      if (this.uploadFileName === '') {
         this.$message({
-          type: 'info',
-          message: '取消导入'
+          type: 'warning',
+          message: '未上传文件'
+        })
+        return
+      }
+      const checkLoading = {
+        text: '数据检查中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(checkLoading)
+      const form = new FormData()
+      form.append('file', this.uploadFile)
+      await CheckData(form).then(res => {
+        this.showAlertMessage(res.data_list, res.message_type)
+        this.$confirm(res.message, '检查结果', {
+          customClass: 'checkAlertBox',
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '进行分析排程',
+          cancelButtonText: '取消',
+          type: res.message_type
+        }).then(() => {
+          this.continueImportPushSchedule()
+          // this.pushDialogVisible = true
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消分析'
+          })
+        })
+        this.loadingInstance.close()
+      }).catch(err => {
+        this.loadingInstance.close() // 清除动画
+        this.$alert('检查出现错误：' + err, '错误', {
+          confirmButtonText: '确定',
+          type: 'error'
         })
       })
     },
@@ -862,8 +868,24 @@ export default {
     },
     // 开始分析
     beginAnalysis() {
-      if (this.checkSuccess === false) {
-        this.$confirm('数据未检查，确定要开始分析排程?', '提示', {
+      // 表格为空
+      if (!window.luckysheet.getCellValue(0, 0)) {
+        this.$message({
+          type: 'warning',
+          message: '未检测到数据，无法分析排程'
+        })
+        return
+      }
+      // 上传格式错误
+      if (window.luckysheet.getAllSheets()[0].name !== '今日排程' && window.luckysheet.getAllSheets()[1].name !== '未上排程') {
+        this.$message({
+          type: 'warning',
+          message: '排程表格Sheet命名错误，无法分析排程'
+        })
+        return
+      }
+      if (this.alertType !== 'success') {
+        this.$confirm('数据检查未通过，确定要开始分析排程?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -1422,13 +1444,13 @@ export default {
       if (window.luckysheet.getAllSheets()[0].name !== '今日排程' && window.luckysheet.getAllSheets()[1].name !== '未上排程') {
         this.$message({
           type: 'warning',
-          message: '请检查上传的Sheet命名是否正确'
+          message: '排程表格Sheet命名错误，无法进行检查'
         })
-        this.showAlertMessage(['请检查上传的Sheet命名是否正确'], 'error')
+        this.showAlertMessage(['排程表格Sheet命名错误，无法进行检查'], 'error')
         return
       }
       const checkLoading = {
-        text: '拼命检查中...',
+        text: '数据检查中...',
         background: 'rgba(0, 0, 0, 0.5)'
       }
       this.loadingInstance = Loading.service(checkLoading)
