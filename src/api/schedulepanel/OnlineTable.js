@@ -3,8 +3,9 @@ import request from '../../utils/request'
 // 检查表格
 export function CheckData(data) {
   return request({
-    url: '/preprocess/excel/analysis/',
+    url: '/preprocess/onlinetable/check_excel_data/',
     method: 'post',
+    timeout: 10 * 60 * 1000,
     data
   })
 }

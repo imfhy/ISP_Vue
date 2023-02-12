@@ -973,7 +973,7 @@ export default {
           this.uploadFileNameMain = this.uploadFileListMain[0].name // 更新文件名
           this.uploadFileMain = this.uploadFileListMain[0].raw // 更新文件
         }
-        this.checkDataNew(this.uploadFileMain, this.uploadFileNameMain)
+        this.checkDataBackend(this.uploadFileMain, this.uploadFileNameMain)
       }
     },
     // 小板文件上传钩子
@@ -1003,7 +1003,7 @@ export default {
           this.uploadFileNameSmall = this.uploadFileListSmall[0].name // 更新文件名
           this.uploadFileSmall = this.uploadFileListSmall[0].raw // 更新文件
         }
-        this.checkDataNew(this.uploadFileSmall, this.uploadFileNameSmall)
+        this.checkDataBackend(this.uploadFileSmall, this.uploadFileNameSmall)
       }
     },
     // 检查
@@ -1043,7 +1043,7 @@ export default {
       })
     },
     // 新版检查
-    async checkDataNew(uploadFile, uploadFileName) {
+    async checkDataBackend(uploadFile, uploadFileName) {
       this.loadingInstance = Loading.service(this.checkLoading)
       const form = new FormData()
       form.append('file', uploadFile)
@@ -2355,6 +2355,8 @@ export default {
 
 .checkAlertBox{
   width: 46%;
+  word-break: break-all !important;
+  overflow: auto;
 }
 </style>
 
