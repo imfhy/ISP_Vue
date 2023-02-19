@@ -138,6 +138,15 @@ const longconfigRouter = {
         title: '小板特殊机种表',
         roles: ['admin', 'common']
       }
+    },
+    {
+      path: 'interfaceconfig',
+      component: () => import('@/views/longconfig/InterfaceConfig'),
+      name: 'InterfaceConfig',
+      meta: {
+        title: '接口配置表',
+        roles: ['admin', 'common']
+      }
     }
   ]
 }
