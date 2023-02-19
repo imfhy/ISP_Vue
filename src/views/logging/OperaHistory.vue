@@ -95,6 +95,7 @@
             <el-tag v-else-if="scope.row.action_type === 'export'" size="small" type="info">导出</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'run'" size="small" type="warning">运行</el-tag>
             <el-tag v-else-if="scope.row.action_type === 'backup'" size="small" type="success">备份</el-tag>
+            <el-tag v-else-if="scope.row.action_type === 'api'" size="small">接口</el-tag>
             <el-tag v-else size="small" type="info">其它</el-tag>
           </template>
         </el-table-column>
@@ -150,6 +151,9 @@ export default {
       }, {
         value: 'run',
         label: '运行'
+      }, {
+        value: 'api',
+        label: '接口'
       }, {
         value: 'other',
         label: '其它'
