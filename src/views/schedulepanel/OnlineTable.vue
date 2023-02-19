@@ -617,7 +617,10 @@ export default {
     },
     post_unscheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      SmtUnscheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      SmtUnscheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -641,7 +644,10 @@ export default {
     },
     post_pre_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      SmtPrescheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      SmtPrescheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -665,7 +671,10 @@ export default {
     },
     post_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      SmtScheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      SmtScheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -689,7 +698,10 @@ export default {
     },
     post_ai_unscheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      AiUnscheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      AiUnscheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -713,7 +725,10 @@ export default {
     },
     post_ai_pre_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      AiPrescheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      AiPrescheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -737,7 +752,10 @@ export default {
     },
     post_ai_scheduled() {
       this.loadingInstance = Loading.service(this.pushLoading)
-      AiScheduled().then(res => {
+      const form = {
+        'user_name': this.name
+      }
+      AiScheduled(form).then(res => {
         if (res.code === 20000) {
           this.$alert(res.message, '推送排程成功', {
             confirmButtonText: '确定',
@@ -773,7 +791,10 @@ export default {
           background: 'rgba(0, 0, 0, 0.5)'
         } // 导入排程动画
         this.loadingInstance = Loading.service(pushLoading)
-        SaveApiCustweekSelfcreate().then(res => {
+        const form = {
+          'user_name': this.name
+        }
+        SaveApiCustweekSelfcreate(form).then(res => {
           if (res.code === 20000) {
             this.$alert(res.message, '推送量化结果成功', {
               confirmButtonText: '确定',

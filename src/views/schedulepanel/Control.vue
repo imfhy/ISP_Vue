@@ -2279,7 +2279,10 @@ export default {
           background: 'rgba(0, 0, 0, 0.5)'
         } // 导入排程动画
         this.loadingInstance = Loading.service(pushLoading)
-        SaveApsOutPutCount().then(res => {
+        const form = {
+          'user_name': this.name
+        }
+        SaveApsOutPutCount(form).then(res => {
           if (res.code === 20000) {
             this.$alert(res.message, '推送量化结果成功', {
               confirmButtonText: '确定',
