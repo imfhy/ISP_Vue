@@ -380,9 +380,6 @@ export default {
           trigger: 'change'
         }],
         paired_process: [{
-          required: true,
-          message: '配对制程名不能为空',
-          trigger: 'blur'
         }],
         grouping_factor_day: [{
           required: true,
