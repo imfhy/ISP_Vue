@@ -2,7 +2,7 @@
   <div id="main">
     <el-card>
       <div>
-        <el-descriptions class="margin-top" title="排程配置" :column="4" :size="size" :label-style="{'font-weight':'bold'}" border>
+        <el-descriptions class="margin-top" title="排程配置" :column="4" :label-style="{'font-weight':'bold'}" border>
           <template slot="extra">
             <el-tooltip class="item" effect="dark" content="刷新表格" placement="top">
               <el-button
