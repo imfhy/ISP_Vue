@@ -214,7 +214,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/Division'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/outsource/otherdata/Division'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'Division',
@@ -679,7 +679,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/Division.scss';
+  @import '../../../assets/css/outsource/otherdata/Division.scss';
 </style>
 <style>
 .btnDanger{

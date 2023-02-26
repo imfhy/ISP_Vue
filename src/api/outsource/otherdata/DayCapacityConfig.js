@@ -1,4 +1,4 @@
-import request from '../../utils/request'
+import request from '../../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({

@@ -92,6 +92,51 @@ const outsourceRouter = {
           }
         },
         {
+          path: 'customer',
+          component: () => import('@/views/outsource/otherdata/Customer'),
+          name: 'Customer',
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
+        },
+        {
+          path: 'daycapacityconfig',
+          component: () => import('@/views/outsource/otherdata/DayCapacityConfig'),
+          name: 'DayCapacityConfig',
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
+        },
+        {
+          path: 'division',
+          component: () => import('@/views/outsource/otherdata/Division'),
+          name: 'Division',
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
+        },
+        {
+          path: 'oldOrder',
+          component: () => import('@/views/outsource/otherdata/OldOrder'),
+          name: 'OldOrder',
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
+        },
+        {
+          path: 'outputfiles',
+          component: () => import('@/views/outsource/otherdata/OutputFiles'),
+          name: 'OutputFiles',
+          meta: {
+            title: '业务排程明细',
+            roles: ['admin', 'common']
+          }
+        },
+        {
           path: 'summary',
           component: () => import('@/views/outsource/otherdata/Summary'),
           name: 'Summary',
