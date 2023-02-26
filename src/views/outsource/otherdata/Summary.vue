@@ -51,9 +51,9 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="pack_line" label="包装线" sortable />
-          <el-table-column prop="holiday_begin" label="放假开始时间" sortable />
-          <el-table-column prop="holiday_end" label="放假结束时间" sortable />
+          <el-table-column prop="model_name" label="AI/SMT组件" sortable />
+          <el-table-column prop="total_count" label="总数量" sortable />
+          <el-table-column prop="factory" label="工厂" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -96,18 +96,18 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.pack_line" prop="pack_line" label="包装线">
-              <el-input v-model="model.pack_line" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.model_name" prop="model_name" label="AI/SMT组件">
+              <el-input v-model="model.model_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="放假开始时间">
+            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="总数量">
               <el-date-picker v-model="model.holiday_begin" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_end" prop="holiday_end" label="放假结束时间">
-              <el-date-picker v-model="model.holiday_end" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.factory" prop="factory" label="工厂">
+              <el-date-picker v-model="model.factory" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,9 +150,9 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="pack_line" label="包装线" />
-        <el-table-column prop="holiday_begin" label="放假开始时间" />
-        <el-table-column prop="holiday_end" label="放假结束时间" />
+        <el-table-column prop="model_name" label="AI/SMT组件" />
+        <el-table-column prop="holiday_begin" label="总数量" />
+        <el-table-column prop="factory" label="工厂" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -230,13 +230,13 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          pack_line: 'CL01',
+          model_name: 'CL01',
           holiday_begin: '2022-10-01',
-          holiday_end: '2022-10-02'
+          factory: '2022-10-02'
         }, {
-          pack_line: '(必填)',
+          model_name: '(必填)',
           holiday_begin: '(必填)',
-          holiday_end: '(必填)'
+          factory: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -258,31 +258,31 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        pack_line: '',
+        model_name: '',
         holiday_begin: '',
-        holiday_end: ''
+        factory: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        pack_line: '',
+        model_name: '',
         holiday_begin: '',
-        holiday_end: ''
+        factory: ''
       },
       rules: {
-        pack_line: [{
+        model_name: [{
           required: true,
-          message: '包装线不能为空',
+          message: 'AI/SMT组件不能为空',
           trigger: 'blur'
         }],
         holiday_begin: [{
           required: true,
-          message: '放假开始时间不能为空',
+          message: '总数量不能为空',
           trigger: 'blur'
         }],
-        holiday_end: [{
+        factory: [{
           required: true,
-          message: '放假结束时间不能为空',
+          message: '工厂不能为空',
           trigger: 'blur'
         }]
       },
@@ -549,7 +549,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['pack_line'] = row.pack_line
+        data['model_name'] = row.model_name
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
