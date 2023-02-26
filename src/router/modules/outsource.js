@@ -96,7 +96,7 @@ const outsourceRouter = {
           component: () => import('@/views/outsource/otherdata/Customer'),
           name: 'Customer',
           meta: {
-            title: '业务排程明细',
+            title: '客户表',
             roles: ['admin', 'common']
           }
         },
@@ -105,7 +105,7 @@ const outsourceRouter = {
           component: () => import('@/views/outsource/otherdata/DayCapacityConfig'),
           name: 'DayCapacityConfig',
           meta: {
-            title: '业务排程明细',
+            title: '每日产能配置',
             roles: ['admin', 'common']
           }
         },
@@ -114,7 +114,7 @@ const outsourceRouter = {
           component: () => import('@/views/outsource/otherdata/Division'),
           name: 'Division',
           meta: {
-            title: '业务排程明细',
+            title: '分工单格式',
             roles: ['admin', 'common']
           }
         },
@@ -123,7 +123,7 @@ const outsourceRouter = {
           component: () => import('@/views/outsource/otherdata/OldOrder'),
           name: 'OldOrder',
           meta: {
-            title: '业务排程明细',
+            title: '旧工单',
             roles: ['admin', 'common']
           }
         },
@@ -132,7 +132,7 @@ const outsourceRouter = {
           component: () => import('@/views/outsource/otherdata/OutputFiles'),
           name: 'OutputFiles',
           meta: {
-            title: '业务排程明细',
+            title: '输出文件',
             roles: ['admin', 'common']
           }
         },
