@@ -51,9 +51,18 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="pack_line" label="包装线" sortable />
-          <el-table-column prop="holiday_begin" label="放假开始时间" sortable />
-          <el-table-column prop="holiday_end" label="放假结束时间" sortable />
+          <el-table-column prop="component_type" label="组件类型" sortable />
+          <el-table-column prop="old_order_type" label="旧工单类型" sortable />
+          <el-table-column prop="demand_date" label="需求日期" sortable />
+          <el-table-column prop="job_quantity" label="工单量" />
+          <el-table-column prop="remain_count" label="剩余数量" />
+          <el-table-column prop="remain_points" label="剩余点数" />
+          <el-table-column prop="total_points" label="总点数" />
+          <el-table-column prop="board_no" label="板号" />
+          <el-table-column prop="mesh_plate_status" label="网板状态" />
+          <el-table-column prop="mesh_plate_count" label="网板数量" />
+          <el-table-column prop="process" label="制程" />
+          <el-table-column prop="manufacturer" label="分配厂商" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -96,18 +105,18 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.pack_line" prop="pack_line" label="包装线">
-              <el-input v-model="model.pack_line" placeholder="请输入" clearable />
+            <el-form-item :rules="rules.component_type" prop="component_type" label="组件类型">
+              <el-input v-model="model.component_type" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="放假开始时间">
-              <el-date-picker v-model="model.holiday_begin" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.old_order_type" prop="old_order_type" label="旧工单类型">
+              <el-date-picker v-model="model.old_order_type" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_end" prop="holiday_end" label="放假结束时间">
-              <el-date-picker v-model="model.holiday_end" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.demand_date" prop="demand_date" label="需求日期">
+              <el-date-picker v-model="model.demand_date" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -150,9 +159,18 @@
         :cell-style="setCellColor"
         border
       >
-        <el-table-column prop="pack_line" label="包装线" />
-        <el-table-column prop="holiday_begin" label="放假开始时间" />
-        <el-table-column prop="holiday_end" label="放假结束时间" />
+        <el-table-column prop="component_type" label="组件类型" />
+        <el-table-column prop="old_order_type" label="旧工单类型" />
+        <el-table-column prop="demand_date" label="需求日期" />
+        <el-table-column prop="job_quantity" label="工单量" />
+        <el-table-column prop="remain_count" label="剩余数量" />
+        <el-table-column prop="remain_points" label="剩余点数" />
+        <el-table-column prop="total_points" label="总点数" />
+        <el-table-column prop="board_no" label="板号" />
+        <el-table-column prop="mesh_plate_status" label="网板状态" />
+        <el-table-column prop="mesh_plate_count" label="网板数量" />
+        <el-table-column prop="process" label="制程" />
+        <el-table-column prop="manufacturer" label="分配厂商" />
       </el-table>
       <el-row>
         <el-col :span="8">
@@ -230,13 +248,33 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          pack_line: 'CL01',
-          holiday_begin: '2022-10-01',
-          holiday_end: '2022-10-02'
+          component_type: '',
+          old_order_type: '',
+          demand_date: '',
+          model_name: '',
+          job_quantity: '',
+          remain_count: '',
+          remain_points: '',
+          total_points: '',
+          board_no: '',
+          mesh_plate_status: '',
+          mesh_plate_count: '',
+          process: '',
+          manufacturer: ''
         }, {
-          pack_line: '(必填)',
-          holiday_begin: '(必填)',
-          holiday_end: '(必填)'
+          component_type: '(必填)',
+          old_order_type: '(必填)',
+          demand_date: '(必填)',
+          model_name: '',
+          job_quantity: '',
+          remain_count: '',
+          remain_points: '',
+          total_points: '',
+          board_no: '',
+          mesh_plate_status: '',
+          mesh_plate_count: '',
+          process: '',
+          manufacturer: ''
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -258,31 +296,51 @@ export default {
       forms: ['$form'],
       model: {
         id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
+        component_type: '',
+        old_order_type: '',
+        demand_date: '',
+        model_name: '',
+        job_quantity: '',
+        remain_count: '',
+        remain_points: '',
+        total_points: '',
+        board_no: '',
+        mesh_plate_status: '',
+        mesh_plate_count: '',
+        process: '',
+        manufacturer: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
-        pack_line: '',
-        holiday_begin: '',
-        holiday_end: ''
+        component_type: '',
+        old_order_type: '',
+        demand_date: '',
+        model_name: '',
+        job_quantity: '',
+        remain_count: '',
+        remain_points: '',
+        total_points: '',
+        board_no: '',
+        mesh_plate_status: '',
+        mesh_plate_count: '',
+        process: '',
+        manufacturer: ''
       },
       rules: {
-        pack_line: [{
+        component_type: [{
           required: true,
-          message: '包装线不能为空',
+          message: '组件类型不能为空',
           trigger: 'blur'
         }],
-        holiday_begin: [{
+        old_order_type: [{
           required: true,
-          message: '放假开始时间不能为空',
+          message: '旧工单类型不能为空',
           trigger: 'blur'
         }],
-        holiday_end: [{
+        demand_date: [{
           required: true,
-          message: '放假结束时间不能为空',
+          message: '需求日期不能为空',
           trigger: 'blur'
         }]
       },
@@ -549,7 +607,7 @@ export default {
       }).then(() => {
         const data = {}
         data['id'] = row.id
-        data['pack_line'] = row.pack_line
+        data['component_type'] = row.component_type
         data['user_name'] = this.name
         HandleDelete(data).then(res => {
           if (res.code === 20000) {
