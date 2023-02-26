@@ -976,7 +976,6 @@ export default {
       this.listenProgress()
       this.stepNow = 2
       AnalysisExcel(form_data).then(res => {
-        console.log('analysis done')
         this.isAnalysis = true // 分析完成
       }).catch(err => {
         this.$alert(err, '错误', {
@@ -1478,19 +1477,20 @@ export default {
       const wb = this.getSheetJs(false) // luckysheet获取sheet，并且转化为SheetJS的格式
       const blob = this.workbook2blob(wb) // SheetJS转化为文件流
       const form = new FormData()
+      form.append('file_name', this.uploadFileName)
       form.append('file', blob)
       await CheckData(form).then(res => {
-        if (res.message_type === 'warning') {
+        if (res.message_type === 'success') {
+          this.$alert(res.message, '检查结果', {
+            confirmButtonText: '确定',
+            type: 'success'
+          })
+        } else {
           this.$alert(res.message, '检查结果', {
             customClass: 'checkAlertBox',
             dangerouslyUseHTMLString: true,
             confirmButtonText: '确定',
-            type: 'warning'
-          })
-        } else {
-          this.$alert(res.message, '检查结果', {
-            confirmButtonText: '确定',
-            type: 'success'
+            type: res.message_type
           })
         }
         this.showAlertMessage(res.data_list, res.message_type)
