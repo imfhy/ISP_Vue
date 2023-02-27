@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import outsourceRouter from './modules/outsource'
+import outsourceBaseDataRouter from './modules/outsource_basedata'
 import dayconfigRouter from './modules/dayconfig'
 import longconfigRouter from './modules/longconfig'
 import predictRouter from './modules/predict'
@@ -134,7 +134,7 @@ export const asyncRoutes = [
   dayconfigRouter,
   longconfigRouter,
   predictRouter,
-  outsourceRouter,
+  outsourceBaseDataRouter,
 
   {
     path: '/permission',
