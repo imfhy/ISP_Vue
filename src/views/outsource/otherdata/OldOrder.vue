@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -51,9 +51,9 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="component_type" label="组件类型" sortable />
-          <el-table-column prop="old_order_type" label="旧工单类型" sortable />
-          <el-table-column prop="demand_date" label="需求日期" sortable />
+          <el-table-column prop="component_type" label="组件类型" />
+          <el-table-column prop="old_order_type" label="旧工单类型" />
+          <el-table-column prop="demand_date" label="需求日期" />
           <el-table-column prop="job_quantity" label="工单量" />
           <el-table-column prop="remain_count" label="剩余数量" />
           <el-table-column prop="remain_points" label="剩余点数" />
@@ -111,12 +111,68 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.old_order_type" prop="old_order_type" label="旧工单类型">
-              <el-date-picker v-model="model.old_order_type" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.old_order_type" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.demand_date" prop="demand_date" label="需求日期">
-              <el-date-picker v-model="model.demand_date" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-date-picker v-model="model.demand_date" placeholder="请选择" value-format="yyyy-MM-dd" format="yyyy-MM-dd" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.model_name" prop="model_name" label="AI/SMT组件">
+              <el-input v-model="model.model_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.job_quantity" prop="job_quantity" label="工单量">
+              <el-input-number v-model="model.job_quantity" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.remain_count" prop="remain_count" label="剩余数量">
+              <el-input-number v-model="model.remain_count" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.remain_points" prop="remain_points" label="剩余点数">
+              <el-input-number v-model="model.remain_points" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.total_points" prop="total_points" label="总点数">
+              <el-input-number v-model="model.total_points" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.board_no" prop="board_no" label="板号">
+              <el-input v-model="model.board_no" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.mesh_plate_status" prop="mesh_plate_status" label="网板状态">
+              <el-input v-model="model.mesh_plate_status" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.mesh_plate_count" prop="mesh_plate_count" label="网板数量">
+              <el-input-number v-model="model.mesh_plate_count" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.process" prop="process" label="制程">
+              <el-input v-model="model.process" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.manufacturer" prop="manufacturer" label="分配厂商">
+              <el-input v-model="model.manufacturer" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -300,13 +356,13 @@ export default {
         old_order_type: '',
         demand_date: '',
         model_name: '',
-        job_quantity: '',
-        remain_count: '',
-        remain_points: '',
-        total_points: '',
+        job_quantity: 0,
+        remain_count: 0,
+        remain_points: 0,
+        total_points: 0,
         board_no: '',
         mesh_plate_status: '',
-        mesh_plate_count: '',
+        mesh_plate_count: 0,
         process: '',
         manufacturer: ''
       },
@@ -317,13 +373,13 @@ export default {
         old_order_type: '',
         demand_date: '',
         model_name: '',
-        job_quantity: '',
-        remain_count: '',
-        remain_points: '',
-        total_points: '',
+        job_quantity: 0,
+        remain_count: 0,
+        remain_points: 0,
+        total_points: 0,
         board_no: '',
         mesh_plate_status: '',
-        mesh_plate_count: '',
+        mesh_plate_count: 0,
         process: '',
         manufacturer: ''
       },
@@ -338,9 +394,55 @@ export default {
           message: '旧工单类型不能为空',
           trigger: 'blur'
         }],
-        demand_date: [{
+        demand_date: [],
+        model_name: [{
           required: true,
-          message: '需求日期不能为空',
+          message: 'AI/SMT组件不能为空',
+          trigger: 'blur'
+        }],
+        job_quantity: [{
+          required: true,
+          message: '工单量不能为空',
+          trigger: 'blur'
+        }],
+        remain_count: [{
+          required: true,
+          message: '剩余数量不能为空',
+          trigger: 'blur'
+        }],
+        remain_points: [{
+          required: true,
+          message: '剩余点数不能为空',
+          trigger: 'blur'
+        }],
+        total_points: [{
+          required: true,
+          message: '总点数不能为空',
+          trigger: 'blur'
+        }],
+        board_no: [{
+          required: true,
+          message: '板号不能为空',
+          trigger: 'blur'
+        }],
+        mesh_plate_status: [{
+          required: true,
+          message: '网板状态不能为空',
+          trigger: 'blur'
+        }],
+        mesh_plate_count: [{
+          required: true,
+          message: '制程不能为空',
+          trigger: 'blur'
+        }],
+        process: [{
+          required: true,
+          message: '制程不能为空',
+          trigger: 'blur'
+        }],
+        manufacturer: [{
+          required: true,
+          message: '分配厂商不能为空',
           trigger: 'blur'
         }]
       },
@@ -595,6 +697,16 @@ export default {
         this.model[key] = ''
         this.modelOriginal[key] = ''
       }
+      this.model['job_quantity'] = 0
+      this.model['remain_count'] = 0
+      this.model['remain_points'] = 0
+      this.model['total_points'] = 0
+      this.model['mesh_plate_count'] = 0
+      this.modelOriginal['job_quantity'] = 0
+      this.modelOriginal['remain_count'] = 0
+      this.modelOriginal['remain_points'] = 0
+      this.modelOriginal['total_points'] = 0
+      this.modelOriginal['mesh_plate_count'] = 0
       this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
     },
     // 表格中删除数据

@@ -41,7 +41,7 @@ const outsourceConstraintsRouter = {
       }
     },
     {
-      path: 'oldOrder',
+      path: 'oldorder',
       component: () => import('@/views/outsource/otherdata/OldOrder'),
       name: 'OldOrder',
       meta: {

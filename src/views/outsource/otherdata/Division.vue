@@ -316,16 +316,17 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          run_mode: 0,
+          id: '',
+          run_mode: '',
           component_type: '',
           job_no: '',
-          job_quantity: '',
+          job_quantity: 0,
           process: '',
           workmanship: '',
           top_points: 0,
           bottom_points: 0,
           program_line_type: '',
-          connect_plates: '',
+          connect_plates: 0,
           priority_manufacturer: '',
           secondly_manufacturer: '',
           points: 0,
@@ -333,16 +334,17 @@ export default {
           factory_type: '',
           manufacturer_status: ''
         }, {
-          run_mode: 0,
+          id: '',
+          run_mode: '',
           component_type: '',
           job_no: '',
-          job_quantity: '',
+          job_quantity: 0,
           process: '',
           workmanship: '',
           top_points: 0,
           bottom_points: 0,
           program_line_type: '',
-          connect_plates: '',
+          connect_plates: 0,
           priority_manufacturer: '',
           secondly_manufacturer: '',
           points: 0,
@@ -373,16 +375,16 @@ export default {
         run_mode: '',
         component_type: '',
         job_no: '',
-        job_quantity: '',
+        job_quantity: 0,
         process: '',
         workmanship: '',
-        top_points: '',
-        bottom_points: '',
+        top_points: 0,
+        bottom_points: 0,
         program_line_type: '',
-        connect_plates: '',
+        connect_plates: 0,
         priority_manufacturer: '',
         secondly_manufacturer: '',
-        points: '',
+        points: 0,
         order_type: '',
         factory_type: '',
         manufacturer_status: ''
@@ -393,16 +395,16 @@ export default {
         run_mode: '',
         component_type: '',
         job_no: '',
-        job_quantity: '',
+        job_quantity: 0,
         process: '',
         workmanship: '',
-        top_points: '',
-        bottom_points: '',
+        top_points: 0,
+        bottom_points: 0,
         program_line_type: '',
-        connect_plates: '',
+        connect_plates: 0,
         priority_manufacturer: '',
         secondly_manufacturer: '',
-        points: '',
+        points: 0,
         order_type: '',
         factory_type: '',
         manufacturer_status: ''
@@ -601,6 +603,16 @@ export default {
                 this.model[key] = ''
                 this.modelOriginal[key] = ''
               }
+              this.model['job_quantity'] = 0
+              this.model['top_points'] = 0
+              this.model['bottom_points'] = 0
+              this.model['connect_plates'] = 0
+              this.model['points'] = 0
+              this.modelOriginal['job_quantity'] = 0
+              this.modelOriginal['top_points'] = 0
+              this.modelOriginal['bottom_points'] = 0
+              this.modelOriginal['connect_plates'] = 0
+              this.modelOriginal['points'] = 0
               this.$refs['$form'].clearValidate() // 清除表单验证的文字提示信息
               this.refreshTableData(true)
             }
