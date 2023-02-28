@@ -723,7 +723,7 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
   DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/schedulepanel/Outsource'
 export default {
-  name: 'Control',
+  name: 'Outsource',
   directives: { elDragDialog },
   data() {
     return {

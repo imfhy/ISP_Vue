@@ -21,16 +21,16 @@ const outsourceBaseDataRouter = {
         title: '客户表',
         roles: ['admin', 'common']
       }
+    },
+    {
+      path: 'factoryType',
+      component: () => import('@/views/outsource/basedata/FactoryType'),
+      name: 'FactoryType',
+      meta: {
+        title: '厂别表',
+        roles: ['admin', 'common']
+      }
     }
-    // {
-    //   path: 'factoryType',
-    //   component: () => import('@/views/outsource/basedata/FactoryType'),
-    //   name: 'FactoryType',
-    //   meta: {
-    //     title: '厂别表',
-    //     roles: ['admin', 'common']
-    //   }
-    // }
   ]
 }
 

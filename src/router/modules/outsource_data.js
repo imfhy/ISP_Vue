@@ -1,10 +1,10 @@
 // 外包相关
 import Layout from '@/layout'
-// 外包约束数据
-const outsourceConstraintsRouter = {
+// 外包数据
+const outsourceDataRouter = {
   path: '/outsourcedata',
   component: Layout,
-  redirect: '/outsourcedata/ledctdata',
+  redirect: '/outsourcedata/schedule',
   alwaysShow: true,
   name: 'OutsourceData',
   meta: {
@@ -69,4 +69,4 @@ const outsourceConstraintsRouter = {
     }
   ]
 }
-export default outsourceConstraintsRouter
+export default outsourceDataRouter
