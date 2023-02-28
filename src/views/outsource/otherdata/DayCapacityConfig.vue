@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -96,18 +96,18 @@
       <el-form ref="$form" :model="model" label-position="left" size="small">
         <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.component_type" prop="component_type" label="包装线">
+            <el-form-item :rules="rules.component_type" prop="component_type" label="组件类型">
               <el-input v-model="model.component_type" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.date_info" prop="date_info" label="放假开始时间">
+            <el-form-item :rules="rules.date_info" prop="date_info" label="日期">
               <el-date-picker v-model="model.date_info" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.capacity" prop="capacity" label="放假结束时间">
-              <el-date-picker v-model="model.capacity" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.capacity" prop="capacity" label="产能">
+              <el-input-number v-model="model.capacity" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -272,17 +272,17 @@ export default {
       rules: {
         component_type: [{
           required: true,
-          message: '包装线不能为空',
+          message: '组件类型不能为空',
           trigger: 'blur'
         }],
         date_info: [{
           required: true,
-          message: '放假开始时间不能为空',
+          message: '日期不能为空',
           trigger: 'blur'
         }],
         capacity: [{
           required: true,
-          message: '放假结束时间不能为空',
+          message: '产能不能为空',
           trigger: 'blur'
         }]
       },
