@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -51,12 +51,12 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="file_category" label="文件类别" sortable />
-          <el-table-column prop="file_name" label="文件名" sortable />
-          <el-table-column prop="file_type" label="文件类型" sortable />
-          <el-table-column prop="file_size" label="文件大小" />
+          <el-table-column prop="file_category" width="110" label="文件类别" sortable />
+          <el-table-column prop="file_name" width="200" label="文件名" />
+          <el-table-column prop="file_type" width="100" label="文件类型" />
+          <el-table-column prop="file_size" width="110" label="文件大小" sortable />
           <el-table-column prop="file_path" label="文件路径" />
-          <el-table-column prop="create_time" label="创建时间" />
+          <el-table-column prop="create_time" width="200" label="创建时间" sortable />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -105,12 +105,29 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.file_name" prop="file_name" label="文件名">
-              <el-date-picker v-model="model.file_name" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.file_name" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.file_type" prop="file_type" label="文件类型">
-              <el-date-picker v-model="model.file_type" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.file_type" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.file_size" prop="file_size" label="文件大小">
+              <el-input v-model="model.file_size" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.file_path" prop="file_path" label="文件路径">
+              <el-input v-model="model.file_path" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.create_time" prop="create_time" label="创建时间">
+              <el-date-picker v-model="model.create_time" type="datetime" placeholder="请选择" format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -302,6 +319,21 @@ export default {
           required: true,
           message: '文件类型不能为空',
           trigger: 'blur'
+        }],
+        file_size: [{
+          required: true,
+          message: '文件大小不能为空',
+          trigger: 'blur'
+        }],
+        file_path: [{
+          required: true,
+          message: '文件路径不能为空',
+          trigger: 'blur'
+        }],
+        create_time: [{
+          required: true,
+          message: '创建时间不能为空',
+          trigger: 'change'
         }]
       },
       line_name_data: LineOptions, // 维护线别
