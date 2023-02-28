@@ -107,7 +107,16 @@ export const asyncRoutes = [
         component: () => import('@/views/schedulepanel/Control'),
         name: 'Control',
         meta: {
-          title: '控制面板',
+          title: '主板小板排程',
+          roles: ['admin', 'common']
+        }
+      },
+      {
+        path: 'config',
+        component: () => import('@/views/schedulepanel/Config'),
+        name: 'Config',
+        meta: {
+          title: '排程配置',
           roles: ['admin', 'common']
         }
       },
@@ -121,11 +130,11 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'config',
-        component: () => import('@/views/schedulepanel/Config'),
-        name: 'Config',
+        path: 'outsource',
+        component: () => import('@/views/schedulepanel/Outsource'),
+        name: 'Outsource',
         meta: {
-          title: '排程配置',
+          title: '外包排程',
           roles: ['admin', 'common']
         }
       }

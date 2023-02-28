@@ -1,0 +1,119 @@
+.card-info{
+  margin:16px;
+  height: 126px;
+}
+.card-progress{
+  margin-left:16px;
+  height: 400px;
+}
+.control{
+  height: 400px;
+}
+.my-icon-date{
+  font-size: 50px;
+  color: #02bafd;
+  line-height: 80px;
+  float: right;
+}
+.my-icon-timer{
+  font-size: 50px;
+  color: #02bafd;
+  line-height: 80px;
+  float: right;
+}
+.my-table{
+  float: right;
+}
+.my-progress{
+  margin-top: 20px;
+}
+.card-gantt{
+  margin: 16px;
+  height: 400px;
+}
+.box-button{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card-panel-description {
+  float: left;
+  margin-top: 12px;
+  margin-left: 20px;
+}
+.card-panel-text-upper {
+  line-height: 18px;
+  color: black;
+  font-size: 20px;
+  font-weight: 18px;
+  margin-bottom: 12px;
+  margin-top: 6px;
+}
+.card-panel-text-down {
+  line-height: 18px;
+  color: rgb(84, 84, 84);
+  font-size: 18px;
+  font-weight: 18px;
+  margin-bottom: 12px;
+  margin-top: 16px;
+}
+
+.el-button--primary {
+background-color: #55acee;
+font-family: "STHeiti";
+border-radius: 3px;
+border-color:#55acee;
+color: #fff;
+}
+.el-button--primary:hover {
+background-color: #3ba0db;
+border-color:#3ba0db;
+border-radius: 3px;
+color: #fff;
+}
+.el-button--primary:focus {
+background-color: #3ba0db;
+border-color:#3ba0db;
+border-radius: 3px;
+color: #fff;
+}
+
+.el-button--stopBtn {
+background-color: #3b5998;
+font-family: "STHeiti";
+border-radius: 3px;
+border-color:#3b5998;
+color: #fff;
+}
+.el-button--stopBtn:hover {
+background-color: #4f6da9;
+border-color:#4f6da9;
+border-radius: 3px;
+color: #fff;
+}
+.el-button--stopBtn:focus {
+background-color: #4f6da9;
+border-color:#4f6da9;
+border-radius: 3px;
+color: #fff;
+}
+
+.el-button--pushBtn {
+background-color: #076cba;
+font-family: "STHeiti";
+border-radius: 3px;
+border-color:#076cba;
+color: #fff;
+}
+.el-button--pushBtn:hover {
+background-color: #1276c2;
+border-color:#1276c2;
+border-radius: 3px;
+color: #fff;
+}
+.el-button--pushBtn:focus {
+background-color: #1276c2;
+border-color:#1276c2;
+border-radius: 3px;
+color: #fff;
+}
