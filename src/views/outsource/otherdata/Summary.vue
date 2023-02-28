@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -101,13 +101,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
-            <el-form-item :rules="rules.holiday_begin" prop="holiday_begin" label="总数量">
-              <el-date-picker v-model="model.holiday_begin" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            <el-form-item :rules="rules.total_count" prop="total_count" label="总数量">
+              <el-input-number v-model="model.total_count" placeholder="请输入" :style="{width: '100%'}" />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.factory" prop="factory" label="工厂">
-              <el-date-picker v-model="model.factory" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.factory" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -230,12 +230,12 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          model_name: 'CL01',
-          holiday_begin: '2022-10-01',
-          factory: '2022-10-02'
+          model_name: '',
+          total_count: '',
+          factory: ''
         }, {
           model_name: '(必填)',
-          holiday_begin: '(必填)',
+          total_count: '(必填)',
           factory: '(必填)'
         }
       ], // 示例的表格数据
@@ -259,14 +259,14 @@ export default {
       model: {
         id: '',
         model_name: '',
-        holiday_begin: '',
+        total_count: 0,
         factory: ''
       },
       // 修改前的表单内容，用于对比表单前后的变化（应用：关闭前提示修改未保存）
       modelOriginal: {
         id: '',
         model_name: '',
-        holiday_begin: '',
+        total_count: 0,
         factory: ''
       },
       rules: {
@@ -275,7 +275,7 @@ export default {
           message: 'AI/SMT组件不能为空',
           trigger: 'blur'
         }],
-        holiday_begin: [{
+        total_count: [{
           required: true,
           message: '总数量不能为空',
           trigger: 'blur'
