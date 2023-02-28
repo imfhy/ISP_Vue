@@ -51,9 +51,9 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="check_status" label="检验状态" sortable />
-          <el-table-column prop="component_type" label="组件类型" sortable />
-          <el-table-column prop="serial_no" label="序列号" sortable />
+          <el-table-column prop="check_status" label="检验状态" />
+          <el-table-column prop="component_type" label="组件类型" />
+          <el-table-column prop="serial_no" label="序列号" />
           <el-table-column prop="package_name" label="机种" />
           <el-table-column prop="model_name" label="AI/SMT组件" />
           <el-table-column prop="total_count" label="总数量" />

@@ -10,9 +10,9 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
-            </el-button>
+            </el-button> -->
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
             </el-button>
@@ -51,22 +51,22 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column prop="run_mode" label="分配模式" sortable />
-          <el-table-column prop="component_type" label="组件类型" sortable />
-          <el-table-column prop="job_no" label="工单号" sortable />
-          <el-table-column prop="job_quantity" label="工单量" />
-          <el-table-column prop="process" label="制程" />
-          <el-table-column prop="workmanship" label="工艺" />
-          <el-table-column prop="top_points" label="上板点数" />
-          <el-table-column prop="bottom_points" label="下板点数" />
-          <el-table-column prop="program_line_type" label="程序线别" />
-          <el-table-column prop="connect_plates" label="联板数" />
-          <el-table-column prop="priority_manufacturer" label="优先分配厂商" />
-          <el-table-column prop="secondly_manufacturer" label="其次分配厂商" />
-          <el-table-column prop="points" label="单片点数" />
-          <el-table-column prop="jorder_type" label="工单类型" />
-          <el-table-column prop="job_no_type" label="厂别" />
-          <el-table-column prop="manufacturer_status" label="分配状态" />
+          <el-table-column prop="run_mode" width="100" label="分配模式" />
+          <el-table-column prop="component_type" width="100" label="组件类型" />
+          <el-table-column prop="job_no" width="90" label="工单号" />
+          <el-table-column prop="job_quantity" width="90" label="工单量" />
+          <el-table-column prop="process" width="80" label="制程" />
+          <el-table-column prop="workmanship" width="80" label="工艺" />
+          <el-table-column prop="top_points" width="100" label="上板点数" />
+          <el-table-column prop="bottom_points" width="100" label="下板点数" />
+          <el-table-column prop="program_line_type" width="200" label="程序线别" />
+          <el-table-column prop="connect_plates" width="90" label="联板数" />
+          <el-table-column prop="priority_manufacturer" width="140" label="优先分配厂商" />
+          <el-table-column prop="secondly_manufacturer" width="140" label="其次分配厂商" />
+          <el-table-column prop="points" width="100" label="单片点数" />
+          <el-table-column prop="jorder_type" width="100" label="工单类型" />
+          <el-table-column prop="job_no_type" width="80" label="厂别" />
+          <el-table-column prop="manufacturer_status" width="100" label="分配状态" />
           <el-table-column width="110" fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -121,6 +121,79 @@
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.job_no" prop="job_no" label="工单号">
               <el-input v-model="model.job_no" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.job_quantity" prop="job_quantity" label="工单量">
+              <el-input-number v-model="model.job_quantity" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.process" prop="process" label="制程">
+              <el-input v-model="model.process" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.workmanship" prop="workmanship" label="工艺">
+              <el-input v-model="model.workmanship" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.top_points" prop="top_points" label="上板点数">
+              <el-input-number v-model="model.top_points" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.bottom_points" prop="bottom_points" label="下板点数">
+              <el-input-number v-model="model.bottom_points" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.program_line_type" prop="program_line_type" label="程序线别">
+              <el-input v-model="model.program_line_type" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.connect_plates" prop="connect_plates" label="联板数">
+              <el-input-number v-model="model.connect_plates" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.priority_manufacturer" prop="priority_manufacturer" label="优先分配厂商">
+              <el-input v-model="model.priority_manufacturer" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.secondly_manufacturer" prop="secondly_manufacturer" label="其次分配厂商">
+              <el-input v-model="model.secondly_manufacturer" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.points" prop="points" label="单片点数">
+              <el-input-number v-model="model.points" placeholder="请输入" :step="0.1" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.order_type" prop="order_type" label="工单类型">
+              <el-input v-model="model.order_type" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.factory_type" prop="factory_type" label="厂别">
+              <el-input v-model="model.factory_type" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.manufacturer_status" prop="manufacturer_status" label="分配状态">
+              <el-input v-model="model.manufacturer_status" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -243,36 +316,36 @@ export default {
       table_data: [], // 表格数据
       tableDataExample: [
         {
-          run_mode: '',
+          run_mode: 0,
           component_type: '',
           job_no: '',
           job_quantity: '',
           process: '',
           workmanship: '',
-          top_points: '',
-          bottom_points: '',
+          top_points: 0,
+          bottom_points: 0,
           program_line_type: '',
           connect_plates: '',
           priority_manufacturer: '',
           secondly_manufacturer: '',
-          points: '',
+          points: 0,
           order_type: '',
           factory_type: '',
           manufacturer_status: ''
         }, {
-          run_mode: '',
+          run_mode: 0,
           component_type: '',
           job_no: '',
           job_quantity: '',
           process: '',
           workmanship: '',
-          top_points: '',
-          bottom_points: '',
+          top_points: 0,
+          bottom_points: 0,
           program_line_type: '',
           connect_plates: '',
           priority_manufacturer: '',
           secondly_manufacturer: '',
-          points: '',
+          points: 0,
           order_type: '',
           factory_type: '',
           manufacturer_status: ''
@@ -342,12 +415,77 @@ export default {
         }],
         component_type: [{
           required: true,
-          message: '放假开始时间不能为空',
+          message: '组件类型不能为空',
           trigger: 'blur'
         }],
         job_no: [{
           required: true,
-          message: '放假结束时间不能为空',
+          message: '工单号不能为空',
+          trigger: 'blur'
+        }],
+        job_quantity: [{
+          required: true,
+          message: '工单量不能为空',
+          trigger: 'blur'
+        }],
+        process: [{
+          required: true,
+          message: '制程不能为空',
+          trigger: 'blur'
+        }],
+        workmanship: [{
+          required: true,
+          message: '工艺不能为空',
+          trigger: 'blur'
+        }],
+        program_line_type: [{
+          required: true,
+          message: '程序线别不能为空',
+          trigger: 'blur'
+        }],
+        top_points: [{
+          required: true,
+          message: '上板点数不能为空',
+          trigger: 'blur'
+        }],
+        bottom_points: [{
+          required: true,
+          message: '下板点数不能为空',
+          trigger: 'blur'
+        }],
+        connect_plates: [{
+          required: true,
+          message: '联板数不能为空',
+          trigger: 'blur'
+        }],
+        priority_manufacturer: [{
+          required: true,
+          message: '优先分配厂商不能为空',
+          trigger: 'blur'
+        }],
+        secondly_manufacturer: [{
+          required: true,
+          message: '其次分配厂商不能为空',
+          trigger: 'blur'
+        }],
+        points: [{
+          required: true,
+          message: '单片点数不能为空',
+          trigger: 'blur'
+        }],
+        order_type: [{
+          required: true,
+          message: '工单类型不能为空',
+          trigger: 'blur'
+        }],
+        factory_type: [{
+          required: true,
+          message: '厂商不能为空',
+          trigger: 'blur'
+        }],
+        manufacturer_status: [{
+          required: true,
+          message: '分配状态不能为空',
           trigger: 'blur'
         }]
       },
