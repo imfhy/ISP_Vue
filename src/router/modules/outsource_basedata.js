@@ -1,10 +1,10 @@
 // 外包相关
 import Layout from '@/layout'
-
+// 外包基本数据
 const outsourceBaseDataRouter = {
-  path: '/basedata',
+  path: '/outsourcebasedata',
   component: Layout,
-  redirect: '/longconfig/ledctdata',
+  redirect: '/outsourcebasedata/customer',
   alwaysShow: true,
   name: 'OutsourceBaseData',
   meta: {
@@ -21,16 +21,16 @@ const outsourceBaseDataRouter = {
         title: '客户表',
         roles: ['admin', 'common']
       }
-    },
-    {
-      path: 'factoryType',
-      component: () => import('@/views/outsource/basedata/FactoryType'),
-      name: 'FactoryType',
-      meta: {
-        title: '厂别表',
-        roles: ['admin', 'common']
-      }
     }
+    // {
+    //   path: 'factoryType',
+    //   component: () => import('@/views/outsource/basedata/FactoryType'),
+    //   name: 'FactoryType',
+    //   meta: {
+    //     title: '厂别表',
+    //     roles: ['admin', 'common']
+    //   }
+    // }
   ]
 }
 

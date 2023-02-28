@@ -8,6 +8,7 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import outsourceBaseDataRouter from './modules/outsource_basedata'
+import outsourceConstraintsRouter from './modules/outsource_data'
 import dayconfigRouter from './modules/dayconfig'
 import longconfigRouter from './modules/longconfig'
 import predictRouter from './modules/predict'
@@ -135,6 +136,7 @@ export const asyncRoutes = [
   longconfigRouter,
   predictRouter,
   outsourceBaseDataRouter,
+  outsourceConstraintsRouter,
 
   {
     path: '/permission',
