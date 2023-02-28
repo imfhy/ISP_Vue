@@ -10,12 +10,12 @@
             <el-button type="danger" @click="deleteData">
               <i class="el-icon-delete" />删除
             </el-button>
-            <el-button @click="importDataDialog">
+            <!-- <el-button @click="importDataDialog">
               <i class="el-icon-upload2" />导入
             </el-button>
             <el-button @click="exportDataDialog">
               <i class="el-icon-download" />导出
-            </el-button>
+            </el-button> -->
           </div>
         </el-col>
         <el-col :span="8">
@@ -109,12 +109,53 @@
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.component_type" prop="component_type" label="组件类型">
-              <el-date-picker v-model="model.component_type" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.component_type" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
             <el-form-item :rules="rules.serial_no" prop="serial_no" label="序列号">
-              <el-date-picker v-model="model.serial_no" placeholder="请选择" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+              <el-input v-model="model.serial_no" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.package_name" prop="package_name" label="包装名">
+              <el-input v-model="model.package_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.model_name" prop="model_name" label="机种名">
+              <el-input v-model="model.model_name" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.total_count" prop="total_count" label="总数量">
+              <el-input-number v-model="model.total_count" placeholder="请输入" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.origin_date" prop="origin_date" label="原始日期">
+              <el-input v-model="model.origin_date" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.demand_date" prop="demand_date" label="需求日期">
+              <el-date-picker v-model="model.demand_date" placeholder="请选择" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :style="{width: '100%'}" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.package_line" prop="package_line" label="包装线">
+              <el-input v-model="model.package_line" placeholder="请输入" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+            <el-form-item :rules="rules.factory" prop="factory" label="工厂">
+              <el-input v-model="model.factory" placeholder="请输入" clearable />
             </el-form-item>
           </el-col>
         </el-row>
@@ -258,13 +299,13 @@ export default {
           check_status: '(必填)',
           component_type: '(必填)',
           serial_no: '(必填)',
-          package_name: '',
-          model_name: '',
-          total_count: '',
-          origin_date: '',
-          demand_date: '',
-          package_line: '',
-          factory: ''
+          package_name: '(必填)',
+          model_name: '(必填)',
+          total_count: '(必填)',
+          origin_date: '(必填)',
+          demand_date: '(必填)',
+          package_line: '(必填)',
+          factory: '(必填)'
         }
       ], // 示例的表格数据
       dialogTitle: '', // 表单dialog标题
@@ -291,7 +332,7 @@ export default {
         serial_no: '',
         package_name: '',
         model_name: '',
-        total_count: '',
+        total_count: 0,
         origin_date: '',
         demand_date: '',
         package_line: '',
@@ -305,7 +346,7 @@ export default {
         serial_no: '',
         package_name: '',
         model_name: '',
-        total_count: '',
+        total_count: 0,
         origin_date: '',
         demand_date: '',
         package_line: '',
@@ -325,6 +366,41 @@ export default {
         serial_no: [{
           required: true,
           message: '序列号不能为空',
+          trigger: 'blur'
+        }],
+        package_name: [{
+          required: true,
+          message: '包装名不能为空',
+          trigger: 'blur'
+        }],
+        model_name: [{
+          required: true,
+          message: '机种名不能为空',
+          trigger: 'blur'
+        }],
+        total_count: [{
+          required: true,
+          message: '总数量不能为空',
+          trigger: 'blur'
+        }],
+        origin_date: [{
+          required: true,
+          message: '原始日期不能为空',
+          trigger: 'blur'
+        }],
+        demand_date: [{
+          required: true,
+          message: '需求日期不能为空',
+          trigger: 'change'
+        }],
+        package_line: [{
+          required: true,
+          message: '包装线不能为空',
+          trigger: 'blur'
+        }],
+        factory: [{
+          required: true,
+          message: '工厂不能为空',
           trigger: 'blur'
         }]
       },
