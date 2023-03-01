@@ -2,7 +2,7 @@
   <div id="main">
     <el-card class="card-info">
       <el-row>
-        <el-col :span="1">
+        <!-- <el-col :span="1">
           <div class="my-icon-date">
             <i class="el-icon-date" />
           </div>
@@ -50,7 +50,7 @@
               <el-table-column prop="obj_value" label="目标值" width="110px;" />
             </el-table>
           </div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-card>
     <el-row :gutter="16">
@@ -126,7 +126,7 @@
           </div>
           <el-row>
             <el-col :span="24">
-              <el-alert
+              <!-- <el-alert
                 title="训练预测模型"
                 type="info"
                 :closable="false"
@@ -143,7 +143,7 @@
                     训练预测模型
                   </el-button>
                 </el-tooltip>
-              </div>
+              </div> -->
               <el-alert
                 title="排程相关操作"
                 type="info"
@@ -154,10 +154,10 @@
                   <el-col :span="8">
                     <el-button type="primary" plain @click="computeDialogMain">
                       <i class="el-icon-monitor" />
-                      计算主板排程
+                      计算外包排程
                     </el-button>
                   </el-col>
-                  <el-col :span="8">
+                  <!-- <el-col :span="8">
                     <el-button type="primary" plain @click="computeDialogSmall">
                       <i class="el-icon-monitor" />
                       计算小板排程
@@ -168,11 +168,11 @@
                       <i class="el-icon-monitor" />
                       计算主板小板
                     </el-button>
-                  </el-col>
+                  </el-col> -->
                 </el-row>
               </div>
               <div class="box-button">
-                <el-row>
+                <!-- <el-row>
                   <el-col :span="8">
                     <el-button type="stopBtn" plain @click="stopTabu">
                       <i class="el-icon-warning-outline" />
@@ -189,7 +189,7 @@
                     <i class="el-icon-upload2" />
                     推送量化结果
                   </el-button>
-                </el-row>
+                </el-row> -->
               </div>
             </el-col>
           </el-row>
@@ -197,7 +197,7 @@
       </el-col>
       <el-col :span="8">
         <el-card style="margin-right: 16px;height: 400px;">
-          <el-tabs v-model="activeName" type="card">
+          <!-- <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="主板下载" name="main">
               <el-row>
                 <el-col :span="24">
@@ -352,30 +352,25 @@
                 </el-col>
               </el-row>
             </el-tab-pane>
-          </el-tabs>
+          </el-tabs> -->
         </el-card>
       </el-col>
     </el-row>
-    <el-card class="card-gantt">
-      <div slot="header" class="clearfix">
-        <span>甘特图</span>
-      </div>
-    </el-card>
 
-    <el-dialog
+    <!-- <el-dialog
       v-el-drag-dialog
       title="计算主板和小板排程"
       :visible.sync="computeBothDialogVisible"
-      width="60%"
+      width="70%"
       :close-on-click-modal="false"
       :before-close="handleCloseBoth"
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNowBoth" finish-status="success" simple>
-        <el-step title="上传排程" />
-        <el-step title="导入排程" />
-        <el-step title="更新信息" />
-        <el-step title="计算排程" />
+        <el-step title="导入文件" />
+        <el-step title="更新新机种" />
+        <el-step title="生成分工单" />
+        <el-step title="开始计算" />
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="6">
@@ -398,13 +393,13 @@
             </el-button>
           </el-upload>
         </el-col>
-        <!-- <el-col :span="2">
+        <el-col :span="2">
           <el-tooltip class="item" effect="dark" :content="mainUploadName" placement="top">
             <el-button style="margin-left: 20px;" @click="getUploadFileMain">
               <i class="el-icon-download" />
             </el-button>
           </el-tooltip>
-        </el-col> -->
+        </el-col>
         <el-col :span="6">
           <el-input style="margin-left: 10px;" placeholder="请上传小板排程文件" :value="uploadFileNameSmall" />
         </el-col>
@@ -503,11 +498,11 @@
           关闭
         </el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
     <el-dialog
       v-el-drag-dialog
-      title="计算主板排程"
+      title="计算外包排程"
       :visible.sync="computeMainDialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -515,10 +510,10 @@
       @dragDialog="handleDrag"
     >
       <el-steps :active="stepNowMain" finish-status="success" simple>
-        <el-step title="上传排程" />
-        <el-step title="导入排程" />
-        <el-step title="更新信息" />
-        <el-step title="计算排程" />
+        <el-step title="导入文件" />
+        <el-step title="更新新机种" />
+        <el-step title="生成分工单" />
+        <el-step title="开始计算" />
       </el-steps>
       <el-row style="margin-top:10px;">
         <el-col :span="8">
@@ -539,16 +534,79 @@
             <el-button slot="trigger" type="primary">
               上传主板排程
             </el-button>
-            <el-button type="success" style="margin-left:10px;" @click="beforeImportMain">
-              导入排程
-            </el-button>
-            <el-button @click="exportScheduleDataMain">
-              导出主板
+          </el-upload>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top:10px;">
+        <el-col :span="8">
+          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+        </el-col>
+        <el-col :span="16">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            accept=".xlsx"
+            :on-change="handleChangeMain"
+            :auto-upload="false"
+            :show-file-list="false"
+            :file-list="uploadFileListMain"
+            style="margin-left: 10px;"
+          >
+            <el-button slot="trigger" type="primary">
+              上传主板排程
             </el-button>
           </el-upload>
         </el-col>
       </el-row>
-      <el-alert
+      <el-row style="margin-top:10px;">
+        <el-col :span="8">
+          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+        </el-col>
+        <el-col :span="16">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            accept=".xlsx"
+            :on-change="handleChangeMain"
+            :auto-upload="false"
+            :show-file-list="false"
+            :file-list="uploadFileListMain"
+            style="margin-left: 10px;"
+          >
+            <el-button slot="trigger" type="primary">
+              上传主板排程
+            </el-button>
+          </el-upload>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top:10px;">
+        <el-col :span="8">
+          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
+        </el-col>
+        <el-col :span="16">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            action=""
+            accept=".xlsx"
+            :on-change="handleChangeMain"
+            :auto-upload="false"
+            :show-file-list="false"
+            :file-list="uploadFileListMain"
+            style="margin-left: 10px;"
+          >
+            <el-button slot="trigger" type="primary">
+              上传主板排程
+            </el-button>
+          </el-upload>
+        </el-col>
+      </el-row>
+      <el-button type="success" style="margin-left:10px;" @click="beforeImportMain">
+        导入排程
+      </el-button>
+      <!-- <el-alert
         title="更新信息"
         type="info"
         :closable="false"
@@ -582,7 +640,7 @@
             </el-button>
           </el-tooltip>
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-alert
         title="计算排程"
         type="info"
@@ -599,7 +657,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog
+    <!-- <el-dialog
       v-el-drag-dialog
       title="计算小板排程"
       :visible.sync="computeSmallDialogVisible"
@@ -691,7 +749,7 @@
           关闭
         </el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
     <el-dialog
       v-el-drag-dialog
