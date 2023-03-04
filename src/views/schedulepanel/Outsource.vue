@@ -59,7 +59,7 @@
           <div slot="header" class="clearfix">
             <span>任务进度</span>
           </div>
-          <el-progress
+          <!-- <el-progress
             :text-inside="true"
             :stroke-width="16"
             :percentage="percentage_1"
@@ -116,7 +116,7 @@
             type="info"
             center
             :closable="false"
-          />
+          /> -->
         </el-card>
       </el-col>
       <el-col :span="16">
