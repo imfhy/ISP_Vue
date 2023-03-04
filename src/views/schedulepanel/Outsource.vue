@@ -53,7 +53,7 @@
         </el-col>
       </el-row>
     </el-card> -->
-    <el-row :gutter="16">
+    <el-row :gutter="16" style="margin-top: 16px; margin-right: 10px;">
       <el-col :span="8">
         <el-card class="card-progress">
           <div slot="header" class="clearfix">
