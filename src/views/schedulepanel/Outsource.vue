@@ -386,7 +386,7 @@ export default {
     ])
   },
   created() {
-    this.listenProgress()
+    // this.listenProgress()
   },
   mounted() {
   },
