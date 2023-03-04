@@ -1,8 +1,8 @@
 <template>
   <div id="main">
-    <el-card class="card-info">
+    <!-- <el-card class="card-info">
       <el-row>
-        <!-- <el-col :span="1">
+        <el-col :span="1">
           <div class="my-icon-date">
             <i class="el-icon-date" />
           </div>
@@ -50,9 +50,9 @@
               <el-table-column prop="obj_value" label="目标值" width="110px;" />
             </el-table>
           </div>
-        </el-col> -->
+        </el-col>
       </el-row>
-    </el-card>
+    </el-card> -->
     <el-row :gutter="16">
       <el-col :span="8">
         <el-card class="card-progress">
@@ -119,7 +119,7 @@
           />
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="16">
         <el-card class="control">
           <div slot="header" class="clearfix">
             <span>控制中心</span>
@@ -127,34 +127,65 @@
           <el-row>
             <el-col :span="24">
               <!-- <el-alert
-                title="训练预测模型"
+                title="外包计算"
                 type="info"
                 :closable="false"
-              />
+                style="margin-bottom: 10px;"
+              /> -->
+              <el-steps :active="stepNow" :align-center="false" finish-status="success" simple>
+                <el-step title="导入文件" />
+                <el-step title="组件筛选" />
+                <el-step title="更新新机种" />
+                <el-step title="生成分工单" />
+                <el-step title="计算排程" />
+              </el-steps>
               <div class="box-button">
-                <el-date-picker
-                  v-model="trainDate"
-                  type="date"
-                  placeholder="选择预测模型日期"
-                />
-                <el-tooltip class="item" effect="dark" :content="trainDateTip" placement="top">
-                  <el-button type="primary" plain style="margin-top:2px;margin-left: 8px;" @click="trainModel">
-                    <i class="el-icon-pie-chart" />
-                    训练预测模型
-                  </el-button>
-                </el-tooltip>
-              </div> -->
+                <el-row>
+                  <el-col :span="24">
+                    <el-button type="primary" plain @click="importDialog">
+                      1.导入输入文件
+                    </el-button>
+                    <el-button type="primary" plain @click="doFilterRules">
+                      2.组件筛选
+                    </el-button>
+                    <el-button type="primary" plain @click="updateNewModels">
+                      3.更新新机种
+                    </el-button>
+                    <el-button type="primary" plain @click="generateDivisions">
+                      4.生成分工单
+                    </el-button>
+                    <el-button type="primary" plain @click="computeDialog">
+                      5.开始计算
+                    </el-button>
+                    <el-button type="success" @click="generateOutput">
+                      6.输出文件
+                    </el-button>
+                    <el-button plain @click="showFilterRules">
+                      显示筛选规则
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
               <el-alert
-                title="排程相关操作"
+                title="外包文件下载"
                 type="info"
                 :closable="false"
+                style="margin-bottom: 10px;"
               />
               <div class="box-button">
                 <el-row>
-                  <el-col :span="8">
-                    <el-button type="primary" plain @click="computeDialogOutsource">
-                      <i class="el-icon-monitor" />
-                      计算外包排程
+                  <el-col :span="24">
+                    <el-button type="primary" plain @click="downloadFile">
+                      <i class="el-icon-download" />
+                      下载xx文件
+                    </el-button>
+                    <el-button type="success" @click="downloadAllFile">
+                      <i class="el-icon-download" />
+                      下载全部文件
                     </el-button>
                   </el-col>
                 </el-row>
@@ -163,50 +194,18 @@
           </el-row>
         </el-card>
       </el-col>
-      <el-col :span="8">
-        <el-card style="margin-right: 16px;height: 400px;" />
-      </el-col>
     </el-row>
 
     <el-dialog
       v-el-drag-dialog
-      title="计算外包排程"
+      title="导入输入文件"
       :visible.sync="dialogVisibleOutsource"
-      width="65%"
+      width="60%"
       :close-on-click-modal="false"
       :before-close="handleCloseOutsource"
       @dragDialog="handleDrag"
     >
-      <el-steps :active="stepNow" finish-status="success" simple>
-        <el-step title="导入文件" />
-        <el-step title="组件筛选" />
-        <el-step title="更新新机种" />
-        <el-step title="生成分工单" />
-        <el-step title="计算排程" />
-      </el-steps>
-      <!-- <el-row style="margin-top:10px;">
-        <el-col :span="8">
-          <el-input placeholder="请上传主板排程文件" :value="uploadFileNameMain" />
-        </el-col>
-        <el-col :span="16">
-          <el-upload
-            ref="upload"
-            class="upload-demo"
-            action=""
-            accept=".xlsx"
-            :on-change="handleChangeMain"
-            :auto-upload="false"
-            :show-file-list="false"
-            :file-list="uploadFileListMain"
-            style="margin-left: 10px;"
-          >
-            <el-button slot="trigger" type="primary">
-              上传主板排程
-            </el-button>
-          </el-upload>
-        </el-col>
-      </el-row> -->
-      <el-row>
+      <el-row style="margin-bottom: 10px">
         <el-col :span="8">
           <el-upload
             class="upload-demo"
@@ -216,6 +215,7 @@
             multiple
             :limit="1"
             :on-exceed="handleExceed_1"
+            :on-change="handleChangeSummary"
             :file-list="fileListSummary"
           >
             <el-button type="primary">点击上传“业务排程汇总”</el-button>
@@ -231,6 +231,7 @@
             multiple
             :limit="1"
             :on-exceed="handleExceed_1"
+            :on-change="handleChangeCustomer"
             :file-list="fileListCustomer"
           >
             <el-button type="primary">点击上传“客户表”</el-button>
@@ -246,6 +247,7 @@
             multiple
             :limit="1"
             :on-exceed="handleExceed_1"
+            :on-change="handleChangeSchedule"
             :file-list="fileListSchedule"
           >
             <el-button type="primary">点击上传“业务排程明细”</el-button>
@@ -263,64 +265,34 @@
             multiple
             :limit="5"
             :on-exceed="handleExceed_5"
-            :file-list="fileListOldorder"
+            :on-change="handleChangeOldOrder"
+            :file-list="fileListOldOrder"
           >
             <el-button type="primary">点击上传“旧工单”</el-button>
             <div slot="tip" class="el-upload__tip">只能上传.xlsx文件，最多可上传5份</div>
           </el-upload>
         </el-col>
-        <el-col :span="8">
-          <el-button type="success" style="margin-left:10px;" @click="beforeImport">
-            导入文件
-          </el-button>
-        </el-col>
       </el-row>
-      <el-alert
-        title="组件筛选"
-        type="info"
-        :closable="false"
-        style="margin-top: 10px;margin-bottom: 10px;"
-      />
-      <el-button type="primary" @click="doFilterRules">
-        组件筛选
-      </el-button>
 
-      <el-alert
-        title="更新新机种"
-        type="info"
-        :closable="false"
-        style="margin-top: 10px;margin-bottom: 10px;"
-      />
-      <el-button type="primary" @click="updateNewModels">
-        更新新机种
-      </el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" style="margin-left:10px;" @click="beforeImport">
+          导入文件
+        </el-button>
+        <el-button @click="handleCloseOutsource">
+          关闭
+        </el-button>
+      </span>
+    </el-dialog>
 
-      <el-alert
-        title="显示筛选规则"
-        type="info"
-        :closable="false"
-        style="margin-top: 10px;margin-bottom: 10px;"
-      />
-      <el-button type="primary" @click="showFilterRules">
-        显示筛选规则
-      </el-button>
-
-      <el-alert
-        title="生成分工单"
-        type="info"
-        :closable="false"
-        style="margin-top: 10px;margin-bottom: 10px;"
-      />
-      <el-button type="primary" @click="generateDivisions">
-        生成分工单
-      </el-button>
-
-      <el-alert
-        title="计算排程"
-        type="info"
-        :closable="false"
-        style="margin-top: 10px;margin-bottom: 10px;"
-      />
+    <el-dialog
+      v-el-drag-dialog
+      title="计算外包"
+      :visible.sync="dialogVisibleCompute"
+      width="30%"
+      :close-on-click-modal="false"
+      :before-close="handleCloseCompute"
+      @dragDialog="handleDrag"
+    >
       <el-row>
         <el-col :span="24">
           <el-radio-group v-model="componentType">
@@ -339,39 +311,17 @@
           </el-radio-group>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-button type="primary" @click="beforeDoOutsourceDistribute">
-            开始计算
-          </el-button>
-          <el-button type="success" @click="generateOutput">
-            输出文件
-          </el-button>
-        </el-col>
-      </el-row>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCloseOutsource">
+        <el-button type="primary" @click="beforeDoOutsourceDistribute">
+          开始计算
+        </el-button>
+        <el-button @click="handleCloseCompute">
           关闭
         </el-button>
       </span>
     </el-dialog>
 
-    <el-dialog
-      v-el-drag-dialog
-      title="提示"
-      :visible.sync="stopScheduleDialog"
-      width="30%"
-      :before-close="handleCloseStop"
-      @dragDialog="handleDrag"
-    >
-      <p style="font-size:16px;">请在下方输入框输入<span style="color:#F56C6C;font-weight:bold;"> 确认终止 </span>后点击确定以终止排程！</p>
-      <el-input v-model="stopInput" placeholder="请输入" style="width: 200px;" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCloseStop">取 消</el-button>
-        <el-button type="primary" @click="confirmStopSchedule">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -422,9 +372,12 @@ export default {
       fileListSummary: [], // 业务排程汇总
       fileListCustomer: [], // 客户表
       fileListSchedule: [], // 业务排程明细
-      fileListOldorder: [], // 旧工单
+      fileListOldOrder: [], // 旧工单
       componentType: 1,
-      runMode: 1
+      runMode: 1,
+      formData: new FormData(),
+      dialogVisibleCompute: false
+
     }
   },
   computed: {
@@ -436,7 +389,6 @@ export default {
     this.listenProgress()
   },
   mounted() {
-
   },
   methods: {
     // 文件超过1
@@ -446,6 +398,26 @@ export default {
     // 文件超过5
     handleExceed_5(files, fileList) {
       this.$message.warning(`限制上传 5 个文件，本次上传了 ${files.length} 个文件，共上传了 ${files.length + fileList.length} 个文件`)
+    },
+    handleChangeSummary(files, fileList) {
+      var file = new File([files.raw], `Summary-${files.name}`)
+      this.formData.append('files', file)
+      this.fileListSummary = fileList
+    },
+    handleChangeCustomer(files, fileList) {
+      var file = new File([files.raw], `Customer-${files.name}`)
+      this.formData.append('files', file)
+      this.fileListCustomer = fileList
+    },
+    handleChangeSchedule(files, fileList) {
+      var file = new File([files.raw], `Schedule-${files.name}`)
+      this.formData.append('files', file)
+      this.fileListSchedule = fileList
+    },
+    handleChangeOldOrder(files, fileList) {
+      var file = new File([files.raw], `OldOrder-${files.name}`)
+      this.formData.append('files', file)
+      this.fileListOldOrder = fileList
     },
     // dialog可拖拽
     handleDrag() {
@@ -462,10 +434,8 @@ export default {
       clearInterval(this.progress_refresh)
       this.progress_refresh = null
     },
-    // 终止计算排程
-    handleCloseStop() {
-      this.stopScheduleDialog = false
-      this.stopInput = ''
+    handleCloseCompute() {
+      this.dialogVisibleCompute = false
     },
     // 获取排程结果
     getScheduleRes() {
@@ -516,8 +486,11 @@ export default {
       })
     },
     // 计算外包dialog
-    computeDialogOutsource() {
+    importDialog() {
       this.dialogVisibleOutsource = true
+    },
+    computeDialog() {
+      this.dialogVisibleCompute = true
     },
     // 关闭计算主板
     handleCloseOutsource() {
@@ -525,7 +498,7 @@ export default {
     },
     // 导入文件之前
     beforeImport() {
-      const fileLength = this.fileListSummary.length + this.fileListCustomer.length + this.fileListSchedule.length + this.fileListOldorder.length
+      const fileLength = this.fileListSummary.length + this.fileListCustomer.length + this.fileListSchedule.length + this.fileListOldOrder.length
       if (fileLength < 1) {
         this.$message({
           type: 'warning',
@@ -537,15 +510,9 @@ export default {
       }
     },
     // 导入排程
-    async submitUploadFile(mode) {
-      this.clickComputeCount = 0
+    async submitUploadFile() {
       this.loadingInstance = Loading.service(this.importLoading)
-      const form = {}
-      form['summary'] = this.fileListSummary
-      form['customer'] = this.fileListCustomer
-      form['schedule'] = this.fileListSchedule
-      form['old_order'] = this.fileListOldorder
-      await ImportFiles(form).then(res => {
+      await ImportFiles(this.formData).then(res => {
         this.loadingInstance.close()
         this.$message({
           message: res.message,
@@ -562,14 +529,27 @@ export default {
     },
     // 组件筛选
     doFilterRules() {
-      this.stepNow = 2
+      if (this.stepNow !== 1) {
+        this.$message({
+          message: '请先导入输入文件',
+          type: 'warning'
+        })
+        return
+      }
+      const loadingMessage = {
+        text: '组件筛选中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       DoFilterRules().then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this.stepNow = 1
+        this.stepNow = 2
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
@@ -578,14 +558,27 @@ export default {
     },
     // 更新新机种
     updateNewModels() {
-      this.stepNow = 3
+      if (this.stepNow !== 2) {
+        this.$message({
+          message: '请先进行组件筛选',
+          type: 'warning'
+        })
+        return
+      }
+      const loadingMessage = {
+        text: '更新新机种中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       UpdateNewModels().then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this.stepNow = 1
+        this.stepNow = 3
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
@@ -594,13 +587,26 @@ export default {
     },
     // 显示筛选规则
     showFilterRules() {
+      if (this.stepNow < 3) {
+        this.$message({
+          message: '未更新新机种，无法显示筛选规则',
+          type: 'warning'
+        })
+        return
+      }
+      const loadingMessage = {
+        text: '获取中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       ShowFilterRules().then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this.stepNow = 1
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
@@ -609,14 +615,27 @@ export default {
     },
     // 生成分工单
     generateDivisions() {
-      this.stepNow = 4
+      if (this.stepNow !== 3) {
+        this.$message({
+          message: '请先更新新机种',
+          type: 'warning'
+        })
+        return
+      }
+      const loadingMessage = {
+        text: '生成分工单中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       GnerateDivisions().then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this.stepNow = 1
+        this.stepNow = 4
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
@@ -625,6 +644,13 @@ export default {
     },
     // 计算之前的确认
     beforeDoOutsourceDistribute() {
+      if (this.stepNow !== 4) {
+        this.$message({
+          message: '请先生成分工单',
+          type: 'warning'
+        })
+        return
+      }
       const map_1 = {
         1: 'SMT主板',
         2: 'SMT小板',
@@ -650,19 +676,25 @@ export default {
         })
       })
     },
-    // 开始计算排程
+    // 开始计算
     doOutsourceDistribute() {
-      this.stepNow = 5
+      const loadingMessage = {
+        text: '计算中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       const form = {}
       form['component_type'] = this.componentType // ["SMT主板", "SMT小板", "AI", "SMT点胶"]
       form['run_mode'] = this.runMode // ["自制优先", "外包优先"]
       DoOutsourceDistribute(form).then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
-        this.stepNow = 1
+        this.stepNow = 5
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
@@ -671,18 +703,40 @@ export default {
     },
     // 输出文件
     generateOutput() {
+      if (this.stepNow !== 5) {
+        this.$message({
+          message: '计算未完成，无法输出',
+          type: 'warning'
+        })
+        return
+      }
+      const loadingMessage = {
+        text: '输出文件中...',
+        background: 'rgba(0, 0, 0, 0.5)'
+      }
+      this.loadingInstance = Loading.service(loadingMessage)
       GenerateOutput().then(res => {
+        this.loadingInstance.close()
         this.$message({
           message: res.message,
           type: 'success'
         })
         this.stepNow = 1
       }).catch(err => {
+        this.loadingInstance.close()
         this.$alert(err, '错误', {
           confirmButtonText: '确定',
           type: 'error'
         })
       })
+    },
+    // 下载文件
+    downloadFile() {
+
+    },
+    // 下载所有文件
+    downloadAllFile() {
+
     }
   }
 }
