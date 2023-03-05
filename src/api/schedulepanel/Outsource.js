@@ -66,7 +66,7 @@ export function GenerateOutput(data) {
 // 获取进度条
 export function GetProgress() {
   return request({
-    url: '/preprocess/control/get_progress/',
+    url: '/OutsourcingPriority/get_progress/',
     method: 'get'
   })
 }
@@ -77,3 +77,35 @@ export function GeScheduleRes() {
     url: '/preprocess/control/get_schedule_res/'
   })
 }
+// 保存导航条
+export function SaveStepNow(data) {
+  return request({
+    url: '/OutsourcingPriority/save_step_now/',
+    method: 'post',
+    data
+  })
+}
+// 获取基本数据
+export function GetBaseData() {
+  return request({
+    method: 'get',
+    url: '/OutsourcingPriority/get_base_data/'
+  })
+}
+// 获取所有下载文件的路径
+export function DownloadAllFile() {
+  return request({
+    method: 'get',
+    url: '/OutsourcingPriority/get_single_output_files/'
+  })
+}
+// 下载文件
+export function DownloadFile(data) {
+  return request({
+    method: 'post',
+    url: '/OutsourcingPriority/download/',
+    responseType: 'blob',
+    data
+  })
+}
+
