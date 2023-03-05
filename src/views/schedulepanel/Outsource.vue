@@ -105,7 +105,7 @@
                     </el-button> -->
                     <el-button type="success" @click="downloadAllFile">
                       <i class="el-icon-download" />
-                      下载全部文件
+                      下载全部输出文件
                     </el-button>
                   </el-col>
                 </el-row>
@@ -119,10 +119,10 @@
     <el-dialog
       v-el-drag-dialog
       title="导入输入文件"
-      :visible.sync="dialogVisibleOutsource"
+      :visible.sync="dialogVisibleImport"
       width="60%"
       :close-on-click-modal="false"
-      :before-close="handleCloseOutsource"
+      :before-close="handleCloseImport"
       @dragDialog="handleDrag"
     >
       <el-row style="margin-bottom: 10px">
@@ -202,7 +202,7 @@
         <el-button type="primary" style="margin-left:10px;" @click="beforeImport">
           导入文件
         </el-button>
-        <el-button @click="handleCloseOutsource">
+        <el-button @click="handleCloseImport">
           关闭
         </el-button>
       </span>
@@ -257,7 +257,6 @@
     >
       <el-table
         id="mytable"
-        v-loading="loading"
         :data="table_data_rules"
         :header-cell-style="{background:'#eef1f6',color:'#606266', padding: '6px'}"
         :cell-style="{padding: '3px'}"
@@ -289,7 +288,7 @@ export default {
     return {
       progressColor: '#02bafd', // 进度条颜色
 
-      dialogVisibleOutsource: false, // 计算主板排程dialog
+      dialogVisibleImport: false, // 计算主板排程dialog
       importLoading: {
         text: '拼命导入中...',
         background: 'rgba(0, 0, 0, 0.5)'
@@ -455,14 +454,14 @@ export default {
     },
     // 计算外包dialog
     importDialog() {
-      this.dialogVisibleOutsource = true
+      this.dialogVisibleImport = true
     },
     computeDialog() {
       this.dialogVisibleCompute = true
     },
     // 关闭计算主板
-    handleCloseOutsource() {
-      this.dialogVisibleOutsource = false
+    handleCloseImport() {
+      this.dialogVisibleImport = false
     },
     // 导入文件之前
     beforeImport() {
@@ -480,6 +479,9 @@ export default {
     // 导入排程
     async submitUploadFile() {
       this.loadingInstance = Loading.service(this.importLoading)
+      setTimeout(() => {
+        this.handleCloseImport()
+      }, 1000)
       await ImportFiles(this.formData).then(res => {
         this.loadingInstance.close()
         this.$message({
@@ -718,17 +720,34 @@ export default {
     // 下载所有文件
     downloadAllFile() {
       DownloadAllFile().then(res => {
-        for (const key in res.file_list) {
-          DownloadFile({ 'file_path': res.file_list[key] }).then(resp => {
-            this.downloadFile(resp)
-          }).catch(err => {
-            console.log(err)
-            this.$message({
-              message: '下载失败，文件不存在',
-              type: 'error'
+        this.$confirm('提示', {
+          title: '提示',
+          message: '确定要下载全部输出文件（本次共有 ' + res.file_list.length + ' 个输出文件）？',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          for (const key in res.file_list) {
+            DownloadFile({ 'file_path': res.file_list[key] }).then(resp => {
+              this.downloadFile(resp)
+            }).catch(err => {
+              console.log(err)
+              this.$message({
+                message: '下载失败，文件不存在',
+                type: 'error'
+              })
             })
+          }
+          this.$alert('本次共下载了 ' + res.file_list.length + ' 个文件', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
-        }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消下载'
+          })
+        })
       })
     }
   }
