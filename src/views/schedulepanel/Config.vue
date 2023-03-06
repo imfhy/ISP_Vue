@@ -134,6 +134,7 @@
           <el-descriptions-item label="西门子线体配置" :span="2">{{ modelOriginal.ximenzi_lines }}</el-descriptions-item>
           <el-descriptions-item label="不能绑定的线体配置" :span="2">{{ modelOriginal.cannot_binding_lines }}</el-descriptions-item>
           <el-descriptions-item label="BPR线体" :span="2">{{ modelOriginal.Four_SR_lines }}</el-descriptions-item>
+          <el-descriptions-item label="安必昂不能绑定线体" :span="4">{{ modelOriginal.AX_lines }}</el-descriptions-item>
 
           <el-descriptions-item label="西门子特殊板宽宽度配置" :span="4">{{ modelOriginal.board_width }}毫米</el-descriptions-item>
 
@@ -426,6 +427,13 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+            <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.AX_lines" prop="AX_lines" label="安必昂不能绑定线体(线体用逗号隔开)">
+                <el-input v-model="model.AX_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.board_width" prop="board_width" label="西门子特殊板宽宽度配置">
                 <el-input-number v-model="model.board_width" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
@@ -522,6 +530,7 @@ export default {
         Non_big_lines: '',
         ximenzi_lines: '',
         cannot_binding_lines: '',
+        AX_lines: '',
         Four_SR_lines: '',
         board_width: 0,
         input_col: '',
@@ -579,6 +588,7 @@ export default {
         ximenzi_lines: '',
         cannot_binding_lines: '',
         Four_SR_lines: '',
+        AX_lines: '',
         board_width: 0,
         input_col: '',
         output_col: '',
@@ -789,6 +799,11 @@ export default {
           trigger: 'change'
         }],
         big_lines: [{
+          required: true,
+          message: '该项不能为空',
+          trigger: 'change'
+        }],
+        AX_lines: [{
           required: true,
           message: '该项不能为空',
           trigger: 'change'
