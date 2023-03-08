@@ -11,7 +11,7 @@
               <div @click="toCompute">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-monitor" /></span>
-                  <span style="margin-left: 10px;">计算排程</span>
+                  <span style="margin-left: 10px;">排程面板</span>
                 </el-card>
               </div>
             </el-col>
@@ -19,7 +19,7 @@
               <div @click="toAnalysis">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-monitor" /></span>
-                  <span style="margin-left: 10px;">分析排程</span>
+                  <span style="margin-left: 10px;">在线表格</span>
                 </el-card>
               </div>
             </el-col>
