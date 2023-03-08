@@ -94,15 +94,15 @@ const longconfigRouter = {
         roles: ['admin', 'common']
       }
     },
-    {
-      path: 'keyboardlinedata',
-      component: () => import('@/views/longconfig/KeyBoardLineData'),
-      name: 'KeyBoardLineData',
-      meta: {
-        title: '按键板表',
-        roles: ['admin', 'common']
-      }
-    },
+    // {
+    //   path: 'keyboardlinedata',
+    //   component: () => import('@/views/longconfig/KeyBoardLineData'),
+    //   name: 'KeyBoardLineData',
+    //   meta: {
+    //     title: '按键板表',
+    //     roles: ['admin', 'common']
+    //   }
+    // },
     {
       path: 'earlyduedateboard8',
       component: () => import('@/views/longconfig/EarlyDueDateBoard8'),
@@ -130,21 +130,30 @@ const longconfigRouter = {
         roles: ['admin', 'common']
       }
     },
-    // {
-    //   path: 'keyboardspecialmodel',
-    //   component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
-    //   name: 'KeyBoardSpecialModel',
-    //   meta: {
-    //     title: '点胶特殊机种表',
-    //     roles: ['admin', 'common']
-    //   }
-    // },
+    {
+      path: 'keyboardspecialmodel',
+      component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
+      name: 'KeyBoardSpecialModel',
+      meta: {
+        title: '只烧录不打板殊机种表',
+        roles: ['admin', 'common']
+      }
+    },
     {
       path: 'dispensingbeforeaimachine',
       component: () => import('@/views/longconfig/DispensingBeforeAIMachine'),
       name: 'DispensingBeforeAIMachine',
       meta: {
         title: '先点胶后AI特殊机种',
+        roles: ['admin', 'common']
+      }
+    },
+    {
+      path: 'correspondencedata',
+      component: () => import('@/views/longconfig/CorrespondenceData'),
+      name: 'CorrespondenceData',
+      meta: {
+        title: 'AI点胶对应关系表',
         roles: ['admin', 'common']
       }
     }

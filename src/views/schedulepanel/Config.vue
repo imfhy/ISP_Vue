@@ -24,7 +24,8 @@
           <el-descriptions-item label="idle权重">{{ modelOriginal.idle_weight }}</el-descriptions-item>
           <el-descriptions-item label="Line balance权重">{{ modelOriginal.line_balance_weight }}</el-descriptions-item>
           <el-descriptions-item label="大工单线权重">{{ modelOriginal.big_line_weight }}</el-descriptions-item>
-          <el-descriptions-item label="锁定时间节点内的idle权重" :span="4">{{ modelOriginal.lock_time_idle_weight }}</el-descriptions-item>
+          <el-descriptions-item label="锁定时间节点内的idle权重" :span="2">{{ modelOriginal.lock_time_idle_weight }}</el-descriptions-item>
+          <el-descriptions-item label="无程序机种锁定时间节点距离正常锁定时间节点时长(单位：小时)" :span="2">{{ modelOriginal.no_program_machine_to_lock_time }}</el-descriptions-item>
 
           <el-descriptions-item label="是否开启全部包装放假">
             <el-tag v-if="modelOriginal.pack_holiday_flag === true" size="small" type="success">开启</el-tag>
@@ -50,8 +51,8 @@
           <el-descriptions-item label="未上排程状态">{{ modelOriginal.unschedule_state_str }}</el-descriptions-item>
           <el-descriptions-item label="n天需求日期参数">{{ modelOriginal.threshold_duedate }}天</el-descriptions-item>
           <el-descriptions-item label="n天物料到达时间参数">{{ modelOriginal.threshold_release }}天</el-descriptions-item>
-          <el-descriptions-item label="LED额外切换时间" :span="2">{{ modelOriginal.led_extra_setup_time }}秒</el-descriptions-item>
-
+          <el-descriptions-item label="LED额外切换时间">{{ modelOriginal.led_extra_setup_time }}秒</el-descriptions-item>
+          <el-descriptions-item label="AI去向列识别内容">{{ modelOriginal.go_where_remark_info }}</el-descriptions-item>
           <el-descriptions-item label="维护时间约束">
             <el-tag v-if="modelOriginal.block_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.block_time_rule === false" size="small" type="danger">关闭</el-tag>
@@ -76,19 +77,19 @@
             <el-tag v-if="modelOriginal.force_day_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_day_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="排xx夜班约束">
+          <el-descriptions-item label="排xx夜班约束" :span="2">
             <el-tag v-if="modelOriginal.force_night_shift_time_rule === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.force_night_shift_time_rule === false" size="small" type="danger">关闭</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="非Gaia工单赌物料到20:00">
+          <!-- <el-descriptions-item label="非Gaia工单赌物料到20:00">
             <el-tag v-if="modelOriginal.not_gaia_release_time_eight === true" size="small" type="success">开启</el-tag>
             <el-tag v-else-if="modelOriginal.not_gaia_release_time_eight === false" size="small" type="danger">关闭</el-tag>
-          </el-descriptions-item>
+          </el-descriptions-item> -->
 
-          <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
+          <!-- <el-descriptions-item label="SM13下板新机种每班产能点数，单位为万" :span="2">{{ modelOriginal.sm13_buttom_new_machine_predict }}万</el-descriptions-item>
           <el-descriptions-item label="SM21上板产能点数预测界限，单位为点" :span="2">{{ modelOriginal.sm21_top_led_threshold }}点</el-descriptions-item>
           <el-descriptions-item label="SM21上板小于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_le_predict }}万</el-descriptions-item>
-          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item>
+          <el-descriptions-item label="SM21上板大于界限产能点数，单位为万" :span="2">{{ modelOriginal.sm21_top_gt_predict }}万</el-descriptions-item> -->
 
           <el-descriptions-item label="是否执行分组">
             <el-tag v-if="modelOriginal.need_dispatch === true" size="small" type="success">开启</el-tag>
@@ -233,7 +234,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
+          <!-- <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm13_buttom_new_machine_predict" prop="sm13_buttom_new_machine_predict" label="SM13下板新机种每班产能点数，单位为万">
                 <el-input-number v-model="model.sm13_buttom_new_machine_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
@@ -244,9 +245,9 @@
                 <el-input-number v-model="model.sm21_top_led_threshold" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
-            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+            <!-- <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.sm21_top_le_predict" prop="sm21_top_le_predict" label="SM21上板小于界限产能点数，单位为万">
                 <el-input-number v-model="model.sm21_top_le_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
@@ -255,10 +256,20 @@
               <el-form-item :rules="rules.sm21_top_gt_predict" prop="sm21_top_gt_predict" label="SM21上板大于界限产能点数，单位为万">
                 <el-input-number v-model="model.sm21_top_gt_predict" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
               </el-form-item>
-            </el-col>
+            </el-col> -->
             <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.led_extra_setup_time" prop="led_extra_setup_time" label="LED额外切换时间">
                 <el-input-number v-model="model.led_extra_setup_time" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.no_program_machine_to_lock_time" prop="no_program_machine_to_lock_time" label="无程序机种锁定时间节点距离正常锁定时间节点时长(单位：小时)">
+                <el-input-number v-model="model.no_program_machine_to_lock_time" placeholder="请输入" :step="1" :style="{width: '100%'}" clearable />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="0" :push="0" :pull="0" tag="div">
+              <el-form-item :rules="rules.go_where_remark_info" prop="go_where_remark_info" label="AI去向列识别内容">
+                <el-input v-model="model.go_where_remark_info" placeholder="请输入" clearable />
               </el-form-item>
             </el-col>
           </el-row>
@@ -300,11 +311,11 @@
                 <el-switch v-model="model.force_night_shift_time_rule" />
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
+            <!-- <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
               <el-form-item :rules="rules.not_gaia_release_time_eight" prop="not_gaia_release_time_eight" label="非Gaia工单赌物料到20:00">
                 <el-switch v-model="model.not_gaia_release_time_eight" />
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="6" :offset="0" :push="0" :pull="0" tag="div">
@@ -429,6 +440,8 @@ export default {
         input_col: '',
         output_col: '',
         output_line_order: '',
+        go_where_remark_info: '',
+        no_program_machine_to_lock_time: '`',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -474,6 +487,8 @@ export default {
         input_col: '',
         output_col: '',
         output_line_order: '',
+        go_where_remark_info: '',
+        no_program_machine_to_lock_time: '',
         CREATED_BY: '',
         CREATED_TIME: '',
         UPDATED_BY: '',
@@ -599,31 +614,31 @@ export default {
           message: '排xx夜班约束不能为空',
           trigger: 'change'
         }],
-        not_gaia_release_time_eight: [{
-          required: true,
-          message: '该选项不能为空',
-          trigger: 'change'
-        }],
-        sm13_buttom_new_machine_predict: [{
-          required: true,
-          message: 'SM13下板新机种每班产能点数不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_led_threshold: [{
-          required: true,
-          message: 'SM21上板产能点数预测界限不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_le_predict: [{
-          required: true,
-          message: 'SM21上板小于界限产能点数不能为空',
-          trigger: 'blur'
-        }],
-        sm21_top_gt_predict: [{
-          required: true,
-          message: 'SM21上板大于界限产能点数不能为空',
-          trigger: 'blur'
-        }],
+        // not_gaia_release_time_eight: [{
+        //   required: true,
+        //   message: '该选项不能为空',
+        //   trigger: 'change'
+        // }],
+        // sm13_buttom_new_machine_predict: [{
+        //   required: true,
+        //   message: 'SM13下板新机种每班产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_led_threshold: [{
+        //   required: true,
+        //   message: 'SM21上板产能点数预测界限不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_le_predict: [{
+        //   required: true,
+        //   message: 'SM21上板小于界限产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
+        // sm21_top_gt_predict: [{
+        //   required: true,
+        //   message: 'SM21上板大于界限产能点数不能为空',
+        //   trigger: 'blur'
+        // }],
         need_preprocess: [{
           required: true,
           message: '是否执行预处理不能为空',
@@ -672,6 +687,16 @@ export default {
         output_line_order: [{
           required: true,
           message: '导出的线体顺序不能为空',
+          trigger: 'blur'
+        }],
+        go_where_remark_info: [{
+          required: true,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        no_program_machine_to_lock_time: [{
+          required: true,
+          message: '不能为空',
           trigger: 'blur'
         }]
       }

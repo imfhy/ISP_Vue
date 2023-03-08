@@ -96,7 +96,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     name: 'SchedulePanel',
     meta: {
-      title: '排程面板',
+      title: '控制面板',
       icon: 'component',
       roles: ['admin', 'common']
     },
@@ -106,7 +106,7 @@ export const asyncRoutes = [
         component: () => import('@/views/schedulepanel/Control'),
         name: 'Control',
         meta: {
-          title: '控制面板',
+          title: '排程面板',
           roles: ['admin', 'common']
         }
       },
