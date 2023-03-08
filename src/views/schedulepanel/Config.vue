@@ -392,43 +392,43 @@
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.big_lines" prop="big_lines" label="大工单线线体(线体用逗号隔开)">
+              <el-form-item :rules="rules.big_lines" prop="big_lines" label="大工单线线体(线体用顿号隔开)">
                 <el-input v-model="model.big_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.Big_lines_remove22" prop="Big_lines_remove22" label="优先排大工单线体(线体用逗号隔开)">
+              <el-form-item :rules="rules.Big_lines_remove22" prop="Big_lines_remove22" label="优先排大工单线体(线体用顿号隔开)">
                 <el-input v-model="model.Big_lines_remove22" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.Non_big_lines" prop="Non_big_lines" label="该线体工单优先排大工单线(线体用逗号隔开)">
+              <el-form-item :rules="rules.Non_big_lines" prop="Non_big_lines" label="该线体工单优先排大工单线(线体用顿号隔开)">
                 <el-input v-model="model.Non_big_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.ximenzi_lines" prop="ximenzi_lines" label="西门子线体配置(线体用逗号隔开)">
+              <el-form-item :rules="rules.ximenzi_lines" prop="ximenzi_lines" label="西门子线体配置(线体用顿号隔开)">
                 <el-input v-model="model.ximenzi_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.cannot_binding_lines" prop="cannot_binding_lines" label="不能绑定的线体配置(线体用逗号隔开)">
+              <el-form-item :rules="rules.cannot_binding_lines" prop="cannot_binding_lines" label="不能绑定的线体配置(线体用顿号隔开)">
                 <el-input v-model="model.cannot_binding_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.Four_SR_lines" prop="Four_SR_lines" label="BPR线体(线体用逗号隔开)">
+              <el-form-item :rules="rules.Four_SR_lines" prop="Four_SR_lines" label="BPR线体(线体用顿号隔开)">
                 <el-input v-model="model.Four_SR_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" justify="start" align="top" tag="div">
             <el-col :span="12" :offset="0" :push="0" :pull="0" tag="div">
-              <el-form-item :rules="rules.AX_lines" prop="AX_lines" label="安必昂不能绑定线体(线体用逗号隔开)">
+              <el-form-item :rules="rules.AX_lines" prop="AX_lines" label="安必昂不能绑定线体(线体用顿号隔开)">
                 <el-input v-model="model.AX_lines" placeholder="请输入" :rows="1" type="textarea" clearable />
               </el-form-item>
             </el-col>
