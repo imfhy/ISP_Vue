@@ -11,7 +11,7 @@
               <div @click="toCompute">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-monitor" /></span>
-                  <span style="margin-left: 10px;">计算排程</span>
+                  <span style="margin-left: 10px;">主板小板排程</span>
                 </el-card>
               </div>
             </el-col>
@@ -19,7 +19,7 @@
               <div @click="toAnalysis">
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-monitor" /></span>
-                  <span style="margin-left: 10px;">分析排程</span>
+                  <span style="margin-left: 10px;">在线表格</span>
                 </el-card>
               </div>
             </el-col>
@@ -56,6 +56,16 @@
                 <el-card shadow="hover" class="btn-card">
                   <span class="btn-icon"><i class="el-icon-document" /></span>
                   <span style="margin-left: 10px;">查看历史操作</span>
+                </el-card>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <div @click="toOutsource">
+                <el-card shadow="hover" class="btn-card">
+                  <span class="btn-icon"><i class="el-icon-monitor" /></span>
+                  <span style="margin-left: 10px;">外包控制面板</span>
                 </el-card>
               </div>
             </el-col>
@@ -144,6 +154,9 @@ export default {
     },
     toBlockTimeData() {
       this.$router.push({ path: 'dayconfig/blocktimedata' })
+    },
+    toOutsource() {
+      this.$router.push({ path: 'schedulepanel/outsource' })
     },
     // 画图
     drawCharts(days) {
