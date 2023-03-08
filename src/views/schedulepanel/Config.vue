@@ -803,41 +803,41 @@ export default {
           message: '该项不能为空',
           trigger: 'change'
         }],
-        AX_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        Big_lines_remove22: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        Non_big_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        ximenzi_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        cannot_binding_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        Four_SR_lines: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
-        board_width: [{
-          required: true,
-          message: '该项不能为空',
-          trigger: 'change'
-        }],
+        // AX_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // Big_lines_remove22: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // Non_big_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // ximenzi_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // cannot_binding_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // Four_SR_lines: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
+        // board_width: [{
+        //   required: true,
+        //   message: '该项不能为空',
+        //   trigger: 'change'
+        // }],
         input_col: [{
           required: true,
           message: '输入的列不能为空',
