@@ -10,7 +10,7 @@ import Layout from '@/layout'
 import outsourceConstraintsRouter from './modules/outsource_constraints'
 import outsourceBaseDataRouter from './modules/outsource_basedata'
 import outsourceDataRouter from './modules/outsource_data'
-import dayconfigRouter from './modules/dayconfig'
+import DayConfigRouter from './modules/DayConfig'
 import longconfigRouter from './modules/longconfig'
 import predictRouter from './modules/predict'
 /**
@@ -142,7 +142,7 @@ export const asyncRoutes = [
     ]
   },
 
-  dayconfigRouter,
+  DayConfigRouter,
   longconfigRouter,
   predictRouter,
   outsourceConstraintsRouter,

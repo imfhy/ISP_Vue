@@ -359,7 +359,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/NoProgramData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/NoProgramData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'NoProgramData',
@@ -946,7 +946,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/NoProgramData.scss';
+  @import '../../assets/css/DayConfig/NoProgramData.scss';
 </style>
 <style>
 .btnDanger{

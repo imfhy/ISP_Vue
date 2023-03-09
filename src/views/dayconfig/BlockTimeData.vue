@@ -489,7 +489,7 @@ import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, AddMultiData,
   ExportData, ImportData, GetBackupName, BackupData, RecoverBackupData, DeleteBackupData,
-  GetDefaultData, SyncFormalData } from '@/api/dayconfig/BlockTimeData'
+  GetDefaultData, SyncFormalData } from '@/api/DayConfig/BlockTimeData'
 // import { lineOptions, LineOptions } from '@/utils/items'
 export default {
   name: 'BlockTimeData',
@@ -1322,7 +1322,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/BlockTimeData.scss';
+  @import '../../assets/css/DayConfig/BlockTimeData.scss';
 </style>
 <style>
 .btnDanger{

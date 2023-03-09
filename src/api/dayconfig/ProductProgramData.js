@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/config/productprogramdata/get_table_data/',
+    url: '/DayConfig/ProductProgramData/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/config/productprogramdata/add_data/',
+    url: '/DayConfig/ProductProgramData/add_data/',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/config/productprogramdata/modify_data/',
+    url: '/DayConfig/ProductProgramData/modify_data/',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/config/productprogramdata/delete_data/',
+    url: '/DayConfig/ProductProgramData/delete_data/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/config/productprogramdata/handle_delete/',
+    url: '/DayConfig/ProductProgramData/handle_delete/',
     method: 'post',
     data
   })
@@ -42,7 +42,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/config/productprogramdata/import_data/',
+    url: '/DayConfig/ProductProgramData/import_data/',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData() {
   return request({
-    url: '/config/productprogramdata/export_data/',
+    url: '/DayConfig/ProductProgramData/export_data/',
     method: 'get'
   })
 }

@@ -382,7 +382,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/NetworkBoard'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/NetworkBoard'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'NetworkBoard',
@@ -976,7 +976,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/NetworkBoard.scss';
+  @import '../../assets/css/DayConfig/NetworkBoard.scss';
 </style>
 <style>
 .btnDanger{

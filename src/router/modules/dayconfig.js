@@ -1,10 +1,10 @@
 // 每日配置
 import Layout from '@/layout'
 
-const dayconfigRouter = {
-  path: '/dayconfig',
+const DayConfigRouter = {
+  path: '/DayConfig',
   component: Layout,
-  redirect: '/dayconfig/blocktimedata',
+  redirect: '/DayConfig/BlockTimeData',
   alwaysShow: true,
   name: 'DayConfig',
   meta: {
@@ -14,8 +14,8 @@ const dayconfigRouter = {
   },
   children: [
     {
-      path: 'blocktimedata',
-      component: () => import('@/views/dayconfig/BlockTimeData'),
+      path: 'BlockTimeData',
+      component: () => import('@/views/DayConfig/BlockTimeData'),
       name: 'BlockTimeData',
       meta: {
         title: '维护时间表',
@@ -24,7 +24,7 @@ const dayconfigRouter = {
     },
     {
       path: 'packholiday',
-      component: () => import('@/views/dayconfig/PackHoliday'),
+      component: () => import('@/views/DayConfig/PackHoliday'),
       name: 'PackHoliday',
       meta: {
         title: '包装线放假表',
@@ -33,7 +33,7 @@ const dayconfigRouter = {
     },
     {
       path: 'programdata',
-      component: () => import('@/views/dayconfig/ProgramData'),
+      component: () => import('@/views/DayConfig/ProgramData'),
       name: 'ProgramData',
       meta: {
         title: '程序表',
@@ -41,8 +41,8 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'productionreportdata',
-      component: () => import('@/views/dayconfig/ProductionReportData'),
+      path: 'ProductionReportData',
+      component: () => import('@/views/DayConfig/ProductionReportData'),
       name: 'ProductionReportData',
       meta: {
         title: '生产报表',
@@ -50,8 +50,8 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'noprogramdata',
-      component: () => import('@/views/dayconfig/NoProgramData'),
+      path: 'NoProgramData',
+      component: () => import('@/views/DayConfig/NoProgramData'),
       name: 'NoProgramData',
       meta: {
         title: '无程序清单表',
@@ -59,8 +59,8 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'networkboard',
-      component: () => import('@/views/dayconfig/NetworkBoard'),
+      path: 'NetworkBoard',
+      component: () => import('@/views/DayConfig/NetworkBoard'),
       name: 'NetworkBoard',
       meta: {
         title: '网板信息表',
@@ -68,8 +68,8 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'testprogramdata',
-      component: () => import('@/views/dayconfig/TestProgramData'),
+      path: 'TestProgramData',
+      component: () => import('@/views/DayConfig/TestProgramData'),
       name: 'TestProgramData',
       meta: {
         title: '试跑程序表',
@@ -77,8 +77,8 @@ const dayconfigRouter = {
       }
     },
     {
-      path: 'productprogramdata',
-      component: () => import('@/views/dayconfig/ProductProgramData'),
+      path: 'ProductProgramData',
+      component: () => import('@/views/DayConfig/ProductProgramData'),
       name: 'ProductProgramData',
       meta: {
         title: '量产程序表',
@@ -88,4 +88,4 @@ const dayconfigRouter = {
   ]
 }
 
-export default dayconfigRouter
+export default DayConfigRouter

@@ -426,7 +426,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/dayconfig/ProductionReportData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/DayConfig/ProductionReportData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'ProductionReportData',
@@ -1134,7 +1134,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/dayconfig/ProductionReportData.scss';
+  @import '../../assets/css/DayConfig/ProductionReportData.scss';
 </style>
 <style>
 .btnDanger{
