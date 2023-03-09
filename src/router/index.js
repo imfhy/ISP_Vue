@@ -92,11 +92,11 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/schedulepanel',
+    path: '/control',
     component: Layout,
-    redirect: '/schedulepanel/control',
+    redirect: '/control/schedulepanel',
     alwaysShow: true,
-    name: 'SchedulePanel',
+    name: 'Control',
     meta: {
       title: '控制面板',
       icon: 'component',
@@ -104,9 +104,9 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'control',
-        component: () => import('@/views/schedulepanel/Control'),
-        name: 'Control',
+        path: 'schedulepanel',
+        component: () => import('@/views/Control/SchedulePanel'),
+        name: 'SchedulePanel',
         meta: {
           title: '主板小板排程',
           roles: ['admin', 'common']
@@ -114,7 +114,7 @@ export const asyncRoutes = [
       },
       {
         path: 'config',
-        component: () => import('@/views/schedulepanel/Config'),
+        component: () => import('@/views/Control/Config'),
         name: 'Config',
         meta: {
           title: '排程配置',
@@ -123,7 +123,7 @@ export const asyncRoutes = [
       },
       {
         path: 'onlinetable',
-        component: () => import('@/views/schedulepanel/OnlineTable'),
+        component: () => import('@/views/Control/OnlineTable'),
         name: 'OnlineTable',
         meta: {
           title: '在线表格',
@@ -132,7 +132,7 @@ export const asyncRoutes = [
       },
       {
         path: 'outsource',
-        component: () => import('@/views/schedulepanel/Outsource'),
+        component: () => import('@/views/Control/Outsource'),
         name: 'Outsource',
         meta: {
           title: '外包控制面板',

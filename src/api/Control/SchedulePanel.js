@@ -3,7 +3,7 @@ import request from '../../utils/request'
 // 训练预测模型接口
 export function TrainModel(data) {
   return request({
-    url: '/preprocess/control/train_model/',
+    url: '/Control/SchedulePanel/train_model/',
     method: 'post',
     data
   })
@@ -11,7 +11,7 @@ export function TrainModel(data) {
 // 数据检查
 export function CheckData(data) {
   return request({
-    url: '/preprocess/control/check_input_excel_upload/',
+    url: '/Control/SchedulePanel/check_input_excel_upload/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
@@ -20,7 +20,7 @@ export function CheckData(data) {
 // 新版数据检查
 export function CheckDataNew(data) {
   return request({
-    url: '/preprocess/control/check_input_excel_new/',
+    url: '/Control/SchedulePanel/check_input_excel_new/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
@@ -29,7 +29,7 @@ export function CheckDataNew(data) {
 // 导入排程表格接口
 export function ImportSchedule(data) {
   return request({
-    url: '/preprocess/control/import_schedule/',
+    url: '/Control/SchedulePanel/import_schedule/',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -38,7 +38,7 @@ export function ImportSchedule(data) {
 // 导入主板+小板排程表格接口
 export function ImportScheduleBoth(data) {
   return request({
-    url: '/preprocess/control/import_schedule_both/',
+    url: '/Control/SchedulePanel/import_schedule_both/',
     method: 'post',
     timeout: 10 * 60 * 1000,
     data
@@ -47,7 +47,7 @@ export function ImportScheduleBoth(data) {
 // 计算排程表格接口
 export function ComputeScheduleMain(data) {
   return request({
-    url: '/preprocess/control/compute_schedule_main/',
+    url: '/Control/SchedulePanel/compute_schedule_main/',
     method: 'post',
     timeout: 100 * 60 * 1000,
     data
@@ -55,7 +55,7 @@ export function ComputeScheduleMain(data) {
 }
 export function ComputeScheduleSmall(data) {
   return request({
-    url: '/preprocess/control/compute_schedule_small/',
+    url: '/Control/SchedulePanel/compute_schedule_small/',
     method: 'post',
     timeout: 100 * 60 * 1000,
     data
@@ -63,7 +63,7 @@ export function ComputeScheduleSmall(data) {
 }
 export function ComputeScheduleBoth(data) {
   return request({
-    url: '/preprocess/control/compute_schedule_both/',
+    url: '/Control/SchedulePanel/compute_schedule_both/',
     method: 'post',
     timeout: 60 * 60 * 1000,
     data
@@ -72,7 +72,7 @@ export function ComputeScheduleBoth(data) {
 // 终止深度搜素
 export function StopTabu(user_name) {
   return request({
-    url: '/preprocess/control/stop_tabu/',
+    url: '/Control/SchedulePanel/stop_tabu/',
     method: 'get',
     params: { user_name }
   })
@@ -80,21 +80,21 @@ export function StopTabu(user_name) {
 // 获取进度条
 export function GetProgress() {
   return request({
-    url: '/preprocess/control/get_progress/',
+    url: '/Control/SchedulePanel/get_progress/',
     method: 'get'
   })
 }
 // 获取历史日志选择器选项
 export function GetLogSelectItem() {
   return request({
-    url: '/preprocess/control/get_history_log_item/',
+    url: '/Control/SchedulePanel/get_history_log_item/',
     method: 'get'
   })
 }
 // 获取历史排程选择器选项
 export function GetExcelSelectItem() {
   return request({
-    url: '/preprocess/control/get_history_excel_item/',
+    url: '/Control/SchedulePanel/get_history_excel_item/',
     method: 'get'
   })
 }
@@ -102,7 +102,7 @@ export function GetExcelSelectItem() {
 export function DownloadHistoryLog(data) {
   return request({
     method: 'post',
-    url: '/preprocess/control/download_history_log/',
+    url: '/Control/SchedulePanel/download_history_log/',
     responseType: 'blob',
     data
   })
@@ -111,7 +111,7 @@ export function DownloadHistoryLog(data) {
 export function DownloadHistoryExcel(data) {
   return request({
     method: 'post',
-    url: '/preprocess/control/download_history_excel/',
+    url: '/Control/SchedulePanel/download_history_excel/',
     responseType: 'blob',
     data
   })
@@ -120,7 +120,7 @@ export function DownloadHistoryExcel(data) {
 export function DownloadSchedule() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_schedule/',
+    url: '/Control/SchedulePanel/download_schedule/',
     responseType: 'blob'
   })
 }
@@ -128,7 +128,7 @@ export function DownloadSchedule() {
 export function DownloadLatestLog() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_latest_log/',
+    url: '/Control/SchedulePanel/download_latest_log/',
     responseType: 'blob'
   })
 }
@@ -136,7 +136,7 @@ export function DownloadLatestLog() {
 export function DownloadNoProgram() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_program/',
+    url: '/Control/SchedulePanel/download_program/',
     responseType: 'blob'
   })
 }
@@ -144,7 +144,7 @@ export function DownloadNoProgram() {
 export function DownloadIdleInfoMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_idle_info_main/',
+    url: '/Control/SchedulePanel/download_idle_info_main/',
     responseType: 'blob'
   })
 }
@@ -152,7 +152,7 @@ export function DownloadIdleInfoMain() {
 export function DownloadStatisticsMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_statistics_main/',
+    url: '/Control/SchedulePanel/download_statistics_main/',
     responseType: 'blob'
   })
 }
@@ -160,7 +160,7 @@ export function DownloadStatisticsMain() {
 export function DownloadIdleInfoSmall() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_idle_info_small/',
+    url: '/Control/SchedulePanel/download_idle_info_small/',
     responseType: 'blob'
   })
 }
@@ -168,7 +168,7 @@ export function DownloadIdleInfoSmall() {
 export function DownloadStatisticsSmall() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_statistics_small/',
+    url: '/Control/SchedulePanel/download_statistics_small/',
     responseType: 'blob'
   })
 }
@@ -176,21 +176,21 @@ export function DownloadStatisticsSmall() {
 export function GetRunFlag() {
   return request({
     method: 'get',
-    url: '/preprocess/control/get_run_flag/'
+    url: '/Control/SchedulePanel/get_run_flag/'
   })
 }
 // 获取排程结果
 export function GeScheduleRes() {
   return request({
     method: 'get',
-    url: '/preprocess/control/get_schedule_res/'
+    url: '/Control/SchedulePanel/get_schedule_res/'
   })
 }
 // 终止计算排程
 export function StopSchedule(user_name) {
   return request({
     method: 'get',
-    url: '/preprocess/control/stop_schedule/',
+    url: '/Control/SchedulePanel/stop_schedule/',
     params: { user_name }
   })
 }
@@ -259,7 +259,7 @@ export function ExportSmallScheduleData(data) {
 export function DownloadScheduleSmall() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_schedule_small/',
+    url: '/Control/SchedulePanel/download_schedule_small/',
     responseType: 'blob'
   })
 }
@@ -267,20 +267,20 @@ export function DownloadScheduleSmall() {
 export function DownloadUploadFileMain() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_uploadfile_main/'
+    url: '/Control/SchedulePanel/download_uploadfile_main/'
   })
 }
 // 下载小板上传排程
 export function DownloadUploadFileSmall() {
   return request({
     method: 'get',
-    url: '/preprocess/control/download_uploadfile_small/'
+    url: '/Control/SchedulePanel/download_uploadfile_small/'
   })
 }
 // 获取进度条
 export function GetUploadFileTime() {
   return request({
-    url: '/preprocess/control/get_uploadfile_time/',
+    url: '/Control/SchedulePanel/get_uploadfile_time/',
     method: 'get'
   })
 }

@@ -721,9 +721,9 @@ import { GetProgress, TrainModel, ImportSchedule, ComputeScheduleMain, DownloadS
   GetExcelSelectItem, DownloadHistoryExcel, ImportScheduleBoth, ComputeScheduleSmall, DownloadScheduleSmall,
   GetApsMoBaseData, GetApsMoProgData, DownloadUploadFileMain, DownloadUploadFileSmall,
   GetUploadFileTime, ComputeScheduleBoth, ExportSmallScheduleData, GetApsDeliveryDay, SaveApsOutPutCount,
-  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/schedulepanel/Control'
+  DownloadStatisticsSmall, DownloadIdleInfoSmall, CheckDataNew } from '@/api/Control/SchedulePanel'
 export default {
-  name: 'Control',
+  name: 'SchedulePanel',
   directives: { elDragDialog },
   data() {
     return {
@@ -2315,7 +2315,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/schedulepanel/Control.scss';
+  @import '../../assets/css/Control/SchedulePanel.scss';
 </style>
 <style>
 .my-table .el-table th.is-leaf{

@@ -473,7 +473,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
-import { GetTableData, ModifyData } from '@/api/schedulepanel/Config'
+import { GetTableData, ModifyData } from '@/api/Control/Config'
 export default {
   name: 'Config',
   directives: { elDragDialog },
@@ -973,7 +973,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/schedulepanel/Config.scss';
+  @import '../../assets/css/Control/Config.scss';
 </style>
 <style>
 .card-form .el-card__body{

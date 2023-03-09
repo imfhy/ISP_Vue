@@ -408,7 +408,7 @@ import { AnalysisExcel, GenerateAnaExcel, DownloadAnaExcel, ClearAnaProgress, Ge
   StatisticsSchedule, SmtUnscheduled, SmtPrescheduled, SmtScheduled, AiUnscheduled,
   AiPrescheduled, AiScheduled, GetRunFlag, ImportPushSchedule, SaveApiCustweekSelfcreate,
   CheckData
-} from '@/api/schedulepanel/OnlineTable'
+} from '@/api/Control/OnlineTable'
 import { lineOptions, lockedList, unLockedList } from '@/utils/items'
 export default {
   name: 'OnlineTable',
@@ -1507,7 +1507,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/schedulepanel/OnlineTable.scss';
+  @import '../../assets/css/Control/OnlineTable.scss';
 </style>
 <style>
 .card-control .el-card__body{

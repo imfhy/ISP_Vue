@@ -138,10 +138,10 @@ export default {
   methods: {
     // 一些快捷路由跳转
     toCompute() {
-      this.$router.push({ path: 'schedulepanel/control' })
+      this.$router.push({ path: 'Control/control' })
     },
     toAnalysis() {
-      this.$router.push({ path: 'schedulepanel/onlinetable' })
+      this.$router.push({ path: 'Control/onlinetable' })
     },
     toLoggingdb() {
       this.$router.push({ path: 'logging/loggingdb' })
@@ -150,13 +150,13 @@ export default {
       this.$router.push({ path: 'logging/history' })
     },
     toConfig() {
-      this.$router.push({ path: 'schedulepanel/config' })
+      this.$router.push({ path: 'Control/config' })
     },
     toBlockTimeData() {
       this.$router.push({ path: 'dayconfig/blocktimedata' })
     },
     toOutsource() {
-      this.$router.push({ path: 'schedulepanel/outsource' })
+      this.$router.push({ path: 'Control/outsource' })
     },
     // 画图
     drawCharts(days) {
