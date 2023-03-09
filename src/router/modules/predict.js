@@ -2,9 +2,9 @@
 import Layout from '@/layout'
 
 const PredictRouter = {
-  path: '/Predict',
+  path: '/predict',
   component: Layout,
-  redirect: '/Predict/TrainLEDTData',
+  redirect: '/predict/trainledtdata',
   alwaysShow: true,
   name: 'Predict',
   meta: {
@@ -14,7 +14,7 @@ const PredictRouter = {
   },
   children: [
     {
-      path: 'TrainLEDTData',
+      path: 'trainledtdata',
       component: () => import('@/views/Predict/TrainLEDTData'),
       name: 'TrainLEDTData',
       meta: {
@@ -23,7 +23,7 @@ const PredictRouter = {
       }
     },
     {
-      path: 'TrainData',
+      path: 'traindata',
       component: () => import('@/views/Predict/TrainData'),
       name: 'TrainData',
       meta: {

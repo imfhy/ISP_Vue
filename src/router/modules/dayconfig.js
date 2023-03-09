@@ -2,9 +2,9 @@
 import Layout from '@/layout'
 
 const DayConfigRouter = {
-  path: '/DayConfig',
+  path: '/dayconfig',
   component: Layout,
-  redirect: '/DayConfig/BlockTimeData',
+  redirect: '/dayconfig/blocktimedata',
   alwaysShow: true,
   name: 'DayConfig',
   meta: {
@@ -14,7 +14,7 @@ const DayConfigRouter = {
   },
   children: [
     {
-      path: 'BlockTimeData',
+      path: 'blocktimetata',
       component: () => import('@/views/DayConfig/BlockTimeData'),
       name: 'BlockTimeData',
       meta: {
@@ -41,7 +41,7 @@ const DayConfigRouter = {
       }
     },
     {
-      path: 'ProductionReportData',
+      path: 'productionreportdata',
       component: () => import('@/views/DayConfig/ProductionReportData'),
       name: 'ProductionReportData',
       meta: {
@@ -50,7 +50,7 @@ const DayConfigRouter = {
       }
     },
     {
-      path: 'NoProgramData',
+      path: 'noprogramdata',
       component: () => import('@/views/DayConfig/NoProgramData'),
       name: 'NoProgramData',
       meta: {
@@ -59,7 +59,7 @@ const DayConfigRouter = {
       }
     },
     {
-      path: 'NetworkBoard',
+      path: 'networkboard',
       component: () => import('@/views/DayConfig/NetworkBoard'),
       name: 'NetworkBoard',
       meta: {
@@ -68,7 +68,7 @@ const DayConfigRouter = {
       }
     },
     {
-      path: 'TestProgramData',
+      path: 'testprogramdata',
       component: () => import('@/views/DayConfig/TestProgramData'),
       name: 'TestProgramData',
       meta: {
@@ -77,7 +77,7 @@ const DayConfigRouter = {
       }
     },
     {
-      path: 'ProductProgramData',
+      path: 'productprogramdata',
       component: () => import('@/views/DayConfig/ProductProgramData'),
       name: 'ProductProgramData',
       meta: {

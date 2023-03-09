@@ -153,7 +153,7 @@ export default {
       this.$router.push({ path: 'schedulepanel/config' })
     },
     toBlockTimeData() {
-      this.$router.push({ path: 'DayConfig/BlockTimeData' })
+      this.$router.push({ path: 'dayconfig/blocktimedata' })
     },
     toOutsource() {
       this.$router.push({ path: 'schedulepanel/outsource' })

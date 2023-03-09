@@ -2,9 +2,9 @@
 import Layout from '@/layout'
 
 const LongConfigRouter = {
-  path: '/LongConfig',
+  path: '/longconfig',
   component: Layout,
-  redirect: '/LongConfig/LEDCTData',
+  redirect: '/longconfig/ledctata',
   alwaysShow: true,
   name: 'LongConfig',
   meta: {
@@ -14,7 +14,7 @@ const LongConfigRouter = {
   },
   children: [
     {
-      path: 'LEDCTData',
+      path: 'ledctata',
       component: () => import('@/views/LongConfig/LEDCTData'),
       name: 'LEDCTData',
       meta: {
@@ -23,7 +23,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'MP1AddLineData',
+      path: 'mp1addlinedata',
       component: () => import('@/views/LongConfig/MP1AddLineData'),
       name: 'MP1AddLineData',
       meta: {
@@ -32,7 +32,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'NotMP1AddLineData',
+      path: 'notmp1addlinedata',
       component: () => import('@/views/LongConfig/NotMP1AddLineData'),
       name: 'NotMP1AddLineData',
       meta: {
@@ -41,7 +41,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'ExchangeLineData',
+      path: 'exchangelinedata',
       component: () => import('@/views/LongConfig/ExchangeLineData'),
       name: 'ExchangeLineData',
       meta: {
@@ -50,7 +50,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'LineData',
+      path: 'linedata',
       component: () => import('@/views/LongConfig/LineData'),
       name: 'LineData',
       meta: {
@@ -59,7 +59,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'CapacityChangeData',
+      path: 'capacitychangedata',
       component: () => import('@/views/LongConfig/CapacityChangeData'),
       name: 'CapacityChangeData',
       meta: {
@@ -68,7 +68,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'OptimizedMachineData',
+      path: 'optimizedmachinedata',
       component: () => import('@/views/LongConfig/OptimizedMachineData'),
       name: 'OptimizedMachineData',
       meta: {
@@ -77,7 +77,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'SetUpData',
+      path: 'setupdata',
       component: () => import('@/views/LongConfig/SetUpData'),
       name: 'SetUpData',
       meta: {
@@ -86,7 +86,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'ProcessData',
+      path: 'processdata',
       component: () => import('@/views/LongConfig/ProcessData'),
       name: 'ProcessData',
       meta: {
@@ -95,7 +95,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'KeyBoardLineData',
+      path: 'keyBoardlinedata',
       component: () => import('@/views/LongConfig/KeyBoardLineData'),
       name: 'KeyBoardLineData',
       meta: {
@@ -104,7 +104,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'EarlyDueDateBoard8',
+      path: 'earlyduedateboard8',
       component: () => import('@/views/LongConfig/EarlyDueDateBoard8'),
       name: 'EarlyDueDateBoard8',
       meta: {
@@ -113,7 +113,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'ChangeLineData',
+      path: 'changelinedata',
       component: () => import('@/views/LongConfig/ChangeLineData'),
       name: 'ChangeLineData',
       meta: {
@@ -122,7 +122,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'PairedSMTMachineData',
+      path: 'pairedsmtmachinedata',
       component: () => import('@/views/LongConfig/PairedSMTMachineData'),
       name: 'PairedSMTMachineData',
       meta: {
@@ -131,7 +131,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'KeyBoardSpecialModel',
+      path: 'keyboardspecialmodel',
       component: () => import('@/views/LongConfig/KeyBoardSpecialModel'),
       name: 'KeyBoardSpecialModel',
       meta: {
@@ -140,7 +140,7 @@ const LongConfigRouter = {
       }
     },
     {
-      path: 'InterfaceConfig',
+      path: 'interfaceconfig',
       component: () => import('@/views/LongConfig/InterfaceConfig'),
       name: 'InterfaceConfig',
       meta: {
