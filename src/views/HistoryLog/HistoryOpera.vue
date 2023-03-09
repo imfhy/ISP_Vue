@@ -121,9 +121,9 @@
 </template>
 
 <script>
-import { GetTableData, SearchData } from '@/api/logging/OperaHistory'
+import { GetTableData, SearchData } from '@/api/HistoryLog/HistoryOpera'
 export default {
-  name: 'OperaHistory',
+  name: 'HistoryOpera',
   data() {
     return {
       loading: true, // 表格加载动画
@@ -235,7 +235,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/logging/OperaHistory.scss';
+  @import '../../assets/css/HistoryLog/HistoryOpera.scss';
 </style>
 <style>
 .el-pagination {

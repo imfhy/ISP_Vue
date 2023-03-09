@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据分页获取
 export function GetTableData(data) {
   return request({
-    url: '/config/logging/history/get_table_data/',
+    url: '/HistoryLog/HistoryOpera/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 获取表格数据 分页获取
 export function SearchData(data) {
   return request({
-    url: '/config/logging/history/search_data/',
+    url: '/HistoryLog/HistoryOpera/search_data/',
     method: 'post',
     data
   })

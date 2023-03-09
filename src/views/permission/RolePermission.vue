@@ -210,7 +210,7 @@
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetAllUserInfo, CreateUser, ModifyUserPassword, ModifyUserInfo, DeleteUser } from '@/api/permission/RolePermission'
+import { GetAllUserInfo, CreateUser, ModifyUserPassword, ModifyUserInfo, DeleteUser } from '@/api/Permission/RolePermission'
 import { PermissionOptions } from '@/utils/items'
 export default {
   name: 'RolePermission',
@@ -604,7 +604,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/permission/RolePermission.scss';
+  @import '../../assets/css/Permission/RolePermission.scss';
 </style>
 <style>
 .btnDanger{

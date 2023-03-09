@@ -207,7 +207,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/outsource/basedata/Customer'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Outsource/BaseData/Customer'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'Customer',
@@ -663,7 +663,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../../assets/css/outsource/basedata/Customer';
+  @import '../../../assets/css/Outsource/BaseData/Customer';
 </style>
 <style>
 .btnDanger{

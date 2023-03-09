@@ -96,9 +96,9 @@
 </template>
 
 <script>
-import { GetTableData, SearchData } from '@/api/logging/Loggingdb'
+import { GetTableData, SearchData } from '@/api/HistoryLog/HistoryRun'
 export default {
-  name: 'Loggingdb',
+  name: 'HistoryRun',
   data() {
     return {
       loading: true, // 表格加载动画
@@ -194,7 +194,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/logging/Loggingdb.scss';
+  @import '../../assets/css/HistoryLog/HistoryRun.scss';
 </style>
 <style>
 .el-pagination {

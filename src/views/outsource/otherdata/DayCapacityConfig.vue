@@ -214,7 +214,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/outsource/otherdata/DayCapacityConfig'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Outsource/OtherData/DayCapacityConfig'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'DayCapacityConfig',
@@ -679,7 +679,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../../assets/css/outsource/otherdata/DayCapacityConfig.scss';
+  @import '../../../assets/css/Outsource/OtherData/DayCapacityConfig.scss';
 </style>
 <style>
 .btnDanger{

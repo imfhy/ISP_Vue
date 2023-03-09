@@ -1,7 +1,7 @@
 // 外包相关
 import Layout from '@/layout'
 // 外包基本数据
-const outsourceConstraintsRouter = {
+const OutsourceConstraintsRouter = {
   path: '/outsourceconstraints',
   component: Layout,
   redirect: '/outsourceconstraints/modelnamerestrictions',
@@ -15,7 +15,7 @@ const outsourceConstraintsRouter = {
   children: [
     {
       path: 'modelnamerestrictions',
-      component: () => import('@/views/outsource/constraints/ModelNameRestrictions'),
+      component: () => import('@/views/Outsource/Constraints/ModelNameRestrictions'),
       name: 'ModelNameRestrictions',
       meta: {
         title: 'AI/SMT组件优先分配',
@@ -24,7 +24,7 @@ const outsourceConstraintsRouter = {
     },
     {
       path: 'capacity',
-      component: () => import('@/views/outsource/constraints/Capacity'),
+      component: () => import('@/views/Outsource/Constraints/Capacity'),
       name: 'Capacity',
       meta: {
         title: '产能限制',
@@ -34,4 +34,4 @@ const outsourceConstraintsRouter = {
   ]
 }
 
-export default outsourceConstraintsRouter
+export default OutsourceConstraintsRouter

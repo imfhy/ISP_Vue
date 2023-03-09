@@ -7,9 +7,9 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import outsourceConstraintsRouter from './modules/outsource_constraints'
-import outsourceBaseDataRouter from './modules/outsource_basedata'
-import outsourceDataRouter from './modules/outsource_data'
+import OutsourceConstraintsRouter from './modules/OutsourceConstraints'
+import OutsourceBaseDataRouter from './modules/OutsourceBaseData'
+import OutsourceOtherDataRouter from './modules/OutsourceOtherData'
 import DayConfigRouter from './modules/DayConfig'
 import LongConfigRouter from './modules/LongConfig'
 import PredictRouter from './modules/Predict'
@@ -78,7 +78,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/Dashboard'),
+        component: () => import('@/views/Dashboard/Dashboard'),
         name: 'Dashboard',
         meta: { title: '首页', icon: 'el-icon-s-home', affix: true }
       }
@@ -131,9 +131,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'outsource',
-        component: () => import('@/views/Control/Outsource'),
-        name: 'Outsource',
+        path: 'outsourcecontrol',
+        component: () => import('@/views/Control/OutsourceControl'),
+        name: 'OutsourceControl',
         meta: {
           title: '外包控制面板',
           roles: ['admin', 'common']
@@ -145,9 +145,9 @@ export const asyncRoutes = [
   DayConfigRouter,
   LongConfigRouter,
   PredictRouter,
-  outsourceConstraintsRouter,
-  outsourceBaseDataRouter,
-  outsourceDataRouter,
+  OutsourceConstraintsRouter,
+  OutsourceBaseDataRouter,
+  OutsourceOtherDataRouter,
 
   {
     path: '/permission',
@@ -163,7 +163,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'role',
-        component: () => import('@/views/permission/RolePermission'),
+        component: () => import('@/views/Permission/RolePermission'),
         name: 'RolePermission',
         meta: {
           title: '用户权限',
@@ -173,9 +173,9 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/logging',
+    path: '/historylog',
     component: Layout,
-    redirect: '/logging/loggingdb',
+    redirect: '/historylog/loggingdb',
     alwaysShow: true,
     name: 'Logging',
     meta: {
@@ -185,9 +185,9 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'loggingdb',
-        component: () => import('@/views/logging/Loggingdb'),
-        name: 'Loggingdb',
+        path: 'historyrun',
+        component: () => import('@/views/HistoryLog/HistoryRun'),
+        name: 'HistoryRun',
         meta: {
           title: '运行日志',
           roles: ['admin', 'common'],
@@ -195,9 +195,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'operahistory',
-        component: () => import('@/views/logging/OperaHistory'),
-        name: 'OperaHistory',
+        path: 'historyopera',
+        component: () => import('@/views/HistoryLog/HistoryOpera'),
+        name: 'HistoryOpera',
         meta: {
           title: '历史操作',
           roles: ['admin', 'common'],

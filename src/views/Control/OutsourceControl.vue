@@ -280,9 +280,9 @@ import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
 import { GetProgress, ImportFiles, GeScheduleRes, DoOutsourceDistribute, GnerateDivisions, DownloadAllFile, DownloadFile,
-  ShowFilterRules, UpdateNewModels, DoFilterRules, GenerateOutput, SaveStepNow, GetBaseData } from '@/api/Control/Outsource'
+  ShowFilterRules, UpdateNewModels, DoFilterRules, GenerateOutput, SaveStepNow, GetBaseData } from '@/api/Control/OutsourceControl'
 export default {
-  name: 'Outsource',
+  name: 'OutsourceControl',
   directives: { elDragDialog },
   data() {
     return {
@@ -755,7 +755,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../assets/css/Control/Outsource.scss';
+  @import '../../assets/css/Control/OutsourceControl.scss';
 </style>
 <style>
 .my-table .el-table th.is-leaf{

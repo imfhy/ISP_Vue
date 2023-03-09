@@ -2,14 +2,14 @@ import request from '../../utils/request'
 // 获取所有用户信息
 export function GetAllUserInfo() {
   return request({
-    url: '/config/user/get_all_user/',
+    url: '/User/get_all_user/',
     method: 'get'
   })
 }
 // 创建用户
 export function CreateUser(data) {
   return request({
-    url: '/config/user/create_user/',
+    url: '/User/create_user/',
     method: 'post',
     data
   })
@@ -17,7 +17,7 @@ export function CreateUser(data) {
 // 修改用户基本信息
 export function ModifyUserInfo(data) {
   return request({
-    url: '/config/user/modify_userinfo/',
+    url: '/User/modify_userinfo/',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function ModifyUserInfo(data) {
 // 修改用户密码
 export function ModifyUserPassword(data) {
   return request({
-    url: '/config/user/modify_password/',
+    url: '/User/modify_password/',
     method: 'post',
     data
   })
@@ -33,7 +33,7 @@ export function ModifyUserPassword(data) {
 // 删除用户
 export function DeleteUser(data) {
   return request({
-    url: '/config/user/delete_user/',
+    url: '/User/delete_user/',
     method: 'post',
     data
   })

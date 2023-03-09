@@ -288,7 +288,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/outsource/otherdata/OldOrder'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Outsource/OtherData/OldOrder'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'OldOrder',
@@ -849,7 +849,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../../assets/css/outsource/otherdata/OldOrder.scss';
+  @import '../../../assets/css/Outsource/OtherData/OldOrder.scss';
 </style>
 <style>
 .btnDanger{

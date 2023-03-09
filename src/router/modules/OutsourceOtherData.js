@@ -1,10 +1,10 @@
 // 外包相关
 import Layout from '@/layout'
 // 外包数据
-const outsourceDataRouter = {
-  path: '/outsourcedata',
+const OutsourceOtherDataRouter = {
+  path: '/outsourceotherdata',
   component: Layout,
-  redirect: '/outsourcedata/schedule',
+  redirect: '/outsourceotherdata/schedule',
   alwaysShow: true,
   name: 'OutsourceData',
   meta: {
@@ -15,7 +15,7 @@ const outsourceDataRouter = {
   children: [
     {
       path: 'schedule',
-      component: () => import('@/views/outsource/otherdata/Schedule'),
+      component: () => import('@/views/Outsource/OtherData/Schedule'),
       name: 'Schedule',
       meta: {
         title: '业务排程明细',
@@ -24,7 +24,7 @@ const outsourceDataRouter = {
     },
     {
       path: 'daycapacityconfig',
-      component: () => import('@/views/outsource/otherdata/DayCapacityConfig'),
+      component: () => import('@/views/Outsource/OtherData/DayCapacityConfig'),
       name: 'DayCapacityConfig',
       meta: {
         title: '每日产能配置',
@@ -33,7 +33,7 @@ const outsourceDataRouter = {
     },
     {
       path: 'division',
-      component: () => import('@/views/outsource/otherdata/Division'),
+      component: () => import('@/views/Outsource/OtherData/Division'),
       name: 'Division',
       meta: {
         title: '分工单格式',
@@ -42,7 +42,7 @@ const outsourceDataRouter = {
     },
     {
       path: 'oldorder',
-      component: () => import('@/views/outsource/otherdata/OldOrder'),
+      component: () => import('@/views/Outsource/OtherData/OldOrder'),
       name: 'OldOrder',
       meta: {
         title: '旧工单',
@@ -51,7 +51,7 @@ const outsourceDataRouter = {
     },
     {
       path: 'outputfiles',
-      component: () => import('@/views/outsource/otherdata/OutputFiles'),
+      component: () => import('@/views/Outsource/OtherData/OutputFiles'),
       name: 'OutputFiles',
       meta: {
         title: '输出文件',
@@ -60,7 +60,7 @@ const outsourceDataRouter = {
     },
     {
       path: 'summary',
-      component: () => import('@/views/outsource/otherdata/Summary'),
+      component: () => import('@/views/Outsource/OtherData/Summary'),
       name: 'Summary',
       meta: {
         title: '业务排程汇总',
@@ -69,4 +69,4 @@ const outsourceDataRouter = {
     }
   ]
 }
-export default outsourceDataRouter
+export default OutsourceOtherDataRouter

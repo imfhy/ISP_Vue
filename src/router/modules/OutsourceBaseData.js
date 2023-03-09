@@ -1,7 +1,7 @@
 // 外包相关
 import Layout from '@/layout'
 // 外包基本数据
-const outsourceBaseDataRouter = {
+const OutsourceBaseDataRouter = {
   path: '/outsourcebasedata',
   component: Layout,
   redirect: '/outsourcebasedata/customer',
@@ -15,7 +15,7 @@ const outsourceBaseDataRouter = {
   children: [
     {
       path: 'customer',
-      component: () => import('@/views/outsource/basedata/Customer'),
+      component: () => import('@/views/Outsource/BaseData/Customer'),
       name: 'Customer',
       meta: {
         title: '客户表',
@@ -23,8 +23,8 @@ const outsourceBaseDataRouter = {
       }
     },
     {
-      path: 'factoryType',
-      component: () => import('@/views/outsource/basedata/FactoryType'),
+      path: 'factorytype',
+      component: () => import('@/views/Outsource/BaseData/FactoryType'),
       name: 'FactoryType',
       meta: {
         title: '厂别表',
@@ -34,4 +34,4 @@ const outsourceBaseDataRouter = {
   ]
 }
 
-export default outsourceBaseDataRouter
+export default OutsourceBaseDataRouter
