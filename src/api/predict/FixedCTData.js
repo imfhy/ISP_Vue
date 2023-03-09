@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/predict/fixedctdata/get_table_data/',
+    url: '/Predict/FixedCTData/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/predict/fixedctdata/add_data/',
+    url: '/Predict/FixedCTData/add_data/',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/predict/fixedctdata/modify_data/',
+    url: '/Predict/FixedCTData/modify_data/',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/predict/fixedctdata/delete_data/',
+    url: '/Predict/FixedCTData/delete_data/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/predict/fixedctdata/handle_delete/',
+    url: '/Predict/FixedCTData/handle_delete/',
     method: 'post',
     data
   })
@@ -42,7 +42,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/predict/fixedctdata/import_data/',
+    url: '/Predict/FixedCTData/import_data/',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData() {
   return request({
-    url: '/predict/fixedctdata/export_data/',
+    url: '/Predict/FixedCTData/export_data/',
     method: 'get'
   })
 }

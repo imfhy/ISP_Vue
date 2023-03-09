@@ -1,10 +1,10 @@
 // 预测数据
 import Layout from '@/layout'
 
-const predictRouter = {
-  path: '/predict',
+const PredictRouter = {
+  path: '/Predict',
   component: Layout,
-  redirect: '/predict/ledctdata',
+  redirect: '/Predict/TrainLEDTData',
   alwaysShow: true,
   name: 'Predict',
   meta: {
@@ -14,8 +14,8 @@ const predictRouter = {
   },
   children: [
     {
-      path: 'trainleddata',
-      component: () => import('@/views/predict/TrainLEDTData'),
+      path: 'TrainLEDTData',
+      component: () => import('@/views/Predict/TrainLEDTData'),
       name: 'TrainLEDTData',
       meta: {
         title: 'LED训练数据',
@@ -23,8 +23,8 @@ const predictRouter = {
       }
     },
     {
-      path: 'traindata',
-      component: () => import('@/views/predict/TrainData'),
+      path: 'TrainData',
+      component: () => import('@/views/Predict/TrainData'),
       name: 'TrainData',
       meta: {
         title: '训练数据',
@@ -32,8 +32,8 @@ const predictRouter = {
       }
     },
     {
-      path: 'fixedctdata',
-      component: () => import('@/views/predict/FixedCTData'),
+      path: 'FixedCTData',
+      component: () => import('@/views/Predict/FixedCTData'),
       name: 'FixedCTData',
       meta: {
         title: '车间指定CT表',
@@ -43,4 +43,4 @@ const predictRouter = {
   ]
 }
 
-export default predictRouter
+export default PredictRouter

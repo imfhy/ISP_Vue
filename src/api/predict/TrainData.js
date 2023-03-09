@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/predict/traindata/get_table_data/',
+    url: '/Predict/TrainData/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/predict/traindata/add_data/',
+    url: '/Predict/TrainData/add_data/',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/predict/traindata/modify_data/',
+    url: '/Predict/TrainData/modify_data/',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/predict/traindata/delete_data/',
+    url: '/Predict/TrainData/delete_data/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/predict/traindata/handle_delete/',
+    url: '/Predict/TrainData/handle_delete/',
     method: 'post',
     data
   })
@@ -42,7 +42,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/predict/traindata/import_data/',
+    url: '/Predict/TrainData/import_data/',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData() {
   return request({
-    url: '/predict/traindata/export_data/',
+    url: '/Predict/TrainData/export_data/',
     method: 'get'
   })
 }

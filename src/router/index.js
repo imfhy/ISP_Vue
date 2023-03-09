@@ -12,7 +12,7 @@ import outsourceBaseDataRouter from './modules/outsource_basedata'
 import outsourceDataRouter from './modules/outsource_data'
 import DayConfigRouter from './modules/DayConfig'
 import LongConfigRouter from './modules/LongConfig'
-import predictRouter from './modules/predict'
+import PredictRouter from './modules/Predict'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -144,7 +144,7 @@ export const asyncRoutes = [
 
   DayConfigRouter,
   LongConfigRouter,
-  predictRouter,
+  PredictRouter,
   outsourceConstraintsRouter,
   outsourceBaseDataRouter,
   outsourceDataRouter,

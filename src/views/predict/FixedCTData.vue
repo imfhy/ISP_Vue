@@ -225,7 +225,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/FixedCTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Predict/FixedCTData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
   name: 'FixedCTData',
@@ -689,7 +689,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/predict/FixedCTData.scss';
+  @import '../../assets/css/Predict/FixedCTData.scss';
 </style>
 <style>
 .btnDanger{

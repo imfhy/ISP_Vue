@@ -333,7 +333,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/predict/TrainLEDTData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/Predict/TrainLEDTData'
 import { LineOptions, ProcessOptions } from '@/utils/items'
 export default {
   name: 'TrainLEDTData',
@@ -923,7 +923,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/predict/TrainLEDTData.scss';
+  @import '../../assets/css/Predict/TrainLEDTData.scss';
 </style>
 <style>
 .btnDanger{
