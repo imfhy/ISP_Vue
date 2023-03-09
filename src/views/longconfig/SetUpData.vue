@@ -220,7 +220,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/SetUpData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/SetUpData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'SetUpData',
@@ -665,7 +665,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/SetUpData.scss';
+  @import '../../assets/css/LongConfig/SetUpData.scss';
 </style>
 <style>
 .btnDanger{

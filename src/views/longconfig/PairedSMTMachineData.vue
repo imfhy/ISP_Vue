@@ -213,7 +213,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/PairedSMTMachineData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/PairedSMTMachineData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'PairedSMTMachineData',
@@ -655,7 +655,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/PairedSMTMachineData.scss';
+  @import '../../assets/css/LongConfig/PairedSMTMachineData.scss';
 </style>
 <style>
 .btnDanger{

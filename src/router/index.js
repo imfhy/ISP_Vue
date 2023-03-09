@@ -11,7 +11,7 @@ import outsourceConstraintsRouter from './modules/outsource_constraints'
 import outsourceBaseDataRouter from './modules/outsource_basedata'
 import outsourceDataRouter from './modules/outsource_data'
 import DayConfigRouter from './modules/DayConfig'
-import longconfigRouter from './modules/longconfig'
+import LongConfigRouter from './modules/LongConfig'
 import predictRouter from './modules/predict'
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -143,7 +143,7 @@ export const asyncRoutes = [
   },
 
   DayConfigRouter,
-  longconfigRouter,
+  LongConfigRouter,
   predictRouter,
   outsourceConstraintsRouter,
   outsourceBaseDataRouter,

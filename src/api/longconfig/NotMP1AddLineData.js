@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/get_table_data/',
+    url: '/LongConfig/NotMP1AddLineData/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/add_data/',
+    url: '/LongConfig/NotMP1AddLineData/add_data/',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/modify_data/',
+    url: '/LongConfig/NotMP1AddLineData/modify_data/',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/delete_data/',
+    url: '/LongConfig/NotMP1AddLineData/delete_data/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/handle_delete/',
+    url: '/LongConfig/NotMP1AddLineData/handle_delete/',
     method: 'post',
     data
   })
@@ -42,7 +42,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/preprocess/notmp1addlinedata/import_data/',
+    url: '/LongConfig/NotMP1AddLineData/import_data/',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData() {
   return request({
-    url: '/preprocess/notmp1addlinedata/export_data/',
+    url: '/LongConfig/NotMP1AddLineData/export_data/',
     method: 'get'
   })
 }

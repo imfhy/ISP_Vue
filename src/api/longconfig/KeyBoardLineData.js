@@ -2,7 +2,7 @@ import request from '../../utils/request'
 // 获取表格数据 分页获取
 export function GetTableData(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/get_table_data/',
+    url: '/LongConfig/KeyBoardLineData/get_table_data/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function GetTableData(data) {
 // 添加数据
 export function AddData(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/add_data/',
+    url: '/LongConfig/KeyBoardLineData/add_data/',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function AddData(data) {
 // 修改数据
 export function ModifyData(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/modify_data/',
+    url: '/LongConfig/KeyBoardLineData/modify_data/',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function ModifyData(data) {
 // 删除勾选的数据
 export function DeleteData(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/delete_data/',
+    url: '/LongConfig/KeyBoardLineData/delete_data/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function DeleteData(data) {
 // 删除一条数据
 export function HandleDelete(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/handle_delete/',
+    url: '/LongConfig/KeyBoardLineData/handle_delete/',
     method: 'post',
     data
   })
@@ -42,7 +42,7 @@ export function HandleDelete(data) {
 // 确认导入数据
 export function ImportData(data) {
   return request({
-    url: '/preprocess/keyboardlinedata/import_data/',
+    url: '/LongConfig/KeyBoardLineData/import_data/',
     method: 'post',
     data
   })
@@ -50,7 +50,7 @@ export function ImportData(data) {
 // 确认导出数据
 export function ExportData() {
   return request({
-    url: '/preprocess/keyboardlinedata/export_data/',
+    url: '/LongConfig/KeyBoardLineData/export_data/',
     method: 'get'
   })
 }

@@ -229,7 +229,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/NotMP1AddLineData'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/NotMP1AddLineData'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'NotMP1AddLineData',
@@ -673,7 +673,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/NotMP1AddLineData.scss';
+  @import '../../assets/css/LongConfig/NotMP1AddLineData.scss';
 </style>
 <style>
 .btnDanger{

@@ -1,10 +1,10 @@
 // 长期配置
 import Layout from '@/layout'
 
-const longconfigRouter = {
-  path: '/longconfig',
+const LongConfigRouter = {
+  path: '/LongConfig',
   component: Layout,
-  redirect: '/longconfig/ledctdata',
+  redirect: '/LongConfig/LEDCTData',
   alwaysShow: true,
   name: 'LongConfig',
   meta: {
@@ -14,8 +14,8 @@ const longconfigRouter = {
   },
   children: [
     {
-      path: 'ledctdata',
-      component: () => import('@/views/longconfig/LEDCTData'),
+      path: 'LEDCTData',
+      component: () => import('@/views/LongConfig/LEDCTData'),
       name: 'LEDCTData',
       meta: {
         title: 'LED经验数据',
@@ -23,8 +23,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'mp1addlinedata',
-      component: () => import('@/views/longconfig/MP1AddLineData'),
+      path: 'MP1AddLineData',
+      component: () => import('@/views/LongConfig/MP1AddLineData'),
       name: 'MP1AddLineData',
       meta: {
         title: 'MP1补线表',
@@ -32,8 +32,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'notmp1addlinedata',
-      component: () => import('@/views/longconfig/NotMP1AddLineData'),
+      path: 'NotMP1AddLineData',
+      component: () => import('@/views/LongConfig/NotMP1AddLineData'),
       name: 'NotMP1AddLineData',
       meta: {
         title: '非MP1补线表',
@@ -41,8 +41,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'exchangelinedata',
-      component: () => import('@/views/longconfig/ExchangeLineData'),
+      path: 'ExchangeLineData',
+      component: () => import('@/views/LongConfig/ExchangeLineData'),
       name: 'ExchangeLineData',
       meta: {
         title: '交换线别表',
@@ -50,8 +50,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'linedata',
-      component: () => import('@/views/longconfig/LineData'),
+      path: 'LineData',
+      component: () => import('@/views/LongConfig/LineData'),
       name: 'LineData',
       meta: {
         title: '产线配置表',
@@ -59,8 +59,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'capacitychangedata',
-      component: () => import('@/views/longconfig/CapacityChangeData'),
+      path: 'CapacityChangeData',
+      component: () => import('@/views/LongConfig/CapacityChangeData'),
       name: 'CapacityChangeData',
       meta: {
         title: '产能变化表',
@@ -68,8 +68,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'optimizedmachinedata',
-      component: () => import('@/views/longconfig/OptimizedMachineData'),
+      path: 'OptimizedMachineData',
+      component: () => import('@/views/LongConfig/OptimizedMachineData'),
       name: 'OptimizedMachineData',
       meta: {
         title: '优化机种表',
@@ -77,8 +77,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'setupdata',
-      component: () => import('@/views/longconfig/SetUpData'),
+      path: 'SetUpData',
+      component: () => import('@/views/LongConfig/SetUpData'),
       name: 'SetUpData',
       meta: {
         title: '切换表',
@@ -86,8 +86,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'processdata',
-      component: () => import('@/views/longconfig/ProcessData'),
+      path: 'ProcessData',
+      component: () => import('@/views/LongConfig/ProcessData'),
       name: 'ProcessData',
       meta: {
         title: '制程配置表',
@@ -95,8 +95,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'keyboardlinedata',
-      component: () => import('@/views/longconfig/KeyBoardLineData'),
+      path: 'KeyBoardLineData',
+      component: () => import('@/views/LongConfig/KeyBoardLineData'),
       name: 'KeyBoardLineData',
       meta: {
         title: '按键板表',
@@ -104,8 +104,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'earlyduedateboard8',
-      component: () => import('@/views/longconfig/EarlyDueDateBoard8'),
+      path: 'EarlyDueDateBoard8',
+      component: () => import('@/views/LongConfig/EarlyDueDateBoard8'),
       name: 'EarlyDueDateBoard8',
       meta: {
         title: '提早交期板号表',
@@ -113,8 +113,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'changelinedata',
-      component: () => import('@/views/longconfig/ChangeLineData'),
+      path: 'ChangeLineData',
+      component: () => import('@/views/LongConfig/ChangeLineData'),
       name: 'ChangeLineData',
       meta: {
         title: '线体变化表',
@@ -122,8 +122,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'pairedsmtmachinedata',
-      component: () => import('@/views/longconfig/PairedSMTMachineData'),
+      path: 'PairedSMTMachineData',
+      component: () => import('@/views/LongConfig/PairedSMTMachineData'),
       name: 'PairedSMTMachineData',
       meta: {
         title: '配套板表',
@@ -131,8 +131,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'keyboardspecialmodel',
-      component: () => import('@/views/longconfig/KeyBoardSpecialModel'),
+      path: 'KeyBoardSpecialModel',
+      component: () => import('@/views/LongConfig/KeyBoardSpecialModel'),
       name: 'KeyBoardSpecialModel',
       meta: {
         title: '小板特殊机种表',
@@ -140,8 +140,8 @@ const longconfigRouter = {
       }
     },
     {
-      path: 'interfaceconfig',
-      component: () => import('@/views/longconfig/InterfaceConfig'),
+      path: 'InterfaceConfig',
+      component: () => import('@/views/LongConfig/InterfaceConfig'),
       name: 'InterfaceConfig',
       meta: {
         title: '接口配置表',
@@ -151,4 +151,4 @@ const longconfigRouter = {
   ]
 }
 
-export default longconfigRouter
+export default LongConfigRouter

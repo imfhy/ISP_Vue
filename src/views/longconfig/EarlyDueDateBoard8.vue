@@ -206,7 +206,7 @@ import XLSX from 'xlsx'
 import { mapGetters } from 'vuex'
 // import { Loading } from 'element-ui'
 import elDragDialog from '@/directive/el-drag-dialog'
-import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/longconfig/EarlyDueDateBoard8'
+import { GetTableData, AddData, ModifyData, DeleteData, HandleDelete, ExportData, ImportData } from '@/api/LongConfig/EarlyDueDateBoard8'
 import { LineOptions } from '@/utils/items'
 export default {
   name: 'EarlyDueDateBoard8',
@@ -639,7 +639,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  @import '../../assets/css/longconfig/EarlyDueDateBoard8.scss';
+  @import '../../assets/css/LongConfig/EarlyDueDateBoard8.scss';
 </style>
 <style>
 .btnDanger{
